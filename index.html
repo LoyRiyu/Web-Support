@@ -1,377 +1,513 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Moonfall SMP | Cổng Hỗ Trợ Máy Chủ Minecraft</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lexend:wght@500;700&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vania RPG+ | Cổng Hỗ Trợ Server Minecraft</title>
 
-  :root {
-    --bg: #0a0d14;
-    --bg-soft: #111827;
-    --card: #121d30;
-    --card-2: #0f1727;
-    --line: #263451;
-    --text: #eef4ff;
-    --text-dim: #9bb0d1;
-    --primary: #60a5fa;
-    --primary-soft: #1d4ed8;
-    --accent: #67e8f9;
-    --success: #4ade80;
-    --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-  }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Russo+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  <style>
+    :root {
+      --bg: #081018;
+      --bg-2: #0f1723;
+      --panel: #121f33;
+      --line: #2b3e5d;
+      --text: #eff5ff;
+      --text-dim: #a9b8cf;
+      --gold-a: #ffe57a;
+      --gold-b: #ffb91b;
+      --green-a: #85ff63;
+      --green-b: #18b640;
+      --blue-a: #67d3ff;
+      --blue-b: #3a7cff;
+      --discord: #5865f2;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
 
-  body {
-    min-height: 100vh;
-    font-family: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    color: var(--text);
-    background:
-      radial-gradient(circle at 10% 10%, rgba(29, 78, 216, 0.25), transparent 35%),
-      radial-gradient(circle at 90% 20%, rgba(103, 232, 249, 0.12), transparent 30%),
-      linear-gradient(145deg, #070a12, #0d1322 45%, #0b111d);
-    line-height: 1.55;
-    padding-bottom: 48px;
-  }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .container {
-    width: min(1180px, 92vw);
-    margin: 0 auto;
-  }
+    html { scroll-behavior: smooth; }
 
-  .hero {
-    margin-top: 24px;
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    padding: clamp(22px, 4vw, 52px);
-    background: linear-gradient(160deg, rgba(18,29,48,0.9), rgba(9,15,28,0.85));
-    box-shadow: var(--shadow);
-    position: relative;
-    overflow: hidden;
-  }
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background: radial-gradient(circle at top left, rgba(58,124,255,.2), transparent 30%),
+        radial-gradient(circle at 85% 12%, rgba(24,182,64,.18), transparent 28%),
+        linear-gradient(130deg, #04070d, #091221 40%, #0b1624 70%, #081018);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    width: 380px;
-    height: 380px;
-    right: -130px;
-    top: -180px;
-    background: radial-gradient(circle, rgba(96,165,250,.26), transparent 70%);
-    pointer-events: none;
-  }
+    .container { width: min(1200px, 92vw); margin-inline: auto; }
 
-  .hero-top {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--accent);
-    letter-spacing: .3px;
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      background: rgba(8, 16, 24, 0.75);
+      border-bottom: 1px solid rgba(103, 211, 255, 0.2);
+    }
 
-  .dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    background: var(--success);
-    box-shadow: 0 0 14px rgba(74, 222, 128, .7);
-  }
+    .top-nav .wrap {
+      width: min(1200px, 92vw);
+      margin-inline: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 68px;
+      gap: 12px;
+    }
 
-  h1 {
-    font-family: 'Lexend', 'Be Vietnam Pro', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    line-height: 1.18;
-    max-width: 14ch;
-  }
+    .logo {
+      font-family: 'Russo One', sans-serif;
+      letter-spacing: .5px;
+      text-decoration: none;
+      font-size: clamp(20px, 2.3vw, 28px);
+    }
 
-  .hero p {
-    margin-top: 14px;
-    max-width: 62ch;
-    color: var(--text-dim);
-    font-size: clamp(14px, 1.7vw, 18px);
-  }
+    .vania {
+      background: linear-gradient(180deg, var(--gold-a), var(--gold-b));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 0 rgba(0,0,0,.35);
+    }
 
-  .hero-actions {
-    margin-top: 24px;
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
+    .rpg {
+      margin-left: 6px;
+      background: linear-gradient(180deg, var(--green-a), var(--green-b));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 0 rgba(0,0,0,.35);
+    }
 
-  .btn {
-    text-decoration: none;
-    color: #fff;
-    background: linear-gradient(90deg, var(--primary-soft), var(--primary));
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 12px;
-    padding: 11px 16px;
-    font-weight: 700;
-    font-size: 14px;
-  }
+    .menu { display: flex; gap: 14px; flex-wrap: wrap; }
+    .menu a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
 
-  .btn.ghost {
-    background: rgba(96,165,250,.08);
-    color: var(--accent);
-    border-color: rgba(103,232,249,.35);
-  }
+    .hero {
+      margin-top: 20px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(18,31,51,.9), rgba(10,18,31,.9));
+      box-shadow: var(--shadow);
+    }
 
-  .stats {
-    margin-top: 22px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-  }
+    .hero-banner {
+      min-height: 360px;
+      padding: clamp(20px, 4vw, 44px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(to right, rgba(4,10,18,.9), rgba(4,10,18,.52)), url('https://images.unsplash.com/photo-1642759145352-88f2f10929d8?q=80&w=1600&auto=format&fit=crop') center/cover;
+    }
 
-  .stat {
-    background: rgba(15, 23, 39, 0.7);
-    border: 1px solid rgba(96,165,250,.18);
-    border-radius: 14px;
-    padding: 12px;
-  }
+    .status {
+      width: fit-content;
+      border: 1px solid rgba(133,255,99,.35);
+      background: rgba(133,255,99,.09);
+      color: #bcf7a4;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
 
-  .stat strong {
-    display: block;
-    font-size: 22px;
-    color: #fff;
-  }
+    h1 {
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.12;
+      max-width: 12ch;
+      margin-bottom: 12px;
+    }
 
-  .stat span {
-    font-size: 12px;
-    color: var(--text-dim);
-  }
+    .hero p {
+      max-width: 62ch;
+      color: #d0ddf0;
+      margin-bottom: 20px;
+    }
 
-  .section-title {
-    margin: 34px 0 14px;
-    font-size: 24px;
-    font-family: 'Lexend', sans-serif;
-  }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
-  .section-sub {
-    color: var(--text-dim);
-    margin-bottom: 14px;
-  }
+    .btn {
+      text-decoration: none;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      color: white;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 11px 15px;
+      border: 1px solid transparent;
+    }
 
-  .features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 14px;
-  }
+    .btn-primary { background: linear-gradient(90deg, var(--blue-b), var(--blue-a)); }
+    .btn-secondary { background: rgba(103,211,255,.08); border-color: rgba(103,211,255,.35); color: #bcecff; }
+    .btn-discord { background: linear-gradient(90deg, #4c59e7, #6c77f5); }
 
-  .feature-card {
-    background: linear-gradient(175deg, #13203a, #101b30);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 18px;
-  }
+    .server-box {
+      margin-top: 18px;
+      width: fit-content;
+      background: rgba(8,16,24,.7);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-  .feature-card h3 { font-size: 18px; margin-bottom: 8px; }
-  .feature-card p { font-size: 14px; color: var(--text-dim); }
+    .server-ip { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #ffe7ab; font-weight: 700; }
 
-  .recipes {
-    margin-top: 16px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    gap: 14px;
-  }
+    .copy-btn {
+      background: #1d2a44;
+      border: 1px solid #48679d;
+      color: #cce0ff;
+      border-radius: 8px;
+      font-size: 12px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
 
-  .recipe-card {
-    background: linear-gradient(180deg, var(--card), var(--card-2));
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 16px;
-  }
+    section { margin-top: 34px; }
+    .section-head h2 { font-size: 28px; margin-bottom: 6px; }
+    .section-head p { color: var(--text-dim); }
 
-  .recipe-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
+    .quick-links {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
+      gap: 10px;
+    }
 
-  .recipe-name { font-size: 18px; font-weight: 700; }
-  .recipe-slot {
-    font-size: 12px;
-    color: var(--accent);
-    border: 1px solid rgba(103,232,249,.4);
-    padding: 3px 8px;
-    border-radius: 999px;
-  }
+    .quick-links a {
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: #0f1a2e;
+      border-radius: 12px;
+      padding: 12px;
+      color: #dce8fb;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  .craft-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
 
-  .craft-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 56px);
-    grid-template-rows: repeat(3, 56px);
-    gap: 4px;
-    background: #08101f;
-    padding: 6px;
-    border-radius: 10px;
-    border: 1px solid #2f4468;
-  }
+    .feature {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      background: linear-gradient(165deg, #12213a, #0e1a2c);
+    }
 
-  .slot {
-    background: #111d34;
-    border: 1px solid #30466f;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    .feature i { color: #84e6ff; margin-bottom: 8px; font-size: 18px; }
+    .feature h3 { margin-bottom: 8px; }
+    .feature p { color: var(--text-dim); font-size: 14px; }
 
-  .item {
-    width: 38px;
-    height: 38px;
-    object-fit: contain;
-    image-rendering: pixelated;
-    filter: drop-shadow(0 3px 4px rgba(0,0,0,.45));
-  }
+    .recipes {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 14px;
+    }
 
-  .fallback {
-    font-size: 25px;
-  }
+    .card {
+      background: linear-gradient(180deg, #12213a, #0f1b30);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 15px;
+    }
 
-  .arrow {
-    color: var(--text-dim);
-    font-size: 26px;
-  }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      align-items: center;
+    }
 
-  .result {
-    width: 72px;
-    height: 72px;
-    border-radius: 12px;
-    border: 1px solid #4e77b8;
-    background: #0d1930;
-    display: grid;
-    place-items: center;
-  }
+    .badge {
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      color: #bee4ff;
+    }
 
-  .recipe-note {
-    margin-top: 10px;
-    font-size: 13px;
-    color: var(--text-dim);
-  }
+    .craft {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
 
-  footer {
-    margin-top: 38px;
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 13px;
-  }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 58px);
+      gap: 4px;
+      background: #0a1322;
+      border: 1px solid #314a72;
+      border-radius: 10px;
+      padding: 6px;
+    }
 
-  @media (max-width: 600px) {
-    .craft-grid { grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(3, 50px); }
-    .slot { width: 50px; height: 50px; }
-    .item { width: 33px; height: 33px; }
-  }
-</style>
+    .slot {
+      width: 58px;
+      height: 58px;
+      background: #13213b;
+      border: 1px solid #345183;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+    }
+
+    .slot img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.5));
+    }
+
+    .result {
+      width: 72px;
+      height: 72px;
+      border: 1px solid #4c70ad;
+      border-radius: 12px;
+      background: #11203a;
+      display: grid;
+      place-items: center;
+    }
+
+    .muted { color: var(--text-dim); font-size: 13px; margin-top: 8px; }
+
+    .discord-box {
+      margin-top: 16px;
+      border: 1px dashed rgba(88,101,242,.7);
+      background: rgba(88,101,242,.08);
+      border-radius: 12px;
+      padding: 14px;
+      color: #d5dcff;
+    }
+
+    footer {
+      margin: 34px 0 26px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      .menu { display: none; }
+      .grid { grid-template-columns: repeat(3, 50px); }
+      .slot { width: 50px; height: 50px; }
+      .slot img { width: 34px; height: 34px; }
+    }
+  </style>
 </head>
 <body>
-  <main class="container">
-    <section class="hero">
-      <div class="hero-top"><span class="dot"></span> Máy chủ đang hoạt động • Moonfall SMP</div>
-      <h1>Trang chủ hỗ trợ Minecraft dành cho người chơi Việt Nam</h1>
-      <p>
-        Giao diện mới ưu tiên font dễ đọc tiếng Việt, trình bày hiện đại hơn và đã sẵn sàng để bạn thay emoji bằng ảnh item thật.
-        Chỉ cần upload PNG vào thư mục <strong>assets/items/</strong> rồi cập nhật đường dẫn là hiển thị ngay.
-      </p>
-      <div class="hero-actions">
-        <a class="btn" href="#recipes">Xem công thức túi</a>
-        <a class="btn ghost" href="#features">Tính năng server</a>
-      </div>
-      <div class="stats">
-        <div class="stat"><strong>8+</strong><span>Cấp túi trữ vật</span></div>
-        <div class="stat"><strong>24/7</strong><span>Máy chủ luôn mở</span></div>
-        <div class="stat"><strong>Việt hoá</strong><span>Nội dung ưu tiên tiếng Việt</span></div>
-        <div class="stat"><strong>Plugin</strong><span>Hệ thống nâng cấp mở rộng</span></div>
+  <header class="top-nav">
+    <div class="wrap">
+      <a class="logo" href="#top">
+        <span class="vania">Vania</span><span class="rpg">RPG+</span>
+      </a>
+      <nav class="menu">
+        <a href="#tong-quan">Tổng quan</a>
+        <a href="#cong-thuc">Công thức</a>
+        <a href="#discord">Discord</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="container">
+    <section class="hero" id="tong-quan">
+      <div class="hero-banner">
+        <div class="status"><i class="fa-solid fa-signal"></i> Online • Hỗ trợ tiếng Việt</div>
+        <h1><span class="vania">Vania</span> <span class="rpg">RPG+</span> Cổng hỗ trợ máy chủ Minecraft</h1>
+        <p>
+          Mình đã chuyển sang dùng link ảnh item trực tiếp như bạn yêu cầu, phối màu theo phong cách ảnh mẫu
+          (tông vàng kim + xanh lá + nền fantasy đậm), có liên kết điều hướng trong một trang và chừa sẵn khu vực Discord để bạn gắn link chính thức.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#cong-thuc"><i class="fa-solid fa-hammer"></i> Xem công thức</a>
+          <a class="btn btn-secondary" href="#lien-ket"><i class="fa-solid fa-link"></i> Liên kết nhanh</a>
+          <a class="btn btn-discord" href="#discord"><i class="fa-brands fa-discord"></i> Cài Discord</a>
+        </div>
+        <div class="server-box">
+          <span><i class="fa-solid fa-server"></i> IP Server:</span>
+          <span class="server-ip" id="serverIp">play-vanirpg.serveminecraft.net</span>
+          <button class="copy-btn" id="copyIpBtn">Copy IP</button>
+        </div>
       </div>
     </section>
 
-    <h2 id="features" class="section-title">Vì sao đây là “trang chủ thực thụ”</h2>
-    <p class="section-sub">Không chỉ là một bảng craft, giờ bạn có hero, CTA, stats, khu tính năng, và khu công thức dạng card rõ ràng.</p>
-    <section class="features">
-      <article class="feature-card">
-        <h3>Font thân thiện tiếng Việt</h3>
-        <p>Dùng Be Vietnam Pro + Lexend để dấu tiếng Việt hiển thị đẹp, không bị lỗi glyph như các font trang trí cũ.</p>
-      </article>
-      <article class="feature-card">
-        <h3>Sẵn khung ảnh item</h3>
-        <p>Mỗi ô item đã hỗ trợ thẻ &lt;img&gt; và đường dẫn ảnh local trong <code>assets/items/</code>, phù hợp ảnh pack Minecraft.</p>
-      </article>
-      <article class="feature-card">
-        <h3>Bố cục hiện đại hơn</h3>
-        <p>Giảm cảm giác “máy móc”, tăng phân cấp nội dung để người mới vào web hiểu ngay nên bấm gì trước.</p>
-      </article>
+    <section id="lien-ket">
+      <div class="section-head">
+        <h2>Liên kết gián tiếp / trang con trong 1 file</h2>
+        <p>Hiện tại là 1 file <code>index.html</code>, nhưng đã có anchor link để điều hướng nhanh như trang nhiều mục.</p>
+      </div>
+      <div class="quick-links">
+        <a href="#tong-quan"><i class="fa-solid fa-house"></i> Về đầu trang</a>
+        <a href="#cong-thuc"><i class="fa-solid fa-cubes"></i> Công thức túi</a>
+        <a href="#discord"><i class="fa-brands fa-discord"></i> Khu Discord</a>
+      </div>
     </section>
 
-    <h2 id="recipes" class="section-title">Công thức túi trữ vật (mẫu homepage)</h2>
-    <p class="section-sub">Bạn có thể tiếp tục nhân bản card bên dưới cho đủ 8 cấp như dữ liệu hiện có.</p>
+    <section>
+      <div class="section-head">
+        <h2>Điểm nhấn giao diện mới</h2>
+        <p>Bắt mắt hơn nhờ thư viện icon, nền fantasy và phân cấp nội dung rõ ràng.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <i class="fa-solid fa-font"></i>
+          <h3>Font hợp tiếng Việt</h3>
+          <p>Be Vietnam Pro giúp chữ có dấu rõ ràng, không “vỡ” glyph.</p>
+        </article>
+        <article class="feature">
+          <i class="fa-solid fa-image"></i>
+          <h3>Dùng ảnh item thật</h3>
+          <p>Các slot đã map ảnh trực tiếp theo link bạn gửi.</p>
+        </article>
+        <article class="feature">
+          <i class="fa-solid fa-compass"></i>
+          <h3>Điều hướng thông minh</h3>
+          <p>Có menu + liên kết neo (anchor), mở rộng thành đa trang sau rất dễ.</p>
+        </article>
+      </div>
+    </section>
 
-    <section class="recipes">
-      <article class="recipe-card">
-        <div class="recipe-head">
-          <div class="recipe-name">Bố Nang</div>
-          <span class="recipe-slot">9 ô</span>
-        </div>
-        <div class="craft-area">
-          <div class="craft-grid">
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"><img class="item" src="assets/items/leather.png" alt="Da" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'🟫'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/chest.png" alt="Rương" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'🧰'}))"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
-          </div>
-          <div class="arrow">➜</div>
-          <div class="result">
-            <img class="item" src="assets/items/bag_t1.png" alt="Bố Nang" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'🎒'}))">
-          </div>
-        </div>
-        <div class="recipe-note">Đặt 1 da + 1 rương để chế tạo túi cấp cơ bản.</div>
-      </article>
+    <section id="cong-thuc">
+      <div class="section-head">
+        <h2>Công thức túi trữ vật (dùng image URL trực tiếp)</h2>
+        <p>Đã thay icon thô bằng ảnh item. Bạn có thể nhân bản card để làm đủ 8 cấp nhanh chóng.</p>
+      </div>
 
-      <article class="recipe-card">
-        <div class="recipe-head">
-          <div class="recipe-name">Thiết Nang</div>
-          <span class="recipe-slot">18 ô</span>
-        </div>
-        <div class="craft-area">
-          <div class="craft-grid">
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/chest.png" alt="Rương" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'🧰'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
-            <div class="slot"><img class="item" src="assets/items/iron_ingot.png" alt="Sắt" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'⚙️'}))"></div>
+      <div class="recipes">
+        <article class="card">
+          <div class="card-top"><h3>Bố Nang</h3><span class="badge">9 ô</span></div>
+          <div class="craft">
+            <div class="grid">
+              <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6d/Leather_JE2_BE2.png/revision/latest?cb=20190430052953" alt="Da"></div>
+              <div class="slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7K1Pbcb3y4KyU-0LNlH4gIysmgUkp5S_Q2J0ueucFGuuC_nAvAh8LEpI&s=10" alt="Rương"></div>
+              <div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+            </div>
+            <i class="fa-solid fa-arrow-right"></i>
+            <div class="result"><img src="https://cdn-icons-png.flaticon.com/512/1046/1046886.png" alt="Túi"></div>
           </div>
-          <div class="arrow">➜</div>
-          <div class="result">
-            <img class="item" src="assets/items/bag_t2.png" alt="Thiết Nang" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'🎒'}))">
+          <p class="muted">1 Da + 1 Rương.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><h3>Thiết Nang</h3><span class="badge">18 ô</span></div>
+          <div class="craft">
+            <div class="grid">
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+              <div class="slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7K1Pbcb3y4KyU-0LNlH4gIysmgUkp5S_Q2J0ueucFGuuC_nAvAh8LEpI&s=10" alt="Rương"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/fc/Iron_Ingot_JE3_BE2.png/revision/latest/thumbnail/width/360/height/360?cb=20230613175240" alt="Sắt"></div>
+            </div>
+            <i class="fa-solid fa-arrow-right"></i>
+            <div class="result"><img src="https://cdn-icons-png.flaticon.com/512/1046/1046886.png" alt="Túi"></div>
           </div>
-        </div>
-        <div class="recipe-note">Bao quanh rương bằng 8 phôi sắt để nâng cấp dung lượng.</div>
-      </article>
+          <p class="muted">8 Phôi sắt + 1 Rương.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><h3>Kim / Kim Cương / Lục Bảo</h3><span class="badge">Tier cao</span></div>
+          <div class="craft">
+            <div class="grid">
+              <div class="slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6mBn_V9rZVcmC7PyRJLR1WHShCCRPuaN_iy-Om_xKMA&s" alt="Vàng"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_fr_gamepedia/images/6/64/Diamant.png/revision/latest?cb=20200228125731" alt="Kim cương"></div>
+              <div class="slot"><img src="https://minecraft.wiki/images/Emerald_JE3_BE3.png?4c5f3" alt="Ngọc lục bảo"></div>
+              <div class="slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6mBn_V9rZVcmC7PyRJLR1WHShCCRPuaN_iy-Om_xKMA&s" alt="Vàng"></div>
+              <div class="slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7K1Pbcb3y4KyU-0LNlH4gIysmgUkp5S_Q2J0ueucFGuuC_nAvAh8LEpI&s=10" alt="Rương"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_fr_gamepedia/images/6/64/Diamant.png/revision/latest?cb=20200228125731" alt="Kim cương"></div>
+              <div class="slot"><img src="https://minecraft.wiki/images/Emerald_JE3_BE3.png?4c5f3" alt="Ngọc lục bảo"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_fr_gamepedia/images/6/64/Diamant.png/revision/latest?cb=20200228125731" alt="Kim cương"></div>
+              <div class="slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6mBn_V9rZVcmC7PyRJLR1WHShCCRPuaN_iy-Om_xKMA&s" alt="Vàng"></div>
+            </div>
+            <i class="fa-solid fa-arrow-right"></i>
+            <div class="result"><img src="https://cdn-icons-png.flaticon.com/512/1046/1046886.png" alt="Túi"></div>
+          </div>
+          <p class="muted">Template để bạn tách thành từng tier riêng nếu muốn chi tiết hơn.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><h3>Càn Khôn Nang</h3><span class="badge">Legendary</span></div>
+          <div class="craft">
+            <div class="grid">
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/31/Block_of_Netherite_JE1_BE1.png/revision/latest?cb=20200320021504" alt="Khối Netherite"></div>
+              <div class="slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS825rLy6CUBdZhsqK3i60Qa-_m1FozjcRN0-zbzhhEcg&s=10" alt="Sao Nether"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/31/Block_of_Netherite_JE1_BE1.png/revision/latest?cb=20200320021504" alt="Khối Netherite"></div>
+              <div class="slot"></div>
+              <div class="slot"><img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/26/Netherite_Ingot_JE1_BE2.png/revision/latest?cb=20220318055311" alt="Netherite"></div>
+              <div class="slot"></div>
+              <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+            </div>
+            <i class="fa-solid fa-arrow-right"></i>
+            <div class="result"><img src="https://cdn-icons-png.flaticon.com/512/1046/1046886.png" alt="Càn Khôn Nang"></div>
+          </div>
+          <p class="muted">Dùng Netherite + Sao Nether theo phong cách endgame.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="discord">
+      <div class="section-head">
+        <h2>Khu vực Discord (để trống cho bạn gắn link)</h2>
+        <p>Bạn chỉ cần thay URL trong nút bên dưới khi có Discord chính thức.</p>
+      </div>
+      <div class="discord-box">
+        <p><i class="fa-brands fa-discord"></i> Link hiện tại: <code>https://discord.gg/your-server-link</code></p>
+        <p style="margin-top:8px;">
+          <a class="btn btn-discord" href="https://discord.gg/your-server-link" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-discord"></i> Tham gia Discord
+          </a>
+        </p>
+      </div>
     </section>
 
     <footer>
-      Gợi ý bước tiếp theo: bạn upload toàn bộ icon item thật vào <strong>assets/items/</strong>, sau đó mình map hết 8 cấp còn lại để thành homepage hoàn chỉnh.
+      © 2026 Vania RPG+ • Server IP: play-vanirpg.serveminecraft.net
     </footer>
   </main>
+
+  <script>
+    const copyIpBtn = document.getElementById('copyIpBtn');
+    const serverIp = document.getElementById('serverIp')?.textContent || '';
+
+    copyIpBtn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(serverIp);
+        copyIpBtn.textContent = 'Đã copy!';
+        setTimeout(() => (copyIpBtn.textContent = 'Copy IP'), 1500);
+      } catch {
+        copyIpBtn.textContent = 'Không copy được';
+      }
+    });
+  </script>
 </body>
 </html>
