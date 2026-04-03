@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Túi Trữ Vật — Hướng Dẫn Chế Tạo | Vania RPG+</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Russo+One&family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root {
+      --bg:       #060c14;
+      --panel:    #0d1929;
+      --line:     #1e3050;
+      --line-hi:  #2e4a78;
+      --gold-a:   #ffe57a;
+      --gold-b:   #d4930a;
+      --green-a:  #7fff55;
+      --discord:  #5865f2;
+      --text:     #e8f0ff;
+      --text-dim: #6a88b0;
+      --text-mid: #9db8d8;
+      --radius:   14px;
+      --shadow:   0 20px 56px rgba(0,0,0,.6);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;pointer-events:none;z-index:0;opacity:.5}
+    .container{width:min(1180px,92vw);margin-inline:auto;position:relative;z-index:1}
+
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);background:rgba(6,12,20,.8);border-bottom:1px solid rgba(255,220,80,.1)}
+    .nav__inner{width:min(1180px,92vw);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:16px}
+    .logo{font-family:'Russo One',sans-serif;font-size:clamp(18px,2.2vw,24px);text-decoration:none;letter-spacing:.5px}
+    .logo-v{color:var(--gold-a)}.logo-rp{color:var(--green-a)}
+    .nav__back{display:inline-flex;align-items:center;gap:8px;color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:600;transition:color .2s}
+    .nav__back:hover{color:var(--gold-a)}
+    .nav__cta{display:inline-flex;align-items:center;gap:8px;background:var(--discord);color:#fff;font-weight:700;font-size:13px;padding:9px 18px;border-radius:10px;text-decoration:none;transition:filter .2s,transform .15s}
+    .nav__cta:hover{filter:brightness(1.15);transform:translateY(-1px)}
+
+    /* PAGE HEADER */
+    .page-header{padding:clamp(48px,7vw,80px) 0 clamp(36px,5vw,56px);position:relative;z-index:1;border-bottom:1px solid var(--line);margin-bottom:64px}
+    .page-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(255,200,50,.12),transparent 70%);pointer-events:none;z-index:0}
+    .page-header__content{position:relative;z-index:1;text-align:center}
+    .page-header__eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold-b);margin-bottom:14px}
+    .page-header__title{font-family:'Cinzel',serif;font-size:clamp(30px,5vw,58px);font-weight:900;line-height:1.05;letter-spacing:-.5px;margin-bottom:14px}
+    .page-header__title span{background:linear-gradient(100deg,var(--gold-a),#ffa520,var(--gold-a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-header__desc{color:var(--text-dim);font-size:15px;max-width:58ch;margin:0 auto}
+    .page-header__divider{display:flex;align-items:center;gap:16px;margin-top:28px;justify-content:center}
+    .page-header__divider-line{flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--line-hi))}
+    .page-header__divider-line:last-child{background:linear-gradient(90deg,var(--line-hi),transparent)}
+    .page-header__divider-dot{width:5px;height:5px;border-radius:50%;background:var(--gold-b)}
+
+    /* REALM GROUP HEADER */
+    .realm-group{margin-bottom:72px}
+    .realm-group__header{display:flex;align-items:center;gap:16px;margin-bottom:32px;padding:18px 24px;border-radius:14px;border:1px solid;position:relative;overflow:hidden}
+    .realm-group__header::before{content:'';position:absolute;inset:0;opacity:.06;background:var(--realm-bg,var(--gold-a))}
+    .realm-group__num{font-family:'Cinzel',serif;font-size:32px;font-weight:900;opacity:.3;line-height:1}
+    .realm-group__title{font-family:'Cinzel',serif;font-size:clamp(18px,2.5vw,26px);font-weight:700}
+    .realm-group__sub{font-size:13px;color:var(--text-dim);margin-top:2px}
+
+    /* CARD GRID */
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+
+    /* CRAFT CARD */
+    .card{background:linear-gradient(160deg,#0d1d35 0%,#091526 100%);border:1px solid var(--line);border-radius:18px;padding:24px;position:relative;overflow:hidden;transition:border-color .25s,transform .2s,box-shadow .25s}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--card-accent,var(--gold-a)),transparent);opacity:0;transition:opacity .3s}
+    .card:hover{border-color:var(--line-hi);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+    .card:hover::before{opacity:1}
+    .card--legendary{border-color:#5a28a0;animation:legendary-glow 3s ease-in-out infinite}
+    .card--legendary::before{opacity:.6 !important}
+    @keyframes legendary-glow{0%,100%{box-shadow:0 0 24px rgba(157,77,202,.15)}50%{box-shadow:0 0 48px rgba(157,77,202,.3),0 0 80px rgba(255,215,0,.08)}}
+
+    .card__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06)}
+    .card__left{display:flex;align-items:center;gap:12px}
+    .card__tier{font-family:'Cinzel',serif;font-size:10px;font-weight:600;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase}
+    .card__name{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--card-accent,var(--gold-a))}
+    .card__realm-badge{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid var(--card-accent,var(--gold-a));color:var(--card-accent,var(--gold-a));background:rgba(255,255,255,.04);white-space:nowrap}
+    .card__slots-badge{font-size:11px;color:var(--text-dim);background:rgba(255,255,255,.04);border:1px solid var(--line);padding:3px 9px;border-radius:6px;font-weight:600}
+
+    /* CRAFT AREA */
+    .craft-area{display:flex;align-items:center;gap:14px;justify-content:center;padding:4px 0}
+    .craft-grid{display:grid;grid-template-columns:repeat(3,60px);gap:3px;background:#060e1a;border:1px solid var(--line);border-radius:10px;padding:6px;flex-shrink:0}
+    .slot{width:60px;height:60px;background:#0a1828;border:1px solid #1e3050;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:background .2s}
+    .slot.filled{background:#0f2040;border-color:#2a4070}
+    .slot img{width:38px;height:38px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+    .slot__label{font-size:7.5px;color:var(--text-dim);text-align:center;line-height:1.2;max-width:54px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .craft-arrow{color:var(--text-dim);font-size:16px;flex-shrink:0}
+    .result-slot{width:76px;height:76px;background:#0a1828;border:2px solid var(--card-accent,var(--gold-a));border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex-shrink:0;box-shadow:0 0 18px rgba(0,0,0,.3)}
+    .result-slot img{width:48px;height:48px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))}
+    .result-slot__label{font-size:8px;font-weight:600;text-align:center;line-height:1.2;color:var(--card-accent,var(--gold-a))}
+
+    /* MATERIALS NOTE */
+    .card__materials{margin-top:14px;font-size:12.5px;color:var(--text-dim);line-height:1.6;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)}
+    .card__materials strong{color:var(--text-mid)}
+
+    /* LEGENDARY SPECIAL */
+    .card--legendary .craft-grid{border-color:#3a1868;background:#04060e}
+    .card--legendary .slot{background:#0a0820;border-color:#2a1050}
+    .card--legendary .slot.filled{background:#110830;border-color:#3d1580}
+
+    /* FOOTER */
+    .page-footer{border-top:1px solid var(--line);padding:32px 0 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:80px}
+    .page-footer .logo{font-size:18px}
+    .page-footer__right{font-size:13px;color:var(--text-dim)}
+
+    /* LEGEND */
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;padding:16px 20px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px}
+    .legend__item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim)}
+    .legend__dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+    /* RESPONSIVE */
+    @media(max-width:720px){.cards{grid-template-columns:1fr}.craft-grid{grid-template-columns:repeat(3,52px)}.slot{width:52px;height:52px}.slot img{width:34px;height:34px}}
+    @media(max-width:480px){.craft-grid{grid-template-columns:repeat(3,46px)}.slot{width:46px;height:46px}.slot img{width:30px;height:30px}}
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="logo" href="index.html"><span class="logo-v">Vania</span><span class="logo-rp">RPG+</span></a>
+      <a class="nav__back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
+      <a class="nav__cta" href="#discord"><i class="fa-brands fa-discord"></i> Discord</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="page-header">
+      <div class="page-header__content">
+        <span class="page-header__eyebrow">Hướng dẫn chế tạo</span>
+        <h1 class="page-header__title"><span>Túi Trữ Vật</span></h1>
+        <p class="page-header__desc">8 cấp độ từ Phàm Giới đến Độc Tôn Vô Đối. Túi được giữ lại sau khi ngã — không mất khi chết.</p>
+        <div class="page-header__divider">
+          <div class="page-header__divider-line"></div>
+          <div class="page-header__divider-dot"></div>
+          <div class="page-header__divider-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend">
+      <div class="legend__item"><div class="legend__dot" style="background:#c8915a"></div> Phàm Giới (Tier I–III)</div>
+      <div class="legend__item"><div class="legend__dot" style="background:#50e070"></div> Tiên Nhân Giới (Tier IV–V)</div>
+      <div class="legend__item"><div class="legend__dot" style="background:#00d8e8"></div> Thần Giới (Tier VI)</div>
+      <div class="legend__item"><div class="legend__dot" style="background:#9d4dca"></div> Hư Không (Tier VII)</div>
+      <div class="legend__item"><div class="legend__dot" style="background:linear-gradient(90deg,#ffd700,#9d4dca)"></div> Độc Tôn Vô Đối (Tier VIII)</div>
+    </div>
+
+    <!-- ── PHÀM GIỚI ── -->
+    <div class="realm-group">
+      <div class="realm-group__header" style="--realm-bg:#c8915a;border-color:rgba(200,145,90,.35)">
+        <span class="realm-group__num" style="color:#c8915a">一</span>
+        <div>
+          <div class="realm-group__title" style="color:#c8915a">Phàm Giới</div>
+          <div class="realm-group__sub">Tier I · II · III — Vật liệu phàm trần</div>
+        </div>
+      </div>
+      <div class="cards">
+
+        <!-- Tier I: Bố Nang -->
+        <div class="card" style="--card-accent:#c8915a;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier I</div>
+                <div class="card__name">Bố Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge">Luyện Khí</span>
+              <span class="card__slots-badge">9 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot filled">
+                <img src="assets/img/items/leather.png" alt="Da" onerror="this.src='https://mc-heads.net/item/leather'">
+                <span class="slot__label">Da Thuộc</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/chest.png" alt="Rương" onerror="this.src='https://mc-heads.net/item/chest'">
+                <span class="slot__label">Rương</span>
+              </div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot">
+              <img src="assets/img/items/bundle.png" alt="Bố Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label">Bố Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 1 Da Thuộc + 1 Rương</p>
+        </div>
+
+        <!-- Tier II: Thiết Nang -->
+        <div class="card" style="--card-accent:#d0d0e0;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier II</div>
+                <div class="card__name" style="color:#d0d0e0">Thiết Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge" style="border-color:rgba(208,208,224,.4);color:#d0d0e0">Kim Đan</span>
+              <span class="card__slots-badge">18 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/chest.png" alt="Rương" onerror="this.src='https://mc-heads.net/item/chest'">
+                <span class="slot__label">Rương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/iron_ingot.png" alt="Sắt" onerror="this.src='https://mc-heads.net/item/iron_ingot'">
+                <span class="slot__label">Phôi Sắt</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot" style="border-color:#d0d0e0">
+              <img src="assets/img/items/bundle.png" alt="Thiết Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label" style="color:#d0d0e0">Thiết Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 8 Phôi Sắt + 1 Rương (lấp đầy xung quanh)</p>
+        </div>
+
+        <!-- Tier III: Đồng Nang -->
+        <div class="card" style="--card-accent:#d49050;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier III</div>
+                <div class="card__name" style="color:#d49050">Đồng Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge" style="border-color:rgba(212,144,80,.4);color:#d49050">Đại Thừa</span>
+              <span class="card__slots-badge">27 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/chest.png" alt="Rương" onerror="this.src='https://mc-heads.net/item/chest'">
+                <span class="slot__label">Rương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/copper_ingot.png" alt="Đồng" onerror="this.src='https://mc-heads.net/item/copper_ingot'">
+                <span class="slot__label">Phôi Đồng</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot" style="border-color:#d49050">
+              <img src="assets/img/items/bundle.png" alt="Đồng Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label" style="color:#d49050">Đồng Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 8 Phôi Đồng + 1 Rương (lấp đầy xung quanh)</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── TIÊN NHÂN GIỚI ── -->
+    <div class="realm-group">
+      <div class="realm-group__header" style="--realm-bg:#50e070;border-color:rgba(80,224,112,.3)">
+        <span class="realm-group__num" style="color:#50e070">二</span>
+        <div>
+          <div class="realm-group__title" style="color:#50e070">Tiên Nhân Giới</div>
+          <div class="realm-group__sub">Tier IV · V — Thoát tục, tự do phi hành</div>
+        </div>
+      </div>
+      <div class="cards">
+
+        <!-- Tier IV: Kim Nang -->
+        <div class="card" style="--card-accent:#f0c040;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier IV</div>
+                <div class="card__name" style="color:#f0c040">Kim Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge" style="border-color:rgba(240,192,64,.4);color:#f0c040">Tiên Nhân</span>
+              <span class="card__slots-badge">36 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/chest.png" alt="Rương" onerror="this.src='https://mc-heads.net/item/chest'">
+                <span class="slot__label">Rương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/gold_ingot.png" alt="Vàng" onerror="this.src='https://mc-heads.net/item/gold_ingot'">
+                <span class="slot__label">Phôi Vàng</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot" style="border-color:#f0c040">
+              <img src="assets/img/items/bundle.png" alt="Kim Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label" style="color:#f0c040">Kim Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 8 Phôi Vàng + 1 Rương (lấp đầy xung quanh)</p>
+        </div>
+
+        <!-- Tier V: Thúy Ngọc Nang -->
+        <div class="card" style="--card-accent:#50e070;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier V</div>
+                <div class="card__name" style="color:#50e070">Thúy Ngọc Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge" style="border-color:rgba(80,224,112,.4);color:#50e070">Tiên Vương</span>
+              <span class="card__slots-badge">45 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/chest.png" alt="Rương" onerror="this.src='https://mc-heads.net/item/chest'">
+                <span class="slot__label">Rương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/emerald.png" alt="Ngọc" onerror="this.src='https://mc-heads.net/item/emerald'">
+                <span class="slot__label">Ngọc Lục Bảo</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot" style="border-color:#50e070">
+              <img src="assets/img/items/bundle.png" alt="Thúy Ngọc Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label" style="color:#50e070">Thúy Ngọc Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 8 Ngọc Lục Bảo + 1 Rương (lấp đầy xung quanh)</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── THẦN GIỚI ── -->
+    <div class="realm-group">
+      <div class="realm-group__header" style="--realm-bg:#00d8e8;border-color:rgba(0,216,232,.3)">
+        <span class="realm-group__num" style="color:#00d8e8">三</span>
+        <div>
+          <div class="realm-group__title" style="color:#00d8e8">Thượng Cổ Thần Giới</div>
+          <div class="realm-group__sub">Tier VI — Vượt thoát luân hồi, chạm tới khởi nguyên</div>
+        </div>
+      </div>
+      <div class="cards">
+
+        <!-- Tier VI: Kim Cương Nang -->
+        <div class="card" style="--card-accent:#00d8e8;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier VI</div>
+                <div class="card__name" style="color:#00d8e8">Kim Cương Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge" style="border-color:rgba(0,216,232,.4);color:#00d8e8">Thánh Nhân</span>
+              <span class="card__slots-badge">54 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/chest.png" alt="Rương" onerror="this.src='https://mc-heads.net/item/chest'">
+                <span class="slot__label">Rương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/diamond.png" alt="Kim Cương" onerror="this.src='https://mc-heads.net/item/diamond'">
+                <span class="slot__label">Kim Cương</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot" style="border-color:#00d8e8">
+              <img src="assets/img/items/bundle.png" alt="Kim Cương Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label" style="color:#00d8e8">Kim Cương Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 8 Kim Cương + 1 Rương (lấp đầy xung quanh)</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── HƯ KHÔNG ── -->
+    <div class="realm-group">
+      <div class="realm-group__header" style="--realm-bg:#9d4dca;border-color:rgba(157,77,202,.35)">
+        <span class="realm-group__num" style="color:#9d4dca">四</span>
+        <div>
+          <div class="realm-group__title" style="color:#9d4dca">Hư Không Thượng Cảnh</div>
+          <div class="realm-group__sub">Tier VII — Tiêu dao ngoài vũ trụ, hư không làm đạo</div>
+        </div>
+      </div>
+      <div class="cards">
+
+        <!-- Tier VII: Hư Không Nang -->
+        <div class="card" style="--card-accent:#9d4dca;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier VII</div>
+                <div class="card__name" style="color:#9d4dca">Hư Không Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge" style="border-color:rgba(157,77,202,.5);color:#9d4dca">Hỗn Nguyên</span>
+              <span class="card__slots-badge">63 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot filled">
+                <img src="assets/img/items/netherite_ingot.png" alt="Netherite" onerror="this.src='https://mc-heads.net/item/netherite_ingot'">
+                <span class="slot__label">Phôi Netherite</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/chest.png" alt="Rương" onerror="this.src='https://mc-heads.net/item/chest'">
+                <span class="slot__label">Rương</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/netherite_ingot.png" alt="Netherite" onerror="this.src='https://mc-heads.net/item/netherite_ingot'">
+                <span class="slot__label">Phôi Netherite</span>
+              </div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot" style="border-color:#9d4dca;box-shadow:0 0 20px rgba(157,77,202,.3)">
+              <img src="assets/img/items/bundle.png" alt="Hư Không Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label" style="color:#9d4dca">Hư Không Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 2 Phôi Netherite + 1 Rương (hàng giữa)</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── ĐỘC TÔN VÔ ĐỐI ── -->
+    <div class="realm-group">
+      <div class="realm-group__header" style="--realm-bg:#ffd700;border-color:rgba(157,77,202,.5)">
+        <span class="realm-group__num" style="background:linear-gradient(90deg,#ffd700,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">五</span>
+        <div>
+          <div class="realm-group__title" style="background:linear-gradient(90deg,#ffd700,#ff6a00,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:clamp(18px,3vw,28px)">Độc Tôn Vô Đối</div>
+          <div class="realm-group__sub">Tier VIII — Siêu việt tất cả, vĩnh hằng bất diệt</div>
+        </div>
+      </div>
+      <div class="cards">
+
+        <!-- Tier VIII: Càn Khôn Nang -->
+        <div class="card card--legendary" style="--card-accent:#ffd700;">
+          <div class="card__head">
+            <div class="card__left">
+              <div>
+                <div class="card__tier">Tier VIII — Huyền Thoại</div>
+                <div class="card__name" style="background:linear-gradient(90deg,#ffd700,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:18px">Càn Khôn Nang</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="card__realm-badge" style="border-color:rgba(255,215,0,.5);color:#ffd700;background:rgba(255,215,0,.06)">Vĩnh Hằng Quy Nhất</span>
+              <span class="card__slots-badge">72 ô</span>
+            </div>
+          </div>
+          <div class="craft-area">
+            <div class="craft-grid">
+              <div class="slot filled">
+                <img src="assets/img/items/netherite_block.png" alt="Block Netherite" onerror="this.src='https://mc-heads.net/item/netherite_block'">
+                <span class="slot__label">Khối Netherite</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/nether_star.png" alt="Sao Wither" onerror="this.src='https://mc-heads.net/item/nether_star'">
+                <span class="slot__label">Sao Wither</span>
+              </div>
+              <div class="slot filled">
+                <img src="assets/img/items/netherite_block.png" alt="Block Netherite" onerror="this.src='https://mc-heads.net/item/netherite_block'">
+                <span class="slot__label">Khối Netherite</span>
+              </div>
+              <div class="slot"></div>
+              <div class="slot filled">
+                <img src="assets/img/items/netherite_ingot.png" alt="Phôi Netherite" onerror="this.src='https://mc-heads.net/item/netherite_ingot'">
+                <span class="slot__label">Phôi Netherite</span>
+              </div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+            </div>
+            <i class="fa-solid fa-arrow-right craft-arrow"></i>
+            <div class="result-slot" style="border-color:#9d4dca;box-shadow:0 0 30px rgba(157,77,202,.35),0 0 60px rgba(255,215,0,.1)">
+              <img src="assets/img/items/bundle.png" alt="Càn Khôn Nang" onerror="this.src='https://mc-heads.net/item/bundle'">
+              <span class="result-slot__label" style="background:linear-gradient(90deg,#ffd700,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Càn Khôn Nang</span>
+            </div>
+          </div>
+          <p class="card__materials"><strong>Vật liệu:</strong> 2 Khối Netherite + 1 Sao Wither (hàng trên) + 1 Phôi Netherite (giữa)</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <a class="logo" href="index.html"><span class="logo-v">Vania</span><span class="logo-rp">RPG+</span></a>
+      <span class="page-footer__right">Túi được giữ lại sau khi ngã xuống &nbsp;·&nbsp; Không mất khi chết</span>
+    </div>
+
+  </div>
+</body>
+</html>
