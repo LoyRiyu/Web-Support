@@ -9,19 +9,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Russo+One&family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
-    :root {
-      --bg:#060c14;--panel:#0d1929;--line:#1e3050;--line-hi:#2e4a78;
-      --gold-a:#ffe57a;--gold-b:#d4930a;--green-a:#7fff55;--discord:#5865f2;
-      --text:#e8f0ff;--text-dim:#6a88b0;--text-mid:#9db8d8;
-      --radius:14px;--shadow:0 20px 56px rgba(0,0,0,.6);
-    }
+    :root{--bg:#060c14;--panel:#0d1929;--line:#1e3050;--line-hi:#2e4a78;--gold-a:#ffe57a;--gold-b:#d4930a;--green-a:#7fff55;--discord:#5865f2;--text:#e8f0ff;--text-dim:#6a88b0;--text-mid:#9db8d8;--radius:14px}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden}
     body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:200px;pointer-events:none;z-index:0;opacity:.5}
     .container{width:min(1100px,92vw);margin-inline:auto;position:relative;z-index:1}
-
-    /* NAV */
     .nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);background:rgba(6,12,20,.8);border-bottom:1px solid rgba(255,220,80,.1)}
     .nav__inner{width:min(1100px,92vw);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:16px}
     .logo{font-family:'Russo One',sans-serif;font-size:clamp(18px,2.2vw,24px);text-decoration:none;letter-spacing:.5px}
@@ -30,8 +23,6 @@
     .nav__back:hover{color:var(--gold-a)}
     .nav__cta{display:inline-flex;align-items:center;gap:8px;background:var(--discord);color:#fff;font-weight:700;font-size:13px;padding:9px 18px;border-radius:10px;text-decoration:none;transition:filter .2s,transform .15s}
     .nav__cta:hover{filter:brightness(1.15);transform:translateY(-1px)}
-
-    /* PAGE HEADER */
     .page-header{padding:clamp(48px,7vw,88px) 0 clamp(36px,5vw,64px);text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--line);margin-bottom:72px}
     .page-header::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse,rgba(255,200,50,.13),transparent 65%);pointer-events:none}
     .page-header::after{content:'';position:absolute;top:60%;left:50%;transform:translateX(-50%);width:400px;height:200px;background:radial-gradient(ellipse,rgba(157,77,202,.1),transparent 70%);pointer-events:none}
@@ -44,11 +35,7 @@
     .page-header__stat{text-align:center}
     .page-header__stat-num{font-family:'Cinzel',serif;font-size:28px;font-weight:900;color:var(--gold-a)}
     .page-header__stat-label{font-size:11px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
-
-    /* REALM BLOCK */
     .realm-block{margin-bottom:80px}
-
-    /* REALM TITLE BAR */
     .realm-title{display:flex;align-items:center;gap:20px;padding:22px 28px;border-radius:16px;margin-bottom:28px;position:relative;overflow:hidden;border:1px solid}
     .realm-title::before{content:'';position:absolute;inset:0;opacity:.07;background:var(--rb,var(--gold-a))}
     .realm-title__glyph{font-family:'Cinzel',serif;font-size:44px;font-weight:900;opacity:.22;line-height:1;flex-shrink:0}
@@ -56,21 +43,29 @@
     .realm-title__name{font-family:'Cinzel',serif;font-size:clamp(20px,3vw,32px);font-weight:800}
     .realm-title__sub{font-size:13px;color:var(--text-dim);margin-top:3px}
     .realm-title__count{font-family:'Cinzel',serif;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--text-dim);white-space:nowrap}
-
-    /* STAGE GRID */
     .stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-
-    /* STAGE CARD */
-    .stage{background:linear-gradient(160deg,#0c1a2e,#08121e);border:1px solid var(--line);border-radius:14px;padding:20px 18px;position:relative;overflow:hidden;transition:border-color .25s,transform .2s}
+    .stage{background:linear-gradient(160deg,#0c1a2e,#08121e);border:1px solid var(--line);border-radius:14px;padding:20px 18px 16px;position:relative;overflow:hidden;transition:border-color .25s,transform .2s;display:flex;flex-direction:column}
     .stage::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--sc,var(--gold-a)),transparent);opacity:0;transition:opacity .3s}
     .stage:hover{border-color:var(--line-hi);transform:translateY(-2px)}
     .stage:hover::before{opacity:1}
     .stage__num{font-family:'Cinzel',serif;font-size:10px;font-weight:600;letter-spacing:2px;color:var(--text-dim);margin-bottom:6px;text-transform:uppercase}
     .stage__name{font-family:'Cinzel',serif;font-size:clamp(14px,1.8vw,17px);font-weight:700;color:var(--sc,var(--gold-a));margin-bottom:8px;line-height:1.2}
-    .stage__lore{font-size:12.5px;color:var(--text-dim);line-height:1.65}
+    .stage__lore{font-size:12.5px;color:var(--text-dim);line-height:1.65;flex:1}
     .stage__tag{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sc,var(--gold-a));opacity:.7}
 
-    /* SPECIAL: Độc Tôn */
+    /* ── TẾ PHẨM ── */
+    .stage__offering{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+    .offering__label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim);opacity:.55;margin-bottom:7px}
+    .offering__row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+    .offering__qty{font-family:'Cinzel',serif;font-size:11px;font-weight:700;color:var(--text-dim);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:2px 7px;border-radius:4px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0}
+    .offering__name{font-size:12.5px;font-weight:700;color:var(--text-mid);letter-spacing:.2px;line-height:1.3}
+    .offering__name--custom{text-shadow:0 0 10px currentColor}
+    .offering__badge{font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid;white-space:nowrap;flex-shrink:0}
+    .offering__badge--vanilla{color:#6a88b0;border-color:rgba(106,136,176,.28);background:rgba(106,136,176,.06)}
+    .offering__badge--custom{background:rgba(0,0,0,.2)}
+    .offering__v121{font-size:8px;font-weight:700;letter-spacing:1.5px;padding:1px 5px;border-radius:3px;border:1px solid rgba(96,204,255,.35);color:#60ccff;background:rgba(96,204,255,.07);flex-shrink:0}
+
+    /* Độc Tôn */
     .stage--special{background:linear-gradient(160deg,#100820,#06040e);border-color:#3a1868}
     .stage--special .stage__name{font-size:clamp(13px,1.6vw,16px)}
     .stage--special-1 .stage__name{background:linear-gradient(90deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -86,350 +81,571 @@
     @keyframes glow2{0%,100%{box-shadow:0 0 16px rgba(157,77,202,.12)}50%{box-shadow:0 0 32px rgba(157,77,202,.3)}}
     @keyframes glow3{0%,100%{box-shadow:0 0 16px rgba(0,255,255,.08)}50%{box-shadow:0 0 32px rgba(0,255,255,.2)}}
     @keyframes glow4{0%,100%{box-shadow:0 0 24px rgba(255,215,0,.15),0 0 48px rgba(157,77,202,.1)}50%{box-shadow:0 0 48px rgba(255,215,0,.35),0 0 96px rgba(157,77,202,.25)}}
-    .stage--special-4::after{content:'∞';position:absolute;bottom:12px;right:14px;font-family:'Cinzel',serif;font-size:24px;opacity:.08;background:linear-gradient(90deg,#ffd700,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-    /* INDEPENDENT TAB NOTE */
+    .stage--special-4::after{content:'\221E';position:absolute;bottom:12px;right:14px;font-family:'Cinzel',serif;font-size:24px;opacity:.07;background:linear-gradient(90deg,#ffd700,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .realm-note{margin-top:18px;padding:14px 18px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:10px;font-size:12.5px;color:var(--text-dim);font-style:italic}
-
-    /* FOOTER */
     .page-footer{border-top:1px solid var(--line);padding:32px 0 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:80px}
     .page-footer .logo{font-size:18px}
     .page-footer__right{font-size:13px;color:var(--text-dim)}
-
-    /* RESPONSIVE */
     @media(max-width:860px){.stage-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:520px){.stage-grid{grid-template-columns:1fr}.nav__links{display:none}}
+    @media(max-width:520px){.stage-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 
-  <header class="nav">
-    <div class="nav__inner">
-      <a class="logo" href="index.html"><span class="logo-v">Vania</span><span class="logo-rp">RPG+</span></a>
-      <a class="nav__back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
-      <a class="nav__cta" href="https://discord.gg/your-server-link" target="_blank"><i class="fa-brands fa-discord"></i> Discord</a>
+<header class="nav">
+  <div class="nav__inner">
+    <a class="logo" href="index.html"><span class="logo-v">Vania</span><span class="logo-rp">RPG+</span></a>
+    <a class="nav__back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
+    <a class="nav__cta" href="https://discord.gg/your-server-link" target="_blank"><i class="fa-brands fa-discord"></i> Discord</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="page-header">
+    <span class="page-header__eyebrow">Hệ thống tu luyện</span>
+    <h1 class="page-header__title">
+      <span class="page-header__title-a">Cảnh Giới</span>
+      <span class="page-header__title-b">Con Đường Bất Diệt</span>
+    </h1>
+    <p class="page-header__desc">Từ một kẻ phàm trần không tên tuổi, vượt qua từng thiên kiếp, bước lên đài cao nhất vũ trụ — hành trình dài nhất chỉ bắt đầu bằng một bước chân đầu tiên.</p>
+    <div class="page-header__stats">
+      <div class="page-header__stat"><div class="page-header__stat-num">31</div><div class="page-header__stat-label">Cảnh Giới</div></div>
+      <div class="page-header__stat"><div class="page-header__stat-num">4</div><div class="page-header__stat-label">Đại Giới</div></div>
+      <div class="page-header__stat"><div class="page-header__stat-num">4</div><div class="page-header__stat-label">Độc Tôn Đặc Biệt</div></div>
     </div>
-  </header>
+  </div>
 
-  <div class="container">
-    <div class="page-header">
-      <span class="page-header__eyebrow">Hệ thống tu luyện</span>
-      <h1 class="page-header__title">
-        <span class="page-header__title-a">Cảnh Giới</span>
-        <span class="page-header__title-b">Con Đường Bất Diệt</span>
-      </h1>
-      <p class="page-header__desc">Từ một kẻ phàm trần không tên tuổi, vượt qua từng thiên kiếp, bước lên đài cao nhất vũ trụ — hành trình dài nhất chỉ bắt đầu bằng một bước chân đầu tiên.</p>
-      <div class="page-header__stats">
-        <div class="page-header__stat">
-          <div class="page-header__stat-num">31</div>
-          <div class="page-header__stat-label">Cảnh Giới</div>
-        </div>
-        <div class="page-header__stat">
-          <div class="page-header__stat-num">4</div>
-          <div class="page-header__stat-label">Đại Giới</div>
-        </div>
-        <div class="page-header__stat">
-          <div class="page-header__stat-num">4</div>
-          <div class="page-header__stat-label">Độc Tôn Đặc Biệt</div>
-        </div>
+  <!-- PHÀM GIỚI -->
+  <div class="realm-block" id="pham-gioi">
+    <div class="realm-title" style="--rb:#c8915a;border-color:rgba(200,145,90,.3)">
+      <span class="realm-title__glyph" style="color:#c8915a">&#20961;</span>
+      <div class="realm-title__info">
+        <div class="realm-title__name" style="color:#c8915a">Phàm Giới</div>
+        <div class="realm-title__sub">Cõi trần gian, thiên địa linh khí mỏng manh &middot; Người tu bắt đầu cảm ngộ đạo</div>
       </div>
+      <span class="realm-title__count">9 Cảnh Giới</span>
     </div>
-
-    <!-- ═══════════════════════════════════════════════════
-         PHÀM GIỚI
-    ═══════════════════════════════════════════════════ -->
-    <div class="realm-block" id="pham-gioi">
-      <div class="realm-title" style="--rb:#c8915a;border-color:rgba(200,145,90,.3)">
-        <span class="realm-title__glyph" style="color:#c8915a">凡</span>
-        <div class="realm-title__info">
-          <div class="realm-title__name" style="color:#c8915a">Phàm Giới</div>
-          <div class="realm-title__sub">Cõi trần gian, thiên địa linh khí mỏng manh · Người tu bắt đầu cảm ngộ đạo</div>
-        </div>
-        <span class="realm-title__count">9 Cảnh Giới</span>
-      </div>
-      <div class="stage-grid">
-
+    <div class="stage-grid">
         <div class="stage" style="--sc:#b07848">
-          <div class="stage__num">Phàm Giới · 01</div>
+          <div class="stage__num">Phàm Giới &middot; 01</div>
           <div class="stage__name">Luyện Khí</div>
           <div class="stage__lore">Cơ thể phàm trần lần đầu hấp thu linh khí thiên địa. Kinh mạch dần mở, nhục thân bắt đầu thay đổi theo chiều hướng của đạo. Một tia sáng yếu ớt — khởi đầu của vạn dặm.</div>
           <span class="stage__tag"><i class="fa-solid fa-circle-dot"></i> Khởi điểm</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;64</span>
+              <span class="offering__name">Lapis Lazuli</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#b88050">
-          <div class="stage__num">Phàm Giới · 02</div>
+          <div class="stage__num">Phàm Giới &middot; 02</div>
           <div class="stage__name">Trúc Cơ</div>
           <div class="stage__lore">Đặt nền móng vững chắc cho con đường tu tiên. Đan điền hình thành, linh khí trú ngụ ổn định. Nền tảng quyết định thượng hạn — trúc cơ sai một ly, đi vạn dặm lạc đường.</div>
           <span class="stage__tag"><i class="fa-solid fa-layer-group"></i> Nền tảng</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name offering__name--custom" style="color:#e05050">Trúc Cơ Đan</span>
+              <span class="offering__badge offering__badge--custom" style="color:#e05050;border-color:rgba(224,80,80,.45);background:rgba(224,80,80,.08)">Đặc Chế</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#c89040">
-          <div class="stage__num">Phàm Giới · 03</div>
+          <div class="stage__num">Phàm Giới &middot; 03</div>
           <div class="stage__name">Kim Đan</div>
           <div class="stage__lore">Linh khí cô đặc thành kim đan trong đan điền, phát ra ánh sáng thuần khiết. Thọ mạng kéo dài gấp đôi, pháp lực bước đầu có hình có dạng. Kim đan phẩm cấp quyết định tiền đồ.</div>
           <span class="stage__tag"><i class="fa-solid fa-circle"></i> Kim đan hình thành</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Gold Block</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#d09828">
-          <div class="stage__num">Phàm Giới · 04</div>
+          <div class="stage__num">Phàm Giới &middot; 04</div>
           <div class="stage__name">Nguyên Anh</div>
           <div class="stage__lore">Nguyên thần xuất khỏi thể xác, tự do du hành trong phạm vi nhỏ. Cảm nhận được ý niệm của vạn vật, ý thức trở nên minh mẫn tuyệt đối. Lần đầu chạm đến khái niệm "linh hồn bất diệt".</div>
           <span class="stage__tag"><i class="fa-solid fa-ghost"></i> Nguyên thần thoát xác</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Totem of Undying</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#d8a820">
-          <div class="stage__num">Phàm Giới · 05</div>
+          <div class="stage__num">Phàm Giới &middot; 05</div>
           <div class="stage__name">Hóa Thần</div>
           <div class="stage__lore">Thần thức hòa tan vào linh khí thiên địa, bán kính cảm nhận bao trùm hàng dặm. Pháp lực mang theo ý chí của chủ nhân, ra tay không cần kết ấn. Thiên địa bắt đầu "nghe" ngươi.</div>
           <span class="stage__tag"><i class="fa-solid fa-eye"></i> Thiên nhãn mở</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Ghast Tear</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#c0b018">
-          <div class="stage__num">Phàm Giới · 06</div>
+          <div class="stage__num">Phàm Giới &middot; 06</div>
           <div class="stage__name">Luyện Hư</div>
           <div class="stage__lore">Thể xác dần hư hóa, nhục thân tiến gần bản chất nguyên sơ của vũ trụ. Có thể ẩn thân trong hư không thoáng chốc. Quy tắc thiên địa còn ràng buộc, nhưng đã mờ nhạt đáng kể.</div>
           <span class="stage__tag"><i class="fa-solid fa-wind"></i> Bước vào hư không</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Phantom Membrane</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#a8c028">
-          <div class="stage__num">Phàm Giới · 07</div>
+          <div class="stage__num">Phàm Giới &middot; 07</div>
           <div class="stage__name">Hợp Thể</div>
           <div class="stage__lore">Thể xác và nguyên thần hợp nhất hoàn toàn với đạo tâm. Mọi giới hạn sinh học biến mất — không cần ăn uống, không cần ngủ. Thiên địa xem ngươi như một phần của chính nó.</div>
           <span class="stage__tag"><i class="fa-solid fa-arrows-to-dot"></i> Nhất thể hóa</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Heart of the Sea</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#90c840">
-          <div class="stage__num">Phàm Giới · 08</div>
+          <div class="stage__num">Phàm Giới &middot; 08</div>
           <div class="stage__name">Đại Thừa</div>
           <div class="stage__lore">Chỉ một bước chân nữa là thoát khỏi phàm trần. Pháp lực đạt tới ngưỡng đủ sức phá vỡ giới hạn bầu trời. Thiên kiếp đã cảm nhận được sự tồn tại của ngươi và chuẩn bị thử thách.</div>
           <span class="stage__tag"><i class="fa-solid fa-arrow-up"></i> Tiền thăng tiên</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Netherite Ingot</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#70d060">
-          <div class="stage__num">Phàm Giới · 09</div>
+          <div class="stage__num">Phàm Giới &middot; 09</div>
           <div class="stage__name">Độ Kiếp</div>
           <div class="stage__lore">Thiên kiếp giáng xuống — lôi kiếp, hỏa kiếp, tâm ma kiếp. Vượt qua, nhục thân và nguyên thần được tẩy luyện triệt để. Thất bại nghĩa là tan thành tro bụi. Thành công, ngươi bước vào Tiên Nhân Giới.</div>
           <span class="stage__tag"><i class="fa-solid fa-bolt"></i> Thiên lôi thử thách</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name offering__name--custom" style="color:#d8d030">Độ Kiếp Đan</span>
+              <span class="offering__badge offering__badge--custom" style="color:#d8d030;border-color:rgba(216,208,48,.45);background:rgba(216,208,48,.08)">Đặc Chế</span>
+              
+            </div>
+          </div>
         </div>
-
-      </div>
-      <div class="realm-note">Tại cảnh giới Phàm Giới, tu sĩ còn bị ràng buộc bởi quy tắc thiên địa — không thể tự do phi hành, tuổi thọ vẫn hữu hạn, cần bổ sung linh thạch và đan dược để duy trì tu vi.</div>
     </div>
+    <div class="realm-note">Tại cảnh giới Phàm Giới, tu sĩ còn bị ràng buộc bởi quy tắc thiên địa — không thể tự do phi hành, tuổi thọ vẫn hữu hạn, cần bổ sung linh thạch và đan dược để duy trì tu vi.</div>
+  </div>
 
-    <!-- ═══════════════════════════════════════════════════
-         TIÊN NHÂN GIỚI
-    ═══════════════════════════════════════════════════ -->
-    <div class="realm-block" id="tien-nhan-gioi">
-      <div class="realm-title" style="--rb:#50e070;border-color:rgba(80,224,112,.3)">
-        <span class="realm-title__glyph" style="color:#50e070">仙</span>
-        <div class="realm-title__info">
-          <div class="realm-title__name" style="color:#50e070">Tiên Nhân Giới</div>
-          <div class="realm-title__sub">Thoát khỏi vòng luân hồi · Tự do phi hành · Thiên địa không còn trói buộc</div>
-        </div>
-        <span class="realm-title__count">9 Cảnh Giới</span>
+  <!-- TIÊN NHÂN GIỚI -->
+  <div class="realm-block" id="tien-nhan-gioi">
+    <div class="realm-title" style="--rb:#50e070;border-color:rgba(80,224,112,.3)">
+      <span class="realm-title__glyph" style="color:#50e070">&#20243;</span>
+      <div class="realm-title__info">
+        <div class="realm-title__name" style="color:#50e070">Tiên Nhân Giới</div>
+        <div class="realm-title__sub">Thoát khỏi vòng luân hồi &middot; Tự do phi hành &middot; Thiên địa không còn trói buộc</div>
       </div>
-      <div class="stage-grid">
-
+      <span class="realm-title__count">9 Cảnh Giới</span>
+    </div>
+    <div class="stage-grid">
         <div class="stage" style="--sc:#40c860">
-          <div class="stage__num">Tiên Nhân Giới · 01</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 01</div>
           <div class="stage__name">Tiên Nhân</div>
           <div class="stage__lore">Vượt qua thiên kiếp, bước chân đầu tiên lên cõi tiên. Cơ thể chuyển hóa thành tiên thể — tự do bay lượn không cần pháp bảo. Vĩnh sinh bắt đầu từ đây, vòng luân hồi chính thức bị cắt đứt.</div>
           <span class="stage__tag"><i class="fa-solid fa-feather-pointed"></i> Phi hành tự do</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Elytra</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#38b858">
-          <div class="stage__num">Tiên Nhân Giới · 02</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 02</div>
           <div class="stage__name">Chân Tiên</div>
           <div class="stage__lore">Đạo pháp trở nên thuần túy không tạp chất. Thần thức bao phủ hàng trăm dặm, nhận ra mọi biến chuyển của thiên địa. Mỗi hơi thở là hấp thu tiên khí — không cần tu luyện tích cực nữa.</div>
           <span class="stage__tag"><i class="fa-solid fa-infinity"></i> Tự nhiên tu vi</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">End Crystal</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#30a850">
-          <div class="stage__num">Tiên Nhân Giới · 03</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 03</div>
           <div class="stage__name">Huyền Tiên</div>
           <div class="stage__lore">Chạm đến huyền vi của đạo — hiểu được bản chất của không gian và thời gian. Có thể mở không gian con, tạo ra tiểu thế giới riêng. Ý chí có thể ảnh hưởng lên hiện thực xung quanh.</div>
           <span class="stage__tag"><i class="fa-solid fa-cube"></i> Không gian pháp tắc</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Nautilus Shell</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#28a848">
-          <div class="stage__num">Tiên Nhân Giới · 04</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 04</div>
           <div class="stage__name">Kim Tiên</div>
           <div class="stage__lore">Tiên thể chuyển hóa thành kim thân bất hoại — vũ khí phàm trần không thể làm trầy xước. Tiên lực mang theo sức nặng của thiên địa, mỗi đòn đánh có thể san bằng đồi núi.</div>
           <span class="stage__tag"><i class="fa-solid fa-shield"></i> Kim thân bất hoại</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Enchanted Golden Apple</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#20a040">
-          <div class="stage__num">Tiên Nhân Giới · 05</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 05</div>
           <div class="stage__name">Thái Ất Kim Tiên</div>
           <div class="stage__lore">Đứng vào hàng ngũ đại tiên — nhận được sự thừa nhận của Đạo Tổ. Có thể lĩnh hội đạo tắc tiên giới, thuần thục vận dụng pháp tắc không gian-thời gian ở mức vi tế.</div>
           <span class="stage__tag"><i class="fa-solid fa-star"></i> Đại tiên phẩm</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Nether Star</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#18a838">
-          <div class="stage__num">Tiên Nhân Giới · 06</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 06</div>
           <div class="stage__name">Đại La Kim Tiên</div>
           <div class="stage__lore">Đạt đến đỉnh cao của tiên đạo truyền thống. Tiên lực vô cùng dồi dào, có thể duy trì pháp thuật cấp cao liên tục không ngừng nghỉ. Thần thức bao trùm toàn bộ một đại lục.</div>
           <span class="stage__tag"><i class="fa-solid fa-globe"></i> Thiên nhãn vô hạn</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Dragon Head</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#10a030">
-          <div class="stage__num">Tiên Nhân Giới · 07</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 07</div>
           <div class="stage__name">Tiên Vương</div>
           <div class="stage__lore">Bước vào hàng vương giả tiên giới. Có thể lập Tiên Quốc riêng, nhận đệ tử và truyền dạy đạo pháp. Thiên địa tiên giới tuân theo một phần ý chí của Tiên Vương.</div>
           <span class="stage__tag"><i class="fa-solid fa-crown"></i> Lập Tiên Quốc</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Netherite Block</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#088830">
-          <div class="stage__num">Tiên Nhân Giới · 08</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 08</div>
           <div class="stage__name">Tiên Tôn</div>
           <div class="stage__lore">Đứng trên vạn tiên, chỉ dưới một bậc. Một cái liếc mắt có thể xuyên suốt hư không, thấy được vận mệnh của vạn vật. Pháp lực đạt tới cảnh giới "vô hình mà vô sở bất tại".</div>
           <span class="stage__tag"><i class="fa-solid fa-eye-low-vision"></i> Vận mệnh nhỡn nhàng</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Shulker Box</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#007828">
-          <div class="stage__num">Tiên Nhân Giới · 09</div>
+          <div class="stage__num">Tiên Nhân Giới &middot; 09</div>
           <div class="stage__name">Tiên Đế</div>
           <div class="stage__lore">Đỉnh cao tuyệt đối của Tiên Nhân Giới. Ý chí của Tiên Đế chính là quy tắc trong phạm vi ảnh hưởng. Mỗi lời nói là mệnh lệnh vũ trụ, mỗi cử động tạo ra sóng gió thiên địa.</div>
           <span class="stage__tag"><i class="fa-solid fa-meteor"></i> Ý chí = Thiên lý</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name offering__name--custom" style="color:#40d8d8">Tiên Đế Linh Tủy</span>
+              <span class="offering__badge offering__badge--custom" style="color:#40d8d8;border-color:rgba(64,216,216,.45);background:rgba(64,216,216,.08)">Đặc Chế</span>
+              
+            </div>
+          </div>
         </div>
-
-      </div>
-      <div class="realm-note">Từ cảnh giới Tiên Nhân trở lên, tu sĩ hoàn toàn thoát khỏi quy tắc thiên địa phàm trần — có thể tự do phi hành, xuyên không gian, và thọ mạng thực sự trở nên vô hạn.</div>
     </div>
+    <div class="realm-note">Từ cảnh giới Tiên Nhân trở lên, tu sĩ hoàn toàn thoát khỏi quy tắc thiên địa phàm trần — có thể tự do phi hành, xuyên không gian, và thọ mạng thực sự trở nên vô hạn.</div>
+  </div>
 
-    <!-- ═══════════════════════════════════════════════════
-         THƯỢNG CỔ THẦN GIỚI
-    ═══════════════════════════════════════════════════ -->
-    <div class="realm-block" id="than-gioi">
-      <div class="realm-title" style="--rb:#9d4dca;border-color:rgba(157,77,202,.35)">
-        <span class="realm-title__glyph" style="color:#9d4dca">神</span>
-        <div class="realm-title__info">
-          <div class="realm-title__name" style="color:#9d4dca">Thượng Cổ Thần Giới</div>
-          <div class="realm-title__sub">Cõi thần từ buổi hồng hoang · Tiếp cận nguồn gốc vũ trụ · Bước chân vào huyền vi đại đạo</div>
-        </div>
-        <span class="realm-title__count">9 Cảnh Giới</span>
+  <!-- THƯỢNG CỔ THẦN GIỚI -->
+  <div class="realm-block" id="than-gioi">
+    <div class="realm-title" style="--rb:#9d4dca;border-color:rgba(157,77,202,.35)">
+      <span class="realm-title__glyph" style="color:#9d4dca">&#31070;</span>
+      <div class="realm-title__info">
+        <div class="realm-title__name" style="color:#9d4dca">Thượng Cổ Thần Giới</div>
+        <div class="realm-title__sub">Cõi thần từ buổi hồng hoang &middot; Tiếp cận nguồn gốc vũ trụ &middot; Bước chân vào huyền vi đại đạo</div>
       </div>
-      <div class="stage-grid">
-
+      <span class="realm-title__count">9 Cảnh Giới</span>
+    </div>
+    <div class="stage-grid">
         <div class="stage" style="--sc:#8040a8">
-          <div class="stage__num">Thần Giới · 01</div>
+          <div class="stage__num">Thần Giới &middot; 01</div>
           <div class="stage__name">Bán Thánh</div>
           <div class="stage__lore">Tiếp cận ngưỡng cửa Thánh Đạo nhưng chưa bước vào. Thần lực bắt đầu hình thành, vượt xa tiên lực về bản chất. Cảm nhận được sự tồn tại của "Bản Nguyên Đại Đạo" — quy tắc căn bản nhất vũ trụ.</div>
           <span class="stage__tag"><i class="fa-solid fa-circle-half-stroke"></i> Nửa bước Thánh</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;64</span>
+              <span class="offering__name">Emerald Block</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#8848b0">
-          <div class="stage__num">Thần Giới · 02</div>
+          <div class="stage__num">Thần Giới &middot; 02</div>
           <div class="stage__name">Chuẩn Thánh</div>
           <div class="stage__lore">Đứng trước cổng Thánh Đạo — một bước là thánh, một bước lùi là tiên. Thần thức có thể lĩnh ngộ được những đoạn đạo tắc nguyên thủy, tiếp nhận được ký ức của vũ trụ từ buổi khai thiên lập địa.</div>
           <span class="stage__tag"><i class="fa-solid fa-door-open"></i> Trước ngưỡng cửa</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Beacon</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#9050b8">
-          <div class="stage__num">Thần Giới · 03</div>
+          <div class="stage__num">Thần Giới &middot; 03</div>
           <div class="stage__name">Thánh Nhân</div>
           <div class="stage__lore">Chính thức bước vào hàng ngũ Thánh — siêu vượt tiên đạo về bản chất. Thần lực mang theo nguyên tắc cơ bản của đại đạo, có thể viết lại quy luật trong vùng ảnh hưởng. Một Thánh Nhân đủ sức nghiền nát vạn tiên.</div>
           <span class="stage__tag"><i class="fa-solid fa-book-open"></i> Thánh Đạo khai mở</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Heavy Core</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              <span class="offering__v121">1.21</span>
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#9858c0">
-          <div class="stage__num">Thần Giới · 04</div>
+          <div class="stage__num">Thần Giới &middot; 04</div>
           <div class="stage__name">Cổ Thần</div>
           <div class="stage__lore">Thần linh từ thượng cổ ngàn vạn năm trước — tồn tại từ khi vũ trụ còn non trẻ. Ký ức của vạn kiếp tích lũy, hiểu được sự vận hành của đại đạo ở tầm mức vĩ mô nhất. Một ánh mắt đủ sức phá vỡ không-thời gian.</div>
           <span class="stage__tag"><i class="fa-solid fa-hourglass"></i> Ký ức vạn kiếp</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;16</span>
+              <span class="offering__name">Echo Shard</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#a060c8">
-          <div class="stage__num">Thần Giới · 05</div>
+          <div class="stage__num">Thần Giới &middot; 05</div>
           <div class="stage__name">Tổ Thần</div>
           <div class="stage__lore">Đứng đầu một chủng tộc thần, thọ mệnh xuyên suốt nhiều kỷ nguyên vũ trụ. Thần lực của Tổ Thần là ngọn nguồn cho tất cả thần linh dưới quyền. Có thể tạo ra sinh mệnh mới từ hư không.</div>
           <span class="stage__tag"><i class="fa-solid fa-dna"></i> Tạo sinh mệnh</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Recovery Compass</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#a868d0">
-          <div class="stage__num">Thần Giới · 06</div>
+          <div class="stage__num">Thần Giới &middot; 06</div>
           <div class="stage__name">Hỗn Nguyên</div>
           <div class="stage__lore">Chạm đến Hỗn Nguyên — trạng thái trước khi vũ trụ phân tách thành âm dương. Thần thức hòa tan vào cả vũ trụ, đồng thời hiện diện ở khắp nơi và không ở đâu cả. Sự tồn tại vượt qua định nghĩa thông thường.</div>
           <span class="stage__tag"><i class="fa-solid fa-yin-yang"></i> Tiên thiên âm dương</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;16</span>
+              <span class="offering__name">Budding Amethyst</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#b080d8">
-          <div class="stage__num">Thần Giới · 07</div>
+          <div class="stage__num">Thần Giới &middot; 07</div>
           <div class="stage__name">Vô Cực</div>
           <div class="stage__lore">Vượt qua mọi giới hạn của khái niệm "vũ trụ". Thần lực trở nên vô tận theo đúng nghĩa đen — không thể đo lường, không thể so sánh. Ý chí của Vô Cực là đạo tắc tối thượng, không ai có thể kháng cự.</div>
           <span class="stage__tag"><i class="fa-solid fa-circle-notch"></i> Vô hạn bất cực</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;64</span>
+              <span class="offering__name">Diamond Block</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#b898e0">
-          <div class="stage__num">Thần Giới · 08</div>
+          <div class="stage__num">Thần Giới &middot; 08</div>
           <div class="stage__name">Thái Sơ</div>
           <div class="stage__lore">Thái Sơ — buổi bình minh của vũ trụ, lúc mọi thứ chỉ là một điểm kỳ dị. Chạm đến cảnh giới này có nghĩa là đã hiểu toàn bộ lịch sử và tương lai của sự tồn tại. Thời gian không còn là khái niệm tuyến tính nữa.</div>
           <span class="stage__tag"><i class="fa-solid fa-atom"></i> Thấu triệt vũ trụ</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name">Mace</span>
+              <span class="offering__badge offering__badge--vanilla">Tự nhiên</span>
+              <span class="offering__v121">1.21</span>
+            </div>
+          </div>
         </div>
-
         <div class="stage" style="--sc:#c0b0e8">
-          <div class="stage__num">Thần Giới · 09</div>
+          <div class="stage__num">Thần Giới &middot; 09</div>
           <div class="stage__name">Hư Vô</div>
           <div class="stage__lore">Trở về Hư Vô tuyệt đối — trạng thái trước cả Thái Sơ. Tồn tại mà không tồn tại. Không thể bị giết, không thể bị nhận thức, không thể bị định nghĩa. Đây là giới hạn cuối cùng của đường tu bình thường — cánh cửa trước Độc Tôn.</div>
           <span class="stage__tag"><i class="fa-solid fa-question"></i> Vượt mọi định nghĩa</span>
+          <div class="stage__offering">
+            <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+            <div class="offering__row">
+              <span class="offering__qty">&times;1</span>
+              <span class="offering__name offering__name--custom" style="color:#d060d0">Hư Vô Thần Tinh</span>
+              <span class="offering__badge offering__badge--custom" style="color:#d060d0;border-color:rgba(208,96,208,.45);background:rgba(208,96,208,.08)">Đặc Chế</span>
+              
+            </div>
+          </div>
         </div>
-
-      </div>
-      <div class="realm-note">Thượng Cổ Thần Giới là cõi của những sinh mệnh từ buổi hồng hoang, ẩn mình suốt trường thế. Không có con đường rõ ràng — mỗi bước tiến phải tự khai ngộ từ đại đạo.</div>
     </div>
-
-    <!-- ═══════════════════════════════════════════════════
-         ĐỘC TÔN VÔ ĐỐI
-    ═══════════════════════════════════════════════════ -->
-    <div class="realm-block" id="doc-ton">
-      <div class="realm-title" style="--rb:linear-gradient(90deg,#ffd700,#9d4dca);border-color:rgba(157,77,202,.5);background:linear-gradient(135deg,rgba(255,215,0,.04),rgba(157,77,202,.08))">
-        <span class="realm-title__glyph" style="background:linear-gradient(90deg,#ffd700,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">極</span>
-        <div class="realm-title__info">
-          <div class="realm-title__name" style="background:linear-gradient(90deg,#ffd700,#ff4500,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Độc Tôn Vô Đối</div>
-          <div class="realm-title__sub">Vượt thoát mọi quy tắc · Siêu việt đại đạo · Bốn cảnh giới dành cho những kẻ dám nghịch thiên</div>
-        </div>
-        <span class="realm-title__count" style="color:#ffd700">4 Cảnh Giới Đặc Biệt</span>
-      </div>
-
-      <div class="stage-grid">
-
-        <div class="stage stage--special stage--special-1">
-          <div class="stage__num">Độc Tôn · 01</div>
-          <div class="stage__name">Thái Sơ Chi Chủ</div>
-          <div class="stage__lore">Chủ tể của Thái Sơ — người đứng trên cả buổi bình minh vũ trụ. Không chỉ hiểu đại đạo mà là người viết ra đại đạo. Ý chí của ngươi là nguyên tắc, là quy luật, là khai sinh của mọi sự tồn tại. Vũ trụ vận hành theo ý muốn của Thái Sơ Chi Chủ.</div>
-          <span class="stage__tag" style="color:#ffd700;opacity:1"><i class="fa-solid fa-sun"></i> Khai sáng vũ trụ</span>
-        </div>
-
-        <div class="stage stage--special stage--special-2">
-          <div class="stage__num">Độc Tôn · 02</div>
-          <div class="stage__name">Hỗn Độn Chân Chúa</div>
-          <div class="stage__lore">Chúa tể của Hỗn Độn nguyên thủy — đứng trên cả trạng thái trước khi vũ trụ hình thành. Có thể hủy diệt toàn bộ một vũ trụ và tạo ra vũ trụ khác chỉ bằng ý niệm. Đối với Hỗn Độn Chân Chúa, "hiện thực" chỉ là một trong vô vàn khả năng ngươi chọn để tồn tại.</div>
-          <span class="stage__tag" style="color:#ff6030;opacity:1"><i class="fa-solid fa-explosion"></i> Hủy diệt &amp; Tái sinh</span>
-        </div>
-
-        <div class="stage stage--special stage--special-3">
-          <div class="stage__num">Độc Tôn · 03</div>
-          <div class="stage__name">Nghịch Thiên Chí Tôn</div>
-          <div class="stage__lore">Kẻ đã nghịch lại ý trời và thắng. Đứng ngoài mọi quy tắc của đại đạo, thiên đạo, và cả bản thân khái niệm "tồn tại". Sự xuất hiện của Nghịch Thiên Chí Tôn khiến mọi vũ trụ đa chiều đều rung động. Ngươi không là một phần của vũ trụ — ngươi cao hơn vũ trụ.</div>
-          <span class="stage__tag" style="color:#00e8ff;opacity:1"><i class="fa-solid fa-ban"></i> Ngoài mọi quy tắc</span>
-        </div>
-
-        <div class="stage stage--special stage--special-4">
-          <div class="stage__num">Độc Tôn · 04</div>
-          <div class="stage__name">Vĩnh Hằng Quy Nhất</div>
-          <div class="stage__lore">Đỉnh cao tuyệt đối. Không còn sự phân biệt giữa bản thân và vạn vật — tất cả là một, một là tất cả. Vĩnh hằng không có nghĩa là "sống mãi" mà là "không thể không tồn tại". Bước đến đây, ngươi không còn là một sinh linh — ngươi là nền tảng của mọi sự tồn tại, là lý do vạn vật hiện hữu.</div>
-          <span class="stage__tag" style="background:linear-gradient(90deg,#ffd700,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:1"><i class="fa-solid fa-infinity" style="-webkit-text-fill-color:#ffd700"></i>&nbsp; Vĩnh Hằng · Quy Nhất</span>
-        </div>
-
-      </div>
-      <div class="realm-note" style="border-color:rgba(255,215,0,.15);background:rgba(255,215,0,.03)">Bốn cảnh giới Độc Tôn Vô Đối không có lối đi rõ ràng. Không có sư phụ truyền dạy, không có điển tịch ghi chép — mỗi kẻ đạt đến đây đều là người đầu tiên và duy nhất đi trên con đường của chính mình.</div>
-    </div>
-
-    <div class="page-footer">
-      <a class="logo" href="index.html"><span class="logo-v">Vania</span><span class="logo-rp">RPG+</span></a>
-      <span class="page-footer__right">© 2026 Vania RPG+ &nbsp;·&nbsp; play-vanirpg.serveminecraft.net</span>
-    </div>
-
+    <div class="realm-note">Thượng Cổ Thần Giới là cõi của những sinh mệnh từ buổi hồng hoang, ẩn mình suốt trường thế. Không có con đường rõ ràng — mỗi bước tiến phải tự khai ngộ từ đại đạo.</div>
   </div>
+
+  <!-- ĐỘC TÔN VÔ ĐỐI -->
+  <div class="realm-block" id="doc-ton">
+    <div class="realm-title" style="--rb:linear-gradient(90deg,#ffd700,#9d4dca);border-color:rgba(157,77,202,.5);background:linear-gradient(135deg,rgba(255,215,0,.04),rgba(157,77,202,.08))">
+      <span class="realm-title__glyph" style="background:linear-gradient(90deg,#ffd700,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">&#26684;</span>
+      <div class="realm-title__info">
+        <div class="realm-title__name" style="background:linear-gradient(90deg,#ffd700,#ff4500,#9d4dca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Độc Tôn Vô Đối</div>
+        <div class="realm-title__sub">Vượt thoát mọi quy tắc &middot; Siêu việt đại đạo &middot; Bốn cảnh giới dành cho những kẻ dám nghịch thiên</div>
+      </div>
+      <span class="realm-title__count" style="color:#ffd700">4 Cảnh Giới Đặc Biệt</span>
+    </div>
+    <div class="stage-grid">
+
+      <div class="stage stage--special stage--special-1">
+        <div class="stage__num">Độc Tôn &middot; 01</div>
+        <div class="stage__name">Thái Sơ Chi Chủ</div>
+        <div class="stage__lore">Chủ tể của Thái Sơ — người đứng trên cả buổi bình minh vũ trụ. Không chỉ hiểu đại đạo mà là người viết ra đại đạo. Ý chí của ngươi là nguyên tắc, là quy luật, là khai sinh của mọi sự tồn tại. Vũ trụ vận hành theo ý muốn của Thái Sơ Chi Chủ.</div>
+        <span class="stage__tag" style="color:#ffd700;opacity:1"><i class="fa-solid fa-sun"></i> Khai sáng vũ trụ</span>
+        <div class="stage__offering">
+          <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+          <div class="offering__row">
+            <span class="offering__qty">&times;1</span>
+            <span class="offering__name" style="color:#e8c860">Dragon Egg</span>
+            <span class="offering__badge offering__badge--vanilla" style="border-color:rgba(232,200,96,.3);color:#a08840">Tự nhiên</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage stage--special stage--special-2">
+        <div class="stage__num">Độc Tôn &middot; 02</div>
+        <div class="stage__name">Hỗn Độn Chân Chúa</div>
+        <div class="stage__lore">Chúa tể của Hỗn Độn nguyên thủy — đứng trên cả trạng thái trước khi vũ trụ hình thành. Có thể hủy diệt toàn bộ một vũ trụ và tạo ra vũ trụ khác chỉ bằng ý niệm. Đối với Hỗn Độn Chân Chúa, "hiện thực" chỉ là một trong vô vàn khả năng ngươi chọn để tồn tại.</div>
+        <span class="stage__tag" style="color:#ff6030;opacity:1"><i class="fa-solid fa-explosion"></i> Hủy diệt &amp; Tái sinh</span>
+        <div class="stage__offering">
+          <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+          <div class="offering__row">
+            <span class="offering__qty">&times;1</span>
+            <span class="offering__name offering__name--custom" style="color:#9040b0">Hỗn Độn Linh Thai</span>
+            <span class="offering__badge offering__badge--custom" style="color:#9040b0;border-color:rgba(144,64,176,.45);background:rgba(144,64,176,.09)">Đặc Chế</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage stage--special stage--special-3">
+        <div class="stage__num">Độc Tôn &middot; 03</div>
+        <div class="stage__name">Nghịch Thiên Chí Tôn</div>
+        <div class="stage__lore">Kẻ đã nghịch lại ý trời và thắng. Đứng ngoài mọi quy tắc của đại đạo, thiên đạo, và cả bản thân khái niệm "tồn tại". Sự xuất hiện của Nghịch Thiên Chí Tôn khiến mọi vũ trụ đa chiều đều rung động. Ngươi không là một phần của vũ trụ — ngươi cao hơn vũ trụ.</div>
+        <span class="stage__tag" style="color:#00e8ff;opacity:1"><i class="fa-solid fa-ban"></i> Ngoài mọi quy tắc</span>
+        <div class="stage__offering">
+          <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+          <div class="offering__row">
+            <span class="offering__qty">&times;9</span>
+            <span class="offering__name" style="color:#c0c0d0">Netherite Block</span>
+            <span class="offering__badge offering__badge--vanilla" style="border-color:rgba(160,160,180,.28);color:#8888a0">Tự nhiên</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage stage--special stage--special-4">
+        <div class="stage__num">Độc Tôn &middot; 04</div>
+        <div class="stage__name">Vĩnh Hằng Quy Nhất</div>
+        <div class="stage__lore">Đỉnh cao tuyệt đối. Không còn sự phân biệt giữa bản thân và vạn vật — tất cả là một, một là tất cả. Vĩnh hằng không có nghĩa là "sống mãi" mà là "không thể không tồn tại". Bước đến đây, ngươi không còn là một sinh linh — ngươi là nền tảng của mọi sự tồn tại, là lý do vạn vật hiện hữu.</div>
+        <span class="stage__tag" style="background:linear-gradient(90deg,#ffd700,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:1"><i class="fa-solid fa-infinity" style="-webkit-text-fill-color:#ffd700"></i>&nbsp; Vĩnh Hằng &middot; Quy Nhất</span>
+        <div class="stage__offering">
+          <div class="offering__label">&#9670; Tế Phẩm Đột Phá</div>
+          <div class="offering__row">
+            <span class="offering__qty">&times;1</span>
+            <span class="offering__name offering__name--custom" style="color:#cc3333">Vĩnh Hằng Chi Tâm</span>
+            <span class="offering__badge offering__badge--custom" style="color:#cc3333;border-color:rgba(204,51,51,.5);background:rgba(204,51,51,.09)">Đặc Chế</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="realm-note" style="border-color:rgba(255,215,0,.15);background:rgba(255,215,0,.03)">Bốn cảnh giới Độc Tôn Vô Đối không có lối đi rõ ràng. Không có sư phụ truyền dạy, không có điển tịch ghi chép — mỗi kẻ đạt đến đây đều là người đầu tiên và duy nhất đi trên con đường của chính mình.</div>
+  </div>
+
+  <div class="page-footer">
+    <a class="logo" href="index.html"><span class="logo-v">Vania</span><span class="logo-rp">RPG+</span></a>
+    <span class="page-footer__right">&copy; 2026 Vania RPG+ &nbsp;&middot;&nbsp; play-vanirpg.serveminecraft.net</span>
+  </div>
+
+</div>
 </body>
 </html>
