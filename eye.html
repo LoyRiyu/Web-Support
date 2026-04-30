@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mắt Phong Ấn — EAF Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@400;600;700&display=swap&subset=vietnamese" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<link rel="stylesheet" href="minecraft-icons.css"/>
+<style>
+/* ══════════════════════════════════════
+   TOKENS
+══════════════════════════════════════ */
+:root{
+  --night:      #06090f;
+  --navy:       #0a1020;
+  --navy-mid:   #101828;
+  --navy-lt:    #182236;
+  --gold:       #d4a832;
+  --gold-bright:#f5c842;
+  --silver:     #c0d0e8;
+  --silver-dk:  #8898b8;
+  --silver-lt:  #e8f0ff;
+  --white:      #f0f6ff;
+  --ink:        #04070e;
+  --glow-gold:  0 0 22px rgba(212,168,50,.6),0 0 70px rgba(212,168,50,.2);
+  --glow-end:   0 0 22px rgba(100,60,180,.6),0 0 60px rgba(100,60,180,.2);
+
+  /* Eye rarity colors */
+  --col-common:   #8898b8;
+  --col-uncommon: #4ade80;
+  --col-rare:     #60a5fa;
+  --col-epic:     #c084fc;
+  --col-legendary:#f5c842;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--night);
+  color:var(--silver);
+  font-family:'Crimson Pro',Georgia,serif;
+  font-size:1.05rem;
+  line-height:1.75;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* noise */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  opacity:.4;
+}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--ink)}
+::-webkit-scrollbar-thumb{background:var(--gold)}
+::selection{background:var(--gold);color:var(--ink)}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:58px;padding:0 2rem;
+  display:flex;align-items:center;gap:1rem;
+  background:rgba(6,9,15,.92);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(212,168,50,.18);
+}
+.nav-back{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:'Barlow Condensed',sans-serif;font-size:.72rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  text-decoration:none;color:var(--silver-dk);
+  transition:color .2s;padding-right:1rem;
+  border-right:1px solid rgba(212,168,50,.18);
+}
+.nav-back:hover{color:var(--gold-bright)}
+.nav-breadcrumb{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:'Barlow Condensed',sans-serif;font-size:.72rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--silver-dk);
+}
+.nav-breadcrumb .sep{color:rgba(212,168,50,.4)}
+.nav-breadcrumb .current{color:var(--gold)}
+.nav-logo{
+  font-family:'Philosopher',serif;font-size:1.25rem;font-weight:700;
+  color:var(--gold-bright);text-shadow:var(--glow-gold);
+}
+.nav-search{
+  margin-left:auto;
+  display:flex;align-items:center;gap:.5rem;
+  background:rgba(16,24,40,.7);
+  border:1px solid rgba(192,208,232,.12);
+  padding:.3rem .8rem;
+}
+.nav-search input{
+  background:none;border:none;outline:none;
+  font-family:'Barlow Condensed',sans-serif;font-size:.72rem;
+  letter-spacing:.12em;color:var(--silver);width:160px;
+}
+.nav-search input::placeholder{color:var(--silver-dk)}
+.nav-search i{color:var(--silver-dk);font-size:.75rem}
+
+/* ══════════════════════════════════════
+   LAYOUT — sidebar + content
+══════════════════════════════════════ */
+.wiki-layout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+  padding-top:58px;
+}
+
+/* SIDEBAR */
+.wiki-sidebar{
+  position:sticky;top:58px;height:calc(100vh - 58px);
+  overflow-y:auto;
+  background:rgba(8,12,24,.7);
+  border-right:1px solid rgba(212,168,50,.12);
+  padding:2rem 0;
+}
+.wiki-sidebar::-webkit-scrollbar{width:3px}
+.wiki-sidebar::-webkit-scrollbar-thumb{background:rgba(212,168,50,.3)}
+
+.sidebar-heading{
+  font-family:'Barlow Condensed',sans-serif;font-size:.62rem;
+  letter-spacing:.4em;text-transform:uppercase;color:var(--gold);
+  padding:.5rem 1.4rem;margin-bottom:.3rem;
+}
+.sidebar-sep{height:1px;background:rgba(212,168,50,.12);margin:.75rem 1.4rem}
+
+.sidebar-item{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.6rem 1.4rem;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:.78rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--silver-dk);
+  transition:all .18s;text-decoration:none;position:relative;
+  border-left:2px solid transparent;
+}
+.sidebar-item:hover{
+  background:rgba(212,168,50,.05);color:var(--silver-lt);
+  border-left-color:rgba(212,168,50,.3);
+}
+.sidebar-item.active{
+  background:rgba(212,168,50,.08);color:var(--gold-bright);
+  border-left-color:var(--gold);
+}
+.sidebar-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.sidebar-progress{
+  margin-left:auto;font-size:.6rem;color:var(--silver-dk);
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;
+}
+
+/* progress bar bên dưới sidebar */
+.sidebar-footer{
+  padding:1.2rem 1.4rem 0;
+  border-top:1px solid rgba(212,168,50,.12);
+  margin-top:1rem;
+}
+.progress-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:.62rem;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:.4rem;display:flex;justify-content:space-between;
+}
+.progress-bar{
+  height:6px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(212,168,50,.18);overflow:hidden;
+}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-bright));
+  transition:width .6s ease;
+}
+
+/* MAIN CONTENT */
+.wiki-main{
+  padding:3rem 3.5rem;
+  max-width:900px;
+}
+
+/* ══════════════════════════════════════
+   HERO BANNER
+══════════════════════════════════════ */
+.wiki-hero{
+  position:relative;overflow:hidden;
+  margin-bottom:3rem;padding:3rem 2.5rem;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%,rgba(100,60,180,.15),transparent),
+    rgba(10,16,32,.8);
+  border:1px solid rgba(212,168,50,.2);
+}
+.wiki-hero::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    90deg,rgba(212,168,50,.02) 0px,rgba(212,168,50,.02) 1px,
+    transparent 1px,transparent 55px
+  ),repeating-linear-gradient(
+    0deg,rgba(212,168,50,.02) 0px,rgba(212,168,50,.02) 1px,
+    transparent 1px,transparent 55px
+  );
+  pointer-events:none;
+}
+
+/* Eye of Ender preview image */
+.hero-img-wrap{
+  position:absolute;right:2.5rem;top:50%;transform:translateY(-50%);
+  width:200px;height:200px;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-img-wrap img{
+  width:100%;height:100%;object-fit:contain;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 0 30px rgba(100,60,180,.6)) drop-shadow(0 0 60px rgba(100,60,180,.2));
+  animation:eyeFloat 4s ease-in-out infinite;
+}
+@keyframes eyeFloat{
+  0%,100%{transform:translateY(0) rotate(-3deg)}
+  50%    {transform:translateY(-14px) rotate(3deg)}
+}
+
+.hero-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;font-size:.68rem;
+  letter-spacing:.45em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:.7rem;
+}
+.hero-title{
+  font-family:'Philosopher',serif;font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:700;color:var(--white);
+  text-shadow:0 0 40px rgba(100,60,180,.4);
+  margin-bottom:.5rem;line-height:1.1;
+}
+.hero-sub{
+  font-style:italic;color:var(--silver-dk);
+  max-width:480px;line-height:1.8;margin-bottom:1.5rem;
+}
+.hero-stats{
+  display:flex;gap:1.5rem;flex-wrap:wrap;
+}
+.hero-stat{
+  font-family:'Barlow Condensed',sans-serif;font-size:.7rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.4rem;color:var(--silver-dk);
+}
+.hero-stat strong{color:var(--gold-bright);font-family:'Philosopher',serif;font-size:.95rem}
+
+/* ══════════════════════════════════════
+   SECTION HEADINGS
+══════════════════════════════════════ */
+.wiki-section-title{
+  font-family:'Philosopher',serif;font-size:1.4rem;font-weight:700;
+  color:var(--white);margin-bottom:1.5rem;padding-bottom:.6rem;
+  border-bottom:1px solid rgba(212,168,50,.2);
+  display:flex;align-items:center;gap:.75rem;
+}
+.wiki-section-title i{color:var(--gold);font-size:1rem}
+
+/* ══════════════════════════════════════
+   EYE GRID — overview cards
+══════════════════════════════════════ */
+.eye-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:1rem;margin-bottom:3rem;
+}
+.eye-card{
+  background:rgba(10,16,32,.7);
+  border:1px solid rgba(192,208,232,.1);
+  padding:1.4rem 1.2rem;
+  display:flex;flex-direction:column;align-items:center;
+  gap:.7rem;text-align:center;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:all .25s ease;text-decoration:none;
+}
+.eye-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--c,var(--gold)),transparent);
+  transform:scaleX(0);transition:transform .3s ease;transform-origin:center;
+}
+.eye-card:hover{
+  border-color:rgba(212,168,50,.35);
+  background:rgba(16,26,50,.8);
+  transform:translateY(-4px);
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+}
+.eye-card:hover::before{transform:scaleX(1)}
+
+.eye-card-img{
+  width:52px;height:52px;object-fit:contain;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 0 8px var(--c,rgba(212,168,50,.5)));
+  transition:filter .3s;
+  animation:eyeFloat 3.5s ease-in-out infinite;
+}
+.eye-card:nth-child(2n) .eye-card-img{animation-delay:-.8s}
+.eye-card:nth-child(3n) .eye-card-img{animation-delay:-1.6s}
+.eye-card:nth-child(4n) .eye-card-img{animation-delay:-2.4s}
+
+.eye-card-name{
+  font-family:'Philosopher',serif;font-size:.92rem;
+  color:var(--white);line-height:1.2;
+}
+.eye-card-rarity{
+  font-family:'Barlow Condensed',sans-serif;font-size:.6rem;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--c,var(--silver-dk));
+  border:1px solid var(--c,rgba(192,208,232,.2));
+  padding:.15rem .5rem;
+}
+.eye-card-source{
+  font-size:.82rem;font-style:italic;color:var(--silver-dk);
+  line-height:1.4;
+}
+
+/* Checked state */
+.eye-card.checked{
+  background:rgba(74,222,128,.04);
+  border-color:rgba(74,222,128,.25);
+}
+.eye-card.checked::after{
+  content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;
+  position:absolute;top:.5rem;right:.6rem;
+  font-size:.7rem;color:#4ade80;
+}
+
+/* ══════════════════════════════════════
+   EYE DETAIL PANEL (click to expand)
+══════════════════════════════════════ */
+.eye-detail{
+  background:rgba(8,14,28,.8);
+  border:1px solid rgba(212,168,50,.2);
+  margin-bottom:2rem;overflow:hidden;
+  max-height:0;transition:max-height .5s cubic-bezier(.4,0,.2,1);
+}
+.eye-detail.open{max-height:600px}
+
+.eye-detail-inner{
+  display:grid;grid-template-columns:120px 1fr;
+  gap:2rem;padding:2rem;
+}
+.eye-detail-img-col{
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+}
+.eye-detail-img{
+  width:96px;height:96px;object-fit:contain;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 0 20px var(--dc,rgba(212,168,50,.5)));
+  animation:eyeFloat 3s ease-in-out infinite;
+}
+.eye-detail-name{
+  font-family:'Philosopher',serif;font-size:.82rem;
+  text-align:center;color:var(--white);
+}
+.eye-detail-rarity-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:.58rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dc,var(--gold));border:1px solid var(--dc,var(--gold));
+  padding:.15rem .5rem;text-align:center;
+}
+
+.eye-detail-info{}
+.eye-detail-title{
+  font-family:'Philosopher',serif;font-size:1.2rem;
+  color:var(--white);margin-bottom:.3rem;
+}
+.eye-detail-subtitle{
+  font-family:'Barlow Condensed',sans-serif;font-size:.65rem;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:1rem;
+}
+.eye-detail-desc{
+  font-size:.97rem;color:var(--silver-dk);line-height:1.82;
+  margin-bottom:1.2rem;
+}
+.eye-detail-how{
+  background:rgba(212,168,50,.05);
+  border:1px solid rgba(212,168,50,.15);
+  padding:.9rem 1.1rem;
+}
+.eye-detail-how-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:.62rem;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:.4rem;
+}
+.eye-detail-how-text{
+  font-size:.9rem;color:var(--silver);line-height:1.7;
+}
+.eye-detail-tags{
+  display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1rem;
+}
+.eye-tag{
+  font-family:'Barlow Condensed',sans-serif;font-size:.6rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(192,208,232,.12);
+  padding:.18rem .5rem;color:var(--silver-dk);
+}
+
+/* ══════════════════════════════════════
+   LORE SECTION
+══════════════════════════════════════ */
+.lore-block{
+  background:rgba(10,16,32,.5);
+  border-left:3px solid var(--gold);
+  padding:1.2rem 1.5rem;margin-bottom:2rem;
+  font-style:italic;color:var(--silver-dk);
+  line-height:1.9;position:relative;
+}
+.lore-block::before{
+  content:'"';
+  font-family:'Philosopher',serif;font-size:4rem;
+  color:rgba(212,168,50,.15);position:absolute;
+  top:-.5rem;left:.5rem;line-height:1;
+}
+
+/* ══════════════════════════════════════
+   PORTAL VISUALIZATION
+══════════════════════════════════════ */
+.portal-section{margin-bottom:3rem}
+.portal-wrap{
+  background:rgba(8,12,24,.8);
+  border:1px solid rgba(212,168,50,.15);
+  padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+}
+.portal-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:.7rem;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+}
+/* 4x4 portal frame grid */
+.portal-grid{
+  display:grid;
+  grid-template-columns:repeat(5,48px);
+  grid-template-rows:repeat(5,48px);
+  gap:3px;
+}
+.portal-slot{
+  width:48px;height:48px;
+  background:rgba(16,24,40,.8);
+  border:1px solid rgba(192,208,232,.08);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;transition:all .2s;
+}
+.portal-slot.frame{
+  background:rgba(20,30,55,.9);
+  border-color:rgba(100,60,180,.3);
+}
+.portal-slot.center{
+  background:radial-gradient(circle,rgba(100,60,180,.15),transparent);
+  border-color:transparent;
+}
+.portal-slot.filled{
+  background:rgba(100,60,180,.12);
+  border-color:rgba(100,60,180,.5);
+  box-shadow:inset 0 0 12px rgba(100,60,180,.2);
+}
+.portal-slot.filled img{
+  width:32px;height:32px;object-fit:contain;image-rendering:pixelated;
+  filter:drop-shadow(0 0 5px rgba(100,60,180,.7));
+}
+.portal-slot.corner{
+  background:rgba(30,20,60,.8);
+  border-color:rgba(100,60,180,.4);
+}
+.portal-slot.corner .icon-minecraft{
+  filter:drop-shadow(0 0 4px rgba(100,60,180,.5));
+}
+.portal-desc{
+  font-size:.88rem;font-style:italic;color:var(--silver-dk);
+  text-align:center;max-width:400px;
+}
+
+/* ══════════════════════════════════════
+   TIPS BOX
+══════════════════════════════════════ */
+.tip-box{
+  display:flex;gap:1rem;align-items:flex-start;
+  background:rgba(74,222,128,.04);
+  border:1px solid rgba(74,222,128,.2);
+  padding:1rem 1.2rem;margin-bottom:1.5rem;
+}
+.tip-box i{color:#4ade80;flex-shrink:0;margin-top:.15rem}
+.tip-box p{font-size:.92rem;color:var(--silver-dk);line-height:1.7}
+.tip-box p strong{color:var(--silver-lt)}
+
+.warn-box{
+  display:flex;gap:1rem;align-items:flex-start;
+  background:rgba(251,146,60,.04);
+  border:1px solid rgba(251,146,60,.2);
+  padding:1rem 1.2rem;margin-bottom:1.5rem;
+}
+.warn-box i{color:#fb923c;flex-shrink:0;margin-top:.15rem}
+.warn-box p{font-size:.92rem;color:var(--silver-dk);line-height:1.7}
+.warn-box p strong{color:var(--silver-lt)}
+
+/* ══════════════════════════════════════
+   REVEAL
+══════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}
+.d4{transition-delay:.24s}.d5{transition-delay:.3s}.d6{transition-delay:.36s}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:900px){
+  .wiki-layout{grid-template-columns:1fr}
+  .wiki-sidebar{
+    position:static;height:auto;
+    border-right:none;border-bottom:1px solid rgba(212,168,50,.12);
+    padding:1rem 0;
+  }
+  .wiki-sidebar-inner{
+    display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1rem;
+  }
+  .sidebar-heading,.sidebar-sep,.sidebar-footer{display:none}
+  .sidebar-item{
+    padding:.4rem .9rem;border-left:none;
+    border:1px solid rgba(192,208,232,.1);border-radius:0;
+    font-size:.68rem;
+  }
+  .wiki-main{padding:2rem 1.2rem}
+  .hero-img-wrap{display:none}
+  .hero-title{font-size:clamp(1.5rem,6vw,2.2rem)}
+  .eye-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .eye-detail-inner{grid-template-columns:1fr}
+  .eye-detail-img-col{flex-direction:row;justify-content:flex-start}
+  .portal-grid{
+    grid-template-columns:repeat(5,38px);
+    grid-template-rows:repeat(5,38px);
+  }
+  .portal-slot{width:38px;height:38px}
+  .portal-slot.filled img{width:26px;height:26px}
+}
+
+@media(max-width:520px){
+  nav{padding:0 1rem}
+  .nav-search{display:none}
+  .eye-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{flex-direction:column;gap:.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-back">
+    <i class="fas fa-chevron-left"></i>
+    <span class="nav-logo">EAF</span>
+  </a>
+  <div class="nav-breadcrumb">
+    <span>Wiki</span>
+    <span class="sep">/</span>
+    <span class="current">Mắt Phong Ấn</span>
+  </div>
+  <div class="nav-search">
+    <i class="fas fa-search"></i>
+    <input type="text" id="search-input" placeholder="Tìm mắt phong ấn..." autocomplete="off"/>
+  </div>
+</nav>
+
+<div class="wiki-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="wiki-sidebar">
+    <div class="wiki-sidebar-inner" id="sidebar-inner">
+      <div class="sidebar-heading">Các Mắt Phong Ấn</div>
+      <div class="sidebar-sep"></div>
+      <!-- Generated by JS -->
+    </div>
+    <div class="sidebar-footer" id="sidebar-footer">
+      <div class="progress-label">
+        <span>Tiến Độ Thu Thập</span>
+        <span id="prog-count">0 / 12</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="wiki-main">
+
+    <!-- HERO BANNER -->
+    <div class="wiki-hero reveal">
+      <div class="hero-img-wrap">
+        <img
+          src="https://cdn.modrinth.com/data/cached_images/e859542e9542a7d327f56fd46496524348b27a5d.png"
+          alt="Eyes of Ender"
+          onerror="this.style.display='none'"
+        />
+      </div>
+      <p class="hero-eyebrow">EAF — Bách Khoa Thư</p>
+      <h1 class="hero-title">Mắt Phong Ấn</h1>
+      <p class="hero-sub">
+        16 Mắt Phong Ấn huyền bí nằm rải rác khắp thế giới EAF.
+        Thu thập đủ 12 mắt theo yêu cầu để phá vỡ lớp phong ấn và
+        mở cổng vào Thế Giới Tận Cùng.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>16</strong>&nbsp;Loại Mắt</div>
+        <div class="hero-stat"><strong>12</strong>&nbsp;Cần Để Mở Cổng</div>
+        <div class="hero-stat"><strong>4</strong>&nbsp;Cấp Độ Hiếm</div>
+      </div>
+    </div>
+
+    <!-- LORE -->
+    <div class="lore-block reveal">
+      Từ thuở hồng hoang, Thế Giới Tận Cùng bị phong ấn bởi 16 viên mắt thần.
+      Mỗi mắt chứa đựng linh lực của một vùng đất, một sinh vật, hay một bí ẩn
+      chưa được giải. Chỉ những dũng sĩ thu thập đủ 12 viên mới có thể
+      thức tỉnh Cổng Thế Giới và đối mặt với Ender Dragon.
+    </div>
+
+    <!-- TIPS -->
+    <div class="tip-box reveal">
+      <i class="fas fa-lightbulb"></i>
+      <p><strong>Gợi ý:</strong> Bấm vào từng thẻ mắt để xem chi tiết cách lấy.
+      Đánh dấu các mắt đã thu thập bằng cách bấm nút <strong>Đã Có</strong>
+      — tiến độ sẽ được lưu lại.</p>
+    </div>
+    <div class="warn-box reveal">
+      <i class="fas fa-triangle-exclamation"></i>
+      <p><strong>Lưu ý:</strong> Một số mắt chỉ có thể lấy vào
+      <strong>ban đêm</strong> hoặc cần <strong>điều kiện đặc biệt</strong>.
+      Đọc kỹ hướng dẫn từng mắt trước khi săn.</p>
+    </div>
+
+    <!-- EYE GRID -->
+    <section class="reveal">
+      <h2 class="wiki-section-title">
+        <i class="fas fa-eye"></i>
+        Danh Sách Mắt Phong Ấn
+      </h2>
+      <div class="eye-grid" id="eye-grid"></div>
+    </section>
+
+    <!-- DETAIL PANEL (populated by JS on click) -->
+    <div class="eye-detail" id="eye-detail">
+      <div class="eye-detail-inner" id="eye-detail-inner"></div>
+    </div>
+
+    <!-- PORTAL VISUALIZATION -->
+    <section class="portal-section reveal">
+      <h2 class="wiki-section-title">
+        <i class="fas fa-border-all"></i>
+        Khung Phong Ấn Cổng
+      </h2>
+      <div class="portal-wrap">
+        <p class="portal-label">End Portal Frame — Cần 12 Mắt</p>
+        <div class="portal-grid" id="portal-grid"></div>
+        <p class="portal-desc">
+          Đặt 12 mắt phong ấn vào 12 khung xung quanh để kích hoạt cổng.
+          Không phải tất cả 16 mắt đều được yêu cầu — chỉ cần đúng 12.
+        </p>
+      </div>
+    </section>
+
+    <!-- TIPS SECTION -->
+    <section class="reveal">
+      <h2 class="wiki-section-title">
+        <i class="fas fa-map"></i>
+        Chiến Lược Thu Thập
+      </h2>
+      <div class="tip-box">
+        <i class="fas fa-dragon"></i>
+        <p><strong>Mob drops:</strong> Một số mắt rơi từ mob đặc biệt với
+        tỉ lệ thấp. Dùng Looting III để tăng xác suất đáng kể.</p>
+      </div>
+      <div class="tip-box">
+        <i class="fas fa-dungeon"></i>
+        <p><strong>Dungeon & Raid:</strong> Elder Eye, Ominous Eye và
+        Spellbound Eye yêu cầu vượt qua thử thách đặc biệt.
+        Chuẩn bị trang bị kỹ trước khi thử.</p>
+      </div>
+      <div class="tip-box">
+        <i class="fas fa-moon"></i>
+        <p><strong>Ban đêm:</strong> Amber Eye chỉ rơi khi phá Creaking Heart
+        vào ban đêm và có Creaking chết do đó. Không dùng Silk Touch.</p>
+      </div>
+      <div class="tip-box">
+        <i class="fas fa-fish"></i>
+        <p><strong>Câu cá:</strong> Aquatic Eye có thể câu được từ các
+        nguồn nước trong thế giới. Dùng Luck of the Sea III để tăng tỉ lệ.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   EYE DATA
+   Cập nhật nội dung từ eye.yml khi có file
+════════════════════════════════════════ */
+const SPRITE = 'https://cdn.modrinth.com/data/cached_images/e859542e9542a7d327f56fd46496524348b27a5d.png';
+
+const EYES = [
+  {
+    id:'amber',
+    name:'Mắt Hổ Phách',
+    nameEn:'Amber Eye',
+    rarity:'uncommon',
+    color:'#f59e0b',
+    source:'Creaking Heart',
+    biome:'Rừng Pale Oak',
+    dropRate:'10%',
+    required:true,
+    desc:'Rơi từ Creaking Heart bị phá vỡ. Phải thực hiện vào ban đêm — một Creaking phải chết do khối này bị phá. Không rơi khi dùng Silk Touch.',
+    how:'Tìm cây Creaking Heart trong rừng Pale Oak vào ban đêm. Phá khối mà không dùng Silk Touch khi Creaking đang sống.',
+    tags:['Ban Đêm','Pale Oak','10% Drop']
+  },
+  {
+    id:'aquatic',
+    name:'Mắt Đại Dương',
+    nameEn:'Aquatic Eye',
+    rarity:'rare',
+    color:'#38bdf8',
+    source:'Câu Cá / Elder Guardian',
+    biome:'Đại Dương',
+    dropRate:'Câu được',
+    required:true,
+    desc:'Có thể câu được từ nguồn nước, hoặc rơi từ Elder Guardian. Dùng cần câu được enchant Luck of the Sea để tăng tỉ lệ.',
+    how:'Câu cá ở đại dương hoặc tấn công Elder Guardian trong Ocean Monument.',
+    tags:['Câu Cá','Ocean Monument','Elder Guardian']
+  },
+  {
+    id:'archaic',
+    name:'Mắt Cổ Đại',
+    nameEn:'Archaic Eye',
+    rarity:'epic',
+    color:'#a78bfa',
+    source:'Cấu Trúc Cổ Đại',
+    biome:'Thế Giới Dưới Lòng Đất',
+    dropRate:'Rương',
+    required:true,
+    desc:'Tìm thấy trong rương của các cấu trúc cổ đại sâu dưới lòng đất. Thường xuất hiện ở Ancient City hoặc cấu trúc tùy chỉnh của server.',
+    how:'Khám phá Ancient City trong Deepslate layer, mở rương lớn ở trung tâm.',
+    tags:['Ancient City','Deepslate','Rương']
+  },
+  {
+    id:'beastmaster',
+    name:"Mắt Thú Vương",
+    nameEn:"Beastmaster's Eye",
+    rarity:'rare',
+    color:'#86efac',
+    source:'Boss Thú Vương',
+    biome:'Rừng Già',
+    dropRate:'100% (Boss)',
+    required:true,
+    desc:'Rơi từ Boss Thú Vương — sinh vật đặc biệt của server EAF. Triệu hồi bằng nghi lễ đặc biệt trong rừng già lúc trăng tròn.',
+    how:'Triệu hồi Thú Vương bằng cách đặt đúng vật phẩm tế lễ trên bàn thờ rừng vào đêm trăng tròn.',
+    tags:['Boss','Rừng Già','Trăng Tròn']
+  },
+  {
+    id:'bound',
+    name:'Mắt Trói Buộc',
+    nameEn:'Bound Eye',
+    rarity:'epic',
+    color:'#f472b6',
+    source:'Craft',
+    biome:'Bất Kỳ',
+    dropRate:'Craft',
+    required:true,
+    desc:'Được tạo ra từ công thức đặc biệt. Cần nguyên liệu từ nhiều chiều không gian khác nhau để hoàn thành.',
+    how:'Craft từ: Blaze Rod × 4, String × 4, Eye of Ender × 1 theo công thức đặc biệt trên bàn Enchanting.',
+    tags:['Craft','Blaze','String']
+  },
+  {
+    id:'curious',
+    name:'Mắt Tò Mò',
+    nameEn:'Curious Eye',
+    rarity:'common',
+    color:'#94a3b8',
+    source:'Allay / Đổi Chác',
+    biome:'Bất Kỳ',
+    dropRate:'Đổi Chác',
+    required:false,
+    desc:'Lấy được từ Allay hoặc qua hệ thống đổi chác với dân làng đặc biệt. Mắt phổ biến nhất, dễ kiếm nhất.',
+    how:'Cho Allay vật phẩm chúng thích và chờ chúng mang về. Hoặc tìm dân làng Wandering Trader đặc biệt.',
+    tags:['Allay','Dân Làng','Dễ Kiếm']
+  },
+  {
+    id:'elder',
+    name:'Mắt Trưởng Lão',
+    nameEn:'Elder Eye',
+    rarity:'legendary',
+    color:'#f5c842',
+    source:'Elder Guardian',
+    biome:'Ocean Monument',
+    dropRate:'Hiếm',
+    required:true,
+    desc:'Rơi từ Elder Guardian với tỉ lệ rất thấp. Dùng Looting III để tăng xác suất. Đây là một trong những mắt khó kiếm nhất.',
+    how:'Liên tục tiêu diệt Elder Guardian trong Ocean Monument với kiếm Looting III.',
+    tags:['Elder Guardian','Ocean Monument','Looting III']
+  },
+  {
+    id:'eldritch',
+    name:'Mắt Hắc Ám',
+    nameEn:'Eldritch Eye',
+    rarity:'legendary',
+    color:'#7c3aed',
+    source:'The Warden',
+    biome:'Ancient City',
+    dropRate:'Hiếm',
+    required:true,
+    desc:'Rơi từ The Warden — sinh vật mạnh nhất trong Ancient City. Chuẩn bị kỹ trang bị trước khi đối mặt.',
+    how:'Triệu hồi và tiêu diệt The Warden trong Ancient City. Cần trang bị Netherite đầy đủ và potions.',
+    tags:['The Warden','Ancient City','Netherite']
+  },
+  {
+    id:'entombed',
+    name:'Mắt Chôn Vùi',
+    nameEn:'Entombed Eye',
+    rarity:'uncommon',
+    color:'#d97706',
+    source:'Mộ Địa',
+    biome:'Desert / Savanna',
+    dropRate:'Rương',
+    required:true,
+    desc:'Nằm trong rương của các mộ địa sa mạc. Thường được giấu dưới lớp cát xung quanh mộ. Cẩn thận bẫy TNT.',
+    how:'Tìm Desert Pyramid và Desert Well. Mở rương bên dưới — cẩn thận bẫy TNT ở giữa.',
+    tags:['Desert Pyramid','Sa Mạc','Bẫy TNT']
+  },
+  {
+    id:'forged',
+    name:'Mắt Rèn Đúc',
+    nameEn:'Forged Eye',
+    rarity:'rare',
+    color:'#ef4444',
+    source:'Craft / Lò Rèn',
+    biome:'Nether',
+    dropRate:'Craft',
+    required:true,
+    desc:'Rèn đúc từ nguyên liệu Nether trong lò rèn đặc biệt. Cần Blaze Powder và Netherite Scrap làm nguyên liệu chính.',
+    how:'Thu thập Blaze Powder × 8 và Netherite Scrap × 4. Kết hợp trong Smithing Table với công thức riêng.',
+    tags:['Craft','Nether','Smithing Table']
+  },
+  {
+    id:'golden',
+    name:'Mắt Hoàng Kim',
+    nameEn:'Golden Eye',
+    rarity:'rare',
+    color:'#fbbf24',
+    source:'Piglin Bartering',
+    biome:'Nether',
+    dropRate:'Đổi Chác',
+    required:true,
+    desc:'Lấy từ giao dịch với Piglin trong Nether. Ném vàng cho Piglin và chờ đổi lại. Tỉ lệ thấp nhưng có thể farm được.',
+    how:'Vào Nether, đứng gần Piglin và ném Gold Ingot (Q) để bắt đầu bartering. Farm liên tục.',
+    tags:['Piglin','Nether','Bartering']
+  },
+  {
+    id:'ominous',
+    name:'Mắt Điềm Báo',
+    nameEn:'Ominous Eye',
+    rarity:'epic',
+    color:'#ec4899',
+    source:'Ominous Vault',
+    biome:'Trial Chamber',
+    dropRate:'Rương Đặc Biệt',
+    required:false,
+    desc:'Nằm trong Ominous Vault bên trong Trial Chamber. Cần Ominous Trial Key để mở. Chỉ xuất hiện khi có Ominous buff.',
+    how:'Lấy Ominous Trial Key từ trial spawner, rồi mở Ominous Vault trong Trial Chamber.',
+    tags:['Trial Chamber','Ominous Vault','Ominous Key']
+  },
+  {
+    id:'opulent',
+    name:'Mắt Phú Quý',
+    nameEn:'Opulent Eye',
+    rarity:'uncommon',
+    color:'#22d3ee',
+    source:'Merchant Đặc Biệt',
+    biome:'Village',
+    dropRate:'Mua',
+    required:false,
+    desc:'Mua từ Wandering Trader hoặc dân làng đặc biệt. Giá cao nhưng ổn định, phù hợp khi có nhiều Emerald.',
+    how:'Tìm Wandering Trader xuất hiện ngẫu nhiên, hoặc nâng level dân làng lên Master.',
+    tags:['Wandering Trader','Mua','Emerald']
+  },
+  {
+    id:'queens',
+    name:"Mắt Nữ Hoàng",
+    nameEn:"Queen's Eye",
+    rarity:'legendary',
+    color:'#a855f7',
+    source:'Bee Queen Boss',
+    biome:'Meadow / Flower Forest',
+    dropRate:'100% (Boss)',
+    required:true,
+    desc:'Rơi từ Nữ Hoàng Ong — Boss đặc biệt của server EAF. Triệu hồi bằng cách đặt mật ong trên bàn thờ hoa.',
+    how:'Thu thập Honey Block × 8 và đặt lên Flower Altar trong Meadow vào buổi sáng sớm.',
+    tags:['Boss','Meadow','Mật Ong']
+  },
+  {
+    id:'spellbound',
+    name:'Mắt Pháp Thuật',
+    nameEn:'Spellbound Eye',
+    rarity:'epic',
+    color:'#818cf8',
+    source:'Enchanting / Witch',
+    biome:'Swamp',
+    dropRate:'Craft / Drop',
+    required:true,
+    desc:'Tạo từ quá trình enchanting đặc biệt, hoặc rơi từ Witch với tỉ lệ cực thấp. Cần thư enchant hiếm.',
+    how:'Dùng Enchanted Book cấp cao nhất trên Eye of Ender thông thường tại Enchanting Table cấp 30. Hoặc farm Witch.',
+    tags:['Enchanting','Witch','Swamp']
+  },
+  {
+    id:'withered',
+    name:'Mắt Úa Tàn',
+    nameEn:'Withered Eye',
+    rarity:'legendary',
+    color:'#6b7280',
+    source:'Wither Boss',
+    biome:'Nether / Soul Sand Valley',
+    dropRate:'Drop',
+    required:true,
+    desc:'Rơi từ Wither với xác suất thấp. Triệu hồi Wither bằng Soul Sand và Wither Skull. Chiến đấu cực kỳ nguy hiểm.',
+    how:'Thu thập 3 Wither Skull từ Wither Skeleton, xếp trên 4 Soul Sand theo hình chữ T để triệu hồi Wither.',
+    tags:['Wither','Soul Sand','Nether']
+  }
+];
+
+const RARITY_LABEL = {
+  common:'Phổ Thông', uncommon:'Không Phổ Biến',
+  rare:'Hiếm', epic:'Sử Thi', legendary:'Huyền Thoại'
+};
+
+/* ── PROGRESS TRACKING ── */
+let collected = JSON.parse(localStorage.getItem('eaf_eyes') || '[]');
+
+function saveProgress(){ localStorage.setItem('eaf_eyes', JSON.stringify(collected)); }
+
+function updateProgress(){
+  const required = EYES.filter(e=>e.required);
+  const got = collected.filter(id=> required.find(e=>e.id===id));
+  const pct = Math.round(got.length / required.length * 100);
+  document.getElementById('prog-count').textContent = `${got.length} / ${required.length}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+/* ── BUILD SIDEBAR ── */
+function buildSidebar(){
+  const wrap = document.getElementById('sidebar-inner');
+  wrap.innerHTML = '<div class="sidebar-heading">Các Mắt Phong Ấn</div><div class="sidebar-sep"></div>';
+  EYES.forEach(eye=>{
+    const a = document.createElement('a');
+    a.className = 'sidebar-item';
+    a.href = '#';
+    a.dataset.id = eye.id;
+    a.innerHTML = `
+      <span class="sidebar-dot" style="background:${eye.color}"></span>
+      ${eye.name}
+      ${eye.required ? '' : '<span class="sidebar-progress">Tùy Chọn</span>'}
+    `;
+    a.addEventListener('click', e=>{ e.preventDefault(); openDetail(eye.id, a); });
+    wrap.appendChild(a);
+  });
+}
+
+/* ── BUILD EYE GRID ── */
+function buildGrid(filter=''){
+  const grid = document.getElementById('eye-grid');
+  grid.innerHTML = '';
+  const filtered = filter
+    ? EYES.filter(e=>
+        e.name.toLowerCase().includes(filter) ||
+        e.nameEn.toLowerCase().includes(filter) ||
+        e.source.toLowerCase().includes(filter)
+      )
+    : EYES;
+
+  filtered.forEach(eye=>{
+    const card = document.createElement('div');
+    card.className = 'eye-card' + (collected.includes(eye.id) ? ' checked' : '');
+    card.style.setProperty('--c', eye.color);
+    card.dataset.id = eye.id;
+    card.innerHTML = `
+      <img class="eye-card-img" src="${SPRITE}" alt="${eye.nameEn}"
+           style="--c:${eye.color}"
+           onerror="this.style.opacity='.3'"/>
+      <div class="eye-card-name">${eye.name}</div>
+      <div class="eye-card-rarity" style="--c:${eye.color}">${RARITY_LABEL[eye.rarity]}</div>
+      <div class="eye-card-source">${eye.source}</div>
+    `;
+    card.addEventListener('click', ()=> openDetail(eye.id, card));
+    grid.appendChild(card);
+  });
+}
+
+/* ── OPEN DETAIL ── */
+let activeId = null;
+function openDetail(id, trigger){
+  const eye = EYES.find(e=>e.id===id);
+  if(!eye) return;
+
+  const detail = document.getElementById('eye-detail');
+  const inner  = document.getElementById('eye-detail-inner');
+
+  if(activeId === id){
+    detail.classList.remove('open');
+    activeId = null;
+    document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.remove('active'));
+    return;
+  }
+  activeId = id;
+
+  // Sidebar active
+  document.querySelectorAll('.sidebar-item').forEach(s=>{
+    s.classList.toggle('active', s.dataset.id === id);
+  });
+
+  const hasCollected = collected.includes(id);
+
+  inner.innerHTML = `
+    <div class="eye-detail-img-col">
+      <img class="eye-detail-img" src="${SPRITE}" alt="${eye.nameEn}"
+           style="--dc:${eye.color}" onerror="this.style.opacity='.3'"/>
+      <div class="eye-detail-name">${eye.name}</div>
+      <div class="eye-detail-rarity-badge" style="--dc:${eye.color}">${RARITY_LABEL[eye.rarity]}</div>
+    </div>
+    <div class="eye-detail-info">
+      <div class="eye-detail-title">${eye.name}</div>
+      <div class="eye-detail-subtitle">${eye.nameEn} · ${eye.required?'Bắt Buộc':'Tùy Chọn'} · ${eye.biome}</div>
+      <div class="eye-detail-desc">${eye.desc}</div>
+      <div class="eye-detail-how">
+        <div class="eye-detail-how-label"><i class="fas fa-map-signs"></i>&nbsp; Cách Lấy</div>
+        <div class="eye-detail-how-text">${eye.how}</div>
+      </div>
+      <div class="eye-detail-tags">
+        ${eye.tags.map(t=>`<span class="eye-tag">${t}</span>`).join('')}
+        <span class="eye-tag" style="color:${eye.color};border-color:${eye.color}40">Drop: ${eye.dropRate}</span>
+      </div>
+      <button onclick="toggleCollected('${id}')" id="collect-btn"
+        style="margin-top:1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1.2rem;border:1px solid ${hasCollected?'#4ade80':'rgba(212,168,50,.35)'};background:${hasCollected?'rgba(74,222,128,.1)':'rgba(212,168,50,.08)'};color:${hasCollected?'#4ade80':'var(--gold)'};cursor:pointer;transition:all .2s;">
+        ${hasCollected ? '<i class="fas fa-check"></i>&nbsp; Đã Có' : '<i class="fas fa-plus"></i>&nbsp; Đánh Dấu Đã Có'}
+      </button>
+    </div>
+  `;
+
+  detail.classList.add('open');
+
+  // Scroll to detail smoothly
+  setTimeout(()=> detail.scrollIntoView({behavior:'smooth', block:'nearest'}), 50);
+}
+
+function toggleCollected(id){
+  const idx = collected.indexOf(id);
+  if(idx>=0) collected.splice(idx,1);
+  else collected.push(id);
+  saveProgress();
+  updateProgress();
+
+  // Update card
+  document.querySelectorAll(`.eye-card[data-id="${id}"]`).forEach(c=>{
+    c.classList.toggle('checked', collected.includes(id));
+  });
+
+  // Re-render button
+  const btn = document.getElementById('collect-btn');
+  const has = collected.includes(id);
+  const eye = EYES.find(e=>e.id===id);
+  if(btn && eye){
+    btn.style.borderColor = has ? '#4ade80' : 'rgba(212,168,50,.35)';
+    btn.style.background  = has ? 'rgba(74,222,128,.1)' : 'rgba(212,168,50,.08)';
+    btn.style.color       = has ? '#4ade80' : 'var(--gold)';
+    btn.innerHTML = has
+      ? '<i class="fas fa-check"></i>&nbsp; Đã Có'
+      : '<i class="fas fa-plus"></i>&nbsp; Đánh Dấu Đã Có';
+  }
+}
+
+/* ── PORTAL GRID ── */
+function buildPortal(){
+  // 5x5 grid: frame slots at positions 0-4 (top), 5,9 (sides), 10,14 (sides), 15-19 (bottom)
+  // Center 3x3 = void, corners = stone
+  const grid = document.getElementById('portal-grid');
+  const frame = [0,1,2,3,4, 5,9, 10,14, 15,16,17,18,19]; // 14 but portal uses 12
+  const corners = []; // no extra corners in 5x5
+  const center = [6,7,8,11,12,13]; // won't show
+  const required = EYES.filter(e=>e.required).slice(0,12);
+
+  for(let i=0;i<25;i++){
+    const slot = document.createElement('div');
+    const row = Math.floor(i/5), col = i%5;
+    const isEdge = row===0||row===4||col===0||col===4;
+    const isCorner = (row===0||row===4)&&(col===0||col===4);
+
+    if(isCorner){
+      slot.className='portal-slot corner';
+      slot.innerHTML=`<i class="icon-minecraft icon-minecraft-sm icon-minecraft-end-stone"></i>`;
+    } else if(isEdge){
+      const frameIdx = [...Array(25).keys()]
+        .filter(j=>{const r=Math.floor(j/5),c=j%5;return (r===0||r===4||c===0||c===4)&&!(  (r===0||r===4)&&(c===0||c===4));})
+        .indexOf(i);
+      const eye = required[frameIdx] || null;
+      const filled = eye && collected.includes(eye.id);
+      slot.className = `portal-slot frame ${filled?'filled':''}`;
+      if(filled){
+        slot.innerHTML=`<img src="${SPRITE}" alt="${eye.nameEn}" style="filter:drop-shadow(0 0 5px ${eye.color})"/>`;
+        slot.title = eye.name;
+      }
+    } else {
+      slot.className='portal-slot center';
+    }
+    grid.appendChild(slot);
+  }
+}
+
+/* ── SEARCH ── */
+document.getElementById('search-input').addEventListener('input', e=>{
+  buildGrid(e.target.value.toLowerCase().trim());
+  document.getElementById('eye-detail').classList.remove('open');
+  activeId=null;
+});
+
+/* ── REVEAL ── */
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── INIT ── */
+buildSidebar();
+buildGrid();
+buildPortal();
+updateProgress();
+
+/* ── MC ICONS ── */
+(function(){
+  const img=new Image();
+  img.onload=img.onerror=function(){
+    if(this.width!==1) document.documentElement.classList.add('no-webp');
+  };
+  img.src='data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JZACdAEO/gHOAAA=';
+})();
+</script>
+</body>
+</html>
