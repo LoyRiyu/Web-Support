@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Hệ Thống Balo — EAF Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@400;600;700&display=swap&subset=vietnamese" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<link rel="stylesheet" href="minecraft-icons.css"/>
+<style>
+:root{
+  --night:#06090f;--navy:#0a1020;--navy-mid:#101828;
+  --gold:#d4a832;--gold-bright:#f5c842;
+  --silver:#c0d0e8;--silver-dk:#8898b8;--silver-lt:#e8f0ff;--white:#f0f6ff;
+  --ink:#04070e;
+  --leather: #8B4513; --copper:#B87333; --iron:#C0C0C0;
+  --gold-bp:#FFD700; --diamond:#00BFFF; --netherite:#9F4FD9;
+  --glow-gold:0 0 22px rgba(212,168,50,.6),0 0 70px rgba(212,168,50,.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--night);color:var(--silver);font-family:'Crimson Pro',Georgia,serif;font-size:1.05rem;line-height:1.75;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");opacity:.4}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--ink)}::-webkit-scrollbar-thumb{background:var(--gold)}
+::selection{background:var(--gold);color:var(--ink)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:58px;padding:0 2rem;display:flex;align-items:center;gap:1rem;background:rgba(6,9,15,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(212,168,50,.18)}
+.nav-back{display:flex;align-items:center;gap:.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--silver-dk);transition:color .2s;padding-right:1rem;border-right:1px solid rgba(212,168,50,.18)}
+.nav-back:hover{color:var(--gold-bright)}
+.nav-logo{font-family:'Philosopher',serif;font-size:1.25rem;font-weight:700;color:var(--gold-bright);text-shadow:var(--glow-gold)}
+.nav-crumb{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver-dk);display:flex;align-items:center;gap:.5rem}
+.nav-crumb .sep{color:rgba(212,168,50,.4)}.nav-crumb .cur{color:var(--gold)}
+
+/* LAYOUT */
+.page-wrap{padding-top:58px;max-width:1000px;margin:0 auto;padding-left:2rem;padding-right:2rem;padding-bottom:4rem}
+
+/* HERO */
+.wiki-hero{position:relative;overflow:hidden;margin:2.5rem 0;padding:3rem 2.5rem;background:rgba(10,16,32,.8);border:1px solid rgba(212,168,50,.2)}
+.wiki-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(212,168,50,.02) 0px,rgba(212,168,50,.02) 1px,transparent 1px,transparent 55px),repeating-linear-gradient(0deg,rgba(212,168,50,.02) 0px,rgba(212,168,50,.02) 1px,transparent 1px,transparent 55px);pointer-events:none}
+.hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
+.hero-title{font-family:'Philosopher',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:var(--white);margin-bottom:.5rem}
+.hero-sub{font-style:italic;color:var(--silver-dk);max-width:560px;line-height:1.85;margin-bottom:1.5rem}
+.hero-badges{display:flex;gap:.6rem;flex-wrap:wrap}
+.hero-badge{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .8rem;border:1px solid;display:flex;align-items:center;gap:.4rem}
+
+/* SECTION */
+.wiki-section{margin-bottom:3.5rem}
+.wiki-section-title{font-family:'Philosopher',serif;font-size:1.3rem;font-weight:700;color:var(--white);margin-bottom:1.5rem;padding-bottom:.6rem;border-bottom:1px solid rgba(212,168,50,.2);display:flex;align-items:center;gap:.75rem}
+.wiki-section-title i{color:var(--gold);font-size:.95rem}
+
+/* TIER CARDS */
+.tier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+.tier-card{background:rgba(10,16,32,.7);border:1px solid rgba(192,208,232,.1);overflow:hidden;transition:all .25s ease;cursor:pointer}
+.tier-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.tier-header{padding:1.2rem 1.4rem 1rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.tier-img{width:72px;height:72px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 0 10px var(--tc,rgba(212,168,50,.5)));transition:filter .3s;animation:bpFloat 3.5s ease-in-out infinite}
+.tier-card:nth-child(2n) .tier-img{animation-delay:-.7s}
+.tier-card:nth-child(3n) .tier-img{animation-delay:-1.4s}
+@keyframes bpFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.tier-header-info{}
+.tier-name{font-family:'Philosopher',serif;font-size:1.05rem;color:var(--white);margin-bottom:.2rem}
+.tier-sub{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tc,var(--silver-dk))}
+.tier-body{padding:1.1rem 1.4rem}
+.tier-stats{display:grid;grid-template-columns:1fr 1fr;gap:.5rem .8rem;margin-bottom:1rem}
+.tier-stat{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--silver-dk);display:flex;flex-direction:column;gap:.15rem}
+.tier-stat strong{font-family:'Philosopher',serif;font-size:1rem;color:var(--tc,var(--gold-bright));font-weight:700;letter-spacing:0}
+.tier-desc{font-size:.9rem;color:var(--silver-dk);line-height:1.7;font-style:italic;margin-bottom:1rem}
+
+/* RECIPE PREVIEW inside card */
+.tier-recipe-btn{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;background:none;border:1px solid rgba(192,208,232,.15);color:var(--silver-dk);padding:.3rem .8rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:all .18s;width:100%;justify-content:center}
+.tier-recipe-btn:hover{border-color:var(--tc,var(--gold));color:var(--tc,var(--gold))}
+.tier-recipe-btn i{font-size:.7rem}
+
+/* RECIPE MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(8px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--navy-mid);border:1px solid rgba(212,168,50,.3);padding:2rem;max-width:500px;width:90%;position:relative;transform:translateY(20px);transition:transform .25s}
+.modal-overlay.open .modal-box{transform:none}
+.modal-title{font-family:'Philosopher',serif;font-size:1.2rem;color:var(--white);margin-bottom:.4rem}
+.modal-sub{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.modal-close{position:absolute;top:.8rem;right:.8rem;background:none;border:none;color:var(--silver-dk);font-size:1.1rem;cursor:pointer;transition:color .2s}
+.modal-close:hover{color:var(--white)}
+.recipe-img{width:100%;max-width:380px;display:block;margin:0 auto;image-rendering:pixelated;border:1px solid rgba(212,168,50,.15)}
+.smithing-wrap{display:flex;flex-direction:column;gap:.6rem;align-items:center}
+.smithing-row{display:flex;align-items:center;gap:.8rem;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--silver-dk)}
+.smithing-row strong{color:var(--gold)}
+.smithing-arrow{color:var(--gold);font-size:1.2rem}
+
+/* CONTROLS SECTION */
+.controls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.control-card{background:rgba(10,16,32,.7);border:1px solid rgba(212,168,50,.15);padding:1.4rem;display:flex;gap:1rem;align-items:flex-start}
+.control-icon{width:44px;height:44px;background:rgba(212,168,50,.08);border:1px solid rgba(212,168,50,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.control-icon i{color:var(--gold);font-size:1.1rem}
+.control-title{font-family:'Philosopher',serif;font-size:.95rem;color:var(--white);margin-bottom:.3rem}
+.control-desc{font-size:.88rem;color:var(--silver-dk);line-height:1.7}
+.control-kbd{display:inline-flex;align-items:center;gap:.3rem;margin-top:.5rem}
+.kbd{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-bottom:2px solid rgba(255,255,255,.1);padding:.18rem .55rem;color:var(--silver-lt)}
+
+/* UPGRADES TABLE */
+.upgrade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.upgrade-card{background:rgba(10,16,32,.6);border:1px solid rgba(192,208,232,.1);padding:1.2rem 1.3rem;transition:all .2s}
+.upgrade-card:hover{border-color:rgba(74,222,128,.25);background:rgba(74,222,128,.03)}
+.upgrade-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.7rem}
+.upgrade-icon{width:36px;height:36px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.upgrade-icon i{color:#4ade80;font-size:.9rem}
+.upgrade-name{font-family:'Philosopher',serif;font-size:.95rem;color:var(--white)}
+.upgrade-tier-req{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver-dk);margin-top:.1rem}
+.upgrade-desc{font-size:.88rem;color:var(--silver-dk);line-height:1.7}
+.upgrade-effect{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:#4ade80;margin-top:.5rem}
+
+/* PROGRESSION TIMELINE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:.65rem;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--leather),var(--copper),var(--iron),var(--gold-bp),var(--diamond),var(--netherite))}
+.timeline-item{position:relative;margin-bottom:1.5rem}
+.timeline-dot{position:absolute;left:-2rem;top:.2rem;width:14px;height:14px;border-radius:50%;border:2px solid var(--night);box-shadow:0 0 0 2px var(--tc,var(--gold))}
+.timeline-content{background:rgba(10,16,32,.6);border:1px solid rgba(192,208,232,.08);padding:1rem 1.2rem;margin-left:.5rem}
+.timeline-name{font-family:'Philosopher',serif;font-size:1rem;color:var(--white);margin-bottom:.2rem}
+.timeline-detail{font-size:.88rem;color:var(--silver-dk)}
+.timeline-arrow{text-align:center;color:rgba(212,168,50,.4);font-size:.8rem;margin:-0.5rem 0 -0.5rem 2rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.15em;text-transform:uppercase;font-size:.6rem}
+
+/* TIP / WARN */
+.tip-box{display:flex;gap:.9rem;align-items:flex-start;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.2);padding:1rem 1.2rem;margin-bottom:1.2rem}
+.tip-box i{color:#4ade80;flex-shrink:0;margin-top:.15rem}
+.tip-box p{font-size:.92rem;color:var(--silver-dk);line-height:1.7}
+.tip-box p strong{color:var(--silver-lt)}
+.warn-box{display:flex;gap:.9rem;align-items:flex-start;background:rgba(251,146,60,.04);border:1px solid rgba(251,146,60,.2);padding:1rem 1.2rem;margin-bottom:1.2rem}
+.warn-box i{color:#fb923c;flex-shrink:0;margin-top:.15rem}
+.warn-box p{font-size:.92rem;color:var(--silver-dk);line-height:1.7}
+.warn-box p strong{color:var(--silver-lt)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+.d4{transition-delay:.32s}.d5{transition-delay:.4s}.d6{transition-delay:.48s}
+
+/* RESPONSIVE */
+@media(max-width:720px){
+  .page-wrap{padding-left:1.2rem;padding-right:1.2rem}
+  .wiki-hero{padding:2rem 1.4rem}
+  .tier-grid{grid-template-columns:1fr}
+  .controls-grid{grid-template-columns:1fr}
+  .upgrade-grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .hero-title{font-size:clamp(1.5rem,6vw,2.2rem)}
+  nav{padding:0 1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">
+    <i class="fas fa-chevron-left"></i>
+    <span class="nav-logo">EAF</span>
+  </a>
+  <div class="nav-crumb">
+    <span>Wiki</span>
+    <span class="sep">/</span>
+    <span class="cur">Hệ Thống Balo</span>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="wiki-hero reveal">
+    <p class="hero-eyebrow">EAF — Bách Khoa Thư · Plugin</p>
+    <h1 class="hero-title">Hệ Thống Balo</h1>
+    <p class="hero-sub">
+      6 bậc balo từ Da đến Netherite, mỗi bậc mở rộng không gian lưu trữ
+      và thêm ô nâng cấp. Đeo lên lưng, hiển thị 3D, điều khiển bằng phím tắt.
+    </p>
+    <div class="hero-badges">
+      <span class="hero-badge" style="color:#d4a832;border-color:rgba(212,168,50,.4)">
+        <i class="fas fa-layer-group"></i> 6 Bậc
+      </span>
+      <span class="hero-badge" style="color:#4ade80;border-color:rgba(74,222,128,.3)">
+        <i class="fas fa-bolt"></i> 7 Nâng Cấp
+      </span>
+      <span class="hero-badge" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">
+        <i class="fas fa-cube"></i> 3D Model
+      </span>
+      <span class="hero-badge" style="color:#c084fc;border-color:rgba(192,132,252,.3)">
+        <i class="fas fa-keyboard"></i> Phím Tắt
+      </span>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <section class="wiki-section reveal">
+    <h2 class="wiki-section-title"><i class="fas fa-keyboard"></i>Điều Khiển Nhanh</h2>
+
+    <div class="warn-box">
+      <i class="fas fa-triangle-exclamation"></i>
+      <p>Tránh nhầm lẫn: đọc kỹ hướng dẫn phím tắt trước khi dùng.
+      Double-click và double-sneak là các thao tác <strong>có chủ ý</strong> — không xảy ra ngẫu nhiên.</p>
+    </div>
+
+    <div class="controls-grid">
+
+      <div class="control-card">
+        <div class="control-icon"><i class="fas fa-hand-pointer"></i></div>
+        <div>
+          <div class="control-title">Đeo Balo Lên Lưng</div>
+          <div class="control-desc">Cầm balo trên tay, nhấn chuột trái 2 lần nhanh để tự động đeo vào Back Slot. Không cần mở menu CuriosPaper.</div>
+          <div class="control-kbd">
+            <span class="kbd"><i class="fas fa-mouse"></i> Chuột Trái</span>
+            <span style="color:var(--silver-dk);font-size:.7rem">×2 nhanh</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-card">
+        <div class="control-icon"><i class="fas fa-box-open"></i></div>
+        <div>
+          <div class="control-title">Mở Balo Đang Đeo</div>
+          <div class="control-desc">Để balo ở ô số 9 trên hotbar. Ngồi xuống 2 lần liên tiếp để mở trực tiếp balo đang đeo trên lưng.</div>
+          <div class="control-kbd">
+            <span class="kbd">Slot 9</span>
+            <span style="color:var(--silver-dk);font-size:.7rem">+</span>
+            <span class="kbd"><i class="fas fa-arrow-down"></i> Sneak</span>
+            <span style="color:var(--silver-dk);font-size:.7rem">×2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-card">
+        <div class="control-icon"><i class="fas fa-sliders"></i></div>
+        <div>
+          <div class="control-title">Mở Menu Quản Lý</div>
+          <div class="control-desc">Để balo ở ô số 8 trên hotbar. Ngồi xuống 2 lần liên tiếp để mở menu — tháo balo hoặc trang bị balo mới lên lưng.</div>
+          <div class="control-kbd">
+            <span class="kbd">Slot 8</span>
+            <span style="color:var(--silver-dk);font-size:.7rem">+</span>
+            <span class="kbd"><i class="fas fa-arrow-down"></i> Sneak</span>
+            <span style="color:var(--silver-dk);font-size:.7rem">×2</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TIER CARDS -->
+  <section class="wiki-section reveal">
+    <h2 class="wiki-section-title"><i class="fas fa-layer-group"></i>6 Bậc Balo</h2>
+    <div class="tip-box">
+      <i class="fas fa-link"></i>
+      <p><strong>Tiến trình liên kết:</strong> Mỗi bậc cần bậc trước làm nguyên liệu.
+      Không thể bỏ qua bậc — phải crafting theo thứ tự Da → Đồng → Sắt → Vàng → Kim Cương → Netherite.</p>
+    </div>
+    <div class="tier-grid" id="tier-grid"></div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- PROGRESSION TIMELINE -->
+  <section class="wiki-section reveal">
+    <h2 class="wiki-section-title"><i class="fas fa-arrow-trend-up"></i>Lộ Trình Nâng Cấp</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--leather);--tc:var(--leather)"></div>
+        <div class="timeline-content">
+          <div class="timeline-name" style="color:var(--leather)">Balo Da</div>
+          <div class="timeline-detail">27 ô · 1 upgrade slot · String + Leather + Chest</div>
+        </div>
+      </div>
+      <div class="timeline-arrow"><i class="fas fa-chevron-down"></i>&nbsp;Cần Balo Da làm nguyên liệu</div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--copper);--tc:var(--copper)"></div>
+        <div class="timeline-content">
+          <div class="timeline-name" style="color:var(--copper)">Balo Đồng</div>
+          <div class="timeline-detail">45 ô · 2 upgrade slots · Copper Ingot × 8 + Balo Da</div>
+        </div>
+      </div>
+      <div class="timeline-arrow"><i class="fas fa-chevron-down"></i>&nbsp;Cần Balo Đồng làm nguyên liệu</div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--iron);--tc:var(--iron)"></div>
+        <div class="timeline-content">
+          <div class="timeline-name" style="color:var(--iron)">Balo Sắt</div>
+          <div class="timeline-detail">54 ô · 3 upgrade slots · Iron Ingot × 8 + Balo Đồng</div>
+        </div>
+      </div>
+      <div class="timeline-arrow"><i class="fas fa-chevron-down"></i>&nbsp;Cần Balo Sắt làm nguyên liệu</div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--gold-bp);--tc:var(--gold-bp)"></div>
+        <div class="timeline-content">
+          <div class="timeline-name" style="color:var(--gold-bp)">Balo Vàng</div>
+          <div class="timeline-detail">81 ô · 4 upgrade slots · Gold Ingot × 8 + Balo Sắt</div>
+        </div>
+      </div>
+      <div class="timeline-arrow"><i class="fas fa-chevron-down"></i>&nbsp;Cần Balo Vàng làm nguyên liệu</div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--diamond);--tc:var(--diamond)"></div>
+        <div class="timeline-content">
+          <div class="timeline-name" style="color:var(--diamond)">Balo Kim Cương</div>
+          <div class="timeline-detail">108 ô · 5 upgrade slots · Diamond × 8 + Balo Vàng</div>
+        </div>
+      </div>
+      <div class="timeline-arrow"><i class="fas fa-chevron-down"></i>&nbsp;Smithing Table · Cần Balo Kim Cương</div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--netherite);--tc:var(--netherite)"></div>
+        <div class="timeline-content">
+          <div class="timeline-name" style="color:var(--netherite)">Balo Netherite</div>
+          <div class="timeline-detail">120 ô · 6 upgrade slots · Smithing Table · Kháng lửa</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPGRADES -->
+  <section class="wiki-section reveal">
+    <h2 class="wiki-section-title"><i class="fas fa-bolt"></i>7 Loại Nâng Cấp</h2>
+    <div class="tip-box">
+      <i class="fas fa-info-circle"></i>
+      <p>Nâng cấp được đặt vào <strong>ô upgrade slot</strong> trong balo. Số ô tăng dần theo bậc —
+      Balo Netherite có tối đa 6 ô, cho phép kết hợp nhiều upgrade cùng lúc.</p>
+    </div>
+    <div class="upgrade-grid" id="upgrade-grid"></div>
+  </section>
+
+  <!-- TIPS -->
+  <section class="wiki-section reveal">
+    <h2 class="wiki-section-title"><i class="fas fa-lightbulb"></i>Mẹo Sử Dụng</h2>
+    <div class="tip-box">
+      <i class="fas fa-magnet"></i>
+      <p><strong>Magnet + Pickup combo:</strong> Dùng cả 2 upgrade cùng lúc giúp hút đồ từ xa rồi tự chuyển vào balo — hoàn hảo cho farming mob và khai thác hầm mỏ.</p>
+    </div>
+    <div class="tip-box">
+      <i class="fas fa-utensils"></i>
+      <p><strong>Feeding + Refill combo:</strong> Để thức ăn và vũ khí trong balo — Feeding tự ăn khi đói, Refill tự bổ sung vũ khí vào hotbar khi hết. Không cần lo về việc quản lý trong chiến đấu.</p>
+    </div>
+    <div class="tip-box">
+      <i class="fas fa-fire-flame-curved"></i>
+      <p><strong>Balo Netherite:</strong> Kháng lửa — nếu chết và balo rơi vào lửa/nham thạch, balo sẽ không cháy. Rất quan trọng khi explore Nether.</p>
+    </div>
+    <div class="warn-box">
+      <i class="fas fa-skull"></i>
+      <p><strong>Khi chết:</strong> Balo <strong>rơi xuống</strong> cùng với đồ bên trong (trừ cài đặt server khác). Nhanh chóng quay lại lấy trước khi despawn hoặc bị người khác lấy.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ════ DATA ════ */
+const TIERS = [
+  {
+    id:'leather', name:'Balo Da', nameEn:'Leather Backpack',
+    slots:27, upgradeSlots:1, color:'#8B4513',
+    desc:'Chiếc balo đơn sơ nhất. Đủ chứa hành lý cho chuyến đi ngắn.',
+    mat:'String, Leather, Chest',
+    recipeImg:'https://cdn.modrinth.com/data/d4Eqdm1Q/images/9993ee7f9d5baec113ba67a6294905f37d8dcedd.png',
+    recipeType:'crafting'
+  },
+  {
+    id:'copper', name:'Balo Đồng', nameEn:'Copper Backpack',
+    slots:45, upgradeSlots:2, color:'#B87333',
+    desc:'Được bọc đồng gia cố, dùng cho những chuyến thám hiểm dài.',
+    mat:'Copper Ingot ×8 + Balo Da',
+    recipeImg:'https://cdn.modrinth.com/data/d4Eqdm1Q/images/6033f9d9e06e3822ed4eb4848164e8f532d0dacb.png',
+    recipeType:'crafting'
+  },
+  {
+    id:'iron', name:'Balo Sắt', nameEn:'Iron Backpack',
+    slots:54, upgradeSlots:3, color:'#C0C0C0',
+    desc:'Rèn từ sắt nguyên chất, đủ bền để mang vũ khí và giáp.',
+    mat:'Iron Ingot ×8 + Balo Đồng',
+    recipeImg:'https://cdn.modrinth.com/data/d4Eqdm1Q/images/e7c23796bf2b6640903dae478ffeea196721b527.png',
+    recipeType:'crafting'
+  },
+  {
+    id:'gold', name:'Balo Vàng', nameEn:'Gold Backpack',
+    slots:81, upgradeSlots:4, color:'#FFD700',
+    desc:'Dát vàng tinh luyện, dành cho thương nhân và quý tộc.',
+    mat:'Gold Ingot ×8 + Balo Sắt',
+    recipeImg:'https://cdn.modrinth.com/data/d4Eqdm1Q/images/e95e5edc74c1ee243f1e6b5d2b778aa1aef73a25.png',
+    recipeType:'crafting'
+  },
+  {
+    id:'diamond', name:'Balo Kim Cương', nameEn:'Diamond Backpack',
+    slots:108, upgradeSlots:5, color:'#00BFFF',
+    desc:'Cứng như đá, nhẹ như lông. Chứa kho báu cả một vương quốc.',
+    mat:'Diamond ×8 + Balo Vàng',
+    recipeImg:'https://cdn.modrinth.com/data/d4Eqdm1Q/images/22815051e2b1d5f0fcdcd6ef28b9750af798893e.png',
+    recipeType:'crafting'
+  },
+  {
+    id:'netherite', name:'Balo Netherite', nameEn:'Netherite Backpack',
+    slots:120, upgradeSlots:6, color:'#9F4FD9',
+    desc:'Đỉnh cao nghề rèn. Kháng lửa, chống nước, chống mọi hiểm nguy.',
+    mat:'Smithing Table + Netherite Ingot + Balo Kim Cương',
+    recipeImg:'https://cdn.modrinth.com/data/d4Eqdm1Q/images/50e4a592479c6f4d86240489d0fd040b59f8b21c.png',
+    recipeType:'smithing'
+  }
+];
+
+const UPGRADES = [
+  {icon:'fa-hammer',name:'Bàn Chế Tạo Di Động',effect:'Mở crafting 3×3 trong balo',desc:'Không cần tìm bàn chế tạo — craft đồ ngay tại chỗ.',minTier:'Da'},
+  {icon:'fa-magnet',name:'Nam Châm',effect:'Hút đồ từ 8 block xung quanh',desc:'Tự động kéo vật phẩm gần đó vào balo. Kết hợp tốt với Pickup.',minTier:'Sắt'},
+  {icon:'fa-arrow-down-to-bracket',name:'Thu Nhặt Tự Động',effect:'Tự hút đồ rơi vào balo',desc:'Ưu tiên balo trước túi đồ chính khi nhặt vật phẩm.',minTier:'Đồng'},
+  {icon:'fa-utensils',name:'Tự Động Ăn',effect:'Tự dùng thức ăn khi đói',desc:'Ưu tiên thức ăn no nhất. Không cần lo về thanh đói trong chiến đấu.',minTier:'Sắt'},
+  {icon:'fa-rotate',name:'Bổ Sung Hotbar',effect:'Tự refill hotbar khi hết đồ',desc:'Kiếm, mũi tên, potion — luôn đầy trong hotbar.',minTier:'Vàng'},
+  {icon:'fa-compress',name:'Nén Đồ',effect:'Tự nén vật phẩm thành khối',desc:'Iron Ingot ×9 → Iron Block. Tiết kiệm tối đa không gian.',minTier:'Vàng'},
+  {icon:'fa-stack-overflow',name:'Tăng Stack',effect:'Tăng kích thước stack ×2',desc:'Lưu nhiều hơn trong cùng số ô. Chỉ hoạt động bên trong balo.',minTier:'Kim Cương'},
+];
+
+/* ════ BUILD TIER CARDS ════ */
+const grid = document.getElementById('tier-grid');
+TIERS.forEach(t=>{
+  const card = document.createElement('div');
+  card.className='tier-card reveal';
+  card.style.setProperty('--tc',t.color);
+  card.style.borderTopColor = t.color+'44';
+  card.style.borderTopWidth = '2px';
+  card.innerHTML=`
+    <div class="tier-header">
+      <div style="width:72px;height:72px;background:${t.color}22;border:1px solid ${t.color}44;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="icon-minecraft icon-minecraft-${t.id==='leather'?'leather':t.id==='copper'?'copper-ingot':t.id==='iron'?'iron-ingot':t.id==='gold'?'gold-ingot':t.id==='diamond'?'diamond':'netherite-ingot'}" style="filter:drop-shadow(0 0 8px ${t.color}88)"></i>
+      </div>
+      <div class="tier-header-info">
+        <div class="tier-name">${t.name}</div>
+        <div class="tier-sub" style="color:${t.color}">${t.nameEn}</div>
+      </div>
+    </div>
+    <div class="tier-body">
+      <div class="tier-stats">
+        <div class="tier-stat"><span>Ô Chứa</span><strong style="color:${t.color}">${t.slots}</strong></div>
+        <div class="tier-stat"><span>Ô Nâng Cấp</span><strong style="color:${t.color}">${t.upgradeSlots}</strong></div>
+      </div>
+      <div class="tier-desc">${t.desc}</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--silver-dk);margin-bottom:.8rem">
+        <i class="fas fa-cube" style="color:${t.color};margin-right:.3rem"></i>${t.mat}
+      </div>
+      <button class="tier-recipe-btn" style="--tc:${t.color}" onclick="openModal('${t.id}')">
+        <i class="fas fa-scroll"></i> Xem Công Thức Craft
+      </button>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+/* ════ BUILD UPGRADE CARDS ════ */
+const ugrid = document.getElementById('upgrade-grid');
+UPGRADES.forEach(u=>{
+  const card = document.createElement('div');
+  card.className='upgrade-card reveal';
+  card.innerHTML=`
+    <div class="upgrade-header">
+      <div class="upgrade-icon"><i class="fas ${u.icon}"></i></div>
+      <div>
+        <div class="upgrade-name">${u.name}</div>
+        <div class="upgrade-tier-req">Yêu cầu: Balo ${u.minTier}+</div>
+      </div>
+    </div>
+    <div class="upgrade-desc">${u.desc}</div>
+    <div class="upgrade-effect"><i class="fas fa-bolt"></i>&nbsp;${u.effect}</div>
+  `;
+  ugrid.appendChild(card);
+});
+
+/* ════ MODAL ════ */
+function openModal(id){
+  const t = TIERS.find(x=>x.id===id);
+  if(!t) return;
+  const content = document.getElementById('modal-content');
+  content.innerHTML = `
+    <div class="modal-title">${t.name}</div>
+    <div class="modal-sub">${t.recipeType==='smithing'?'Smithing Table Recipe':'Crafting Table Recipe'}</div>
+    <img class="recipe-img" src="${t.recipeImg}" alt="Recipe ${t.nameEn}"
+         onerror="this.innerHTML='<p style=\\'color:var(--silver-dk);text-align:center;padding:2rem\\'>Không tải được ảnh</p>'"/>
+    ${t.recipeType==='smithing'?`
+    <div class="smithing-wrap" style="margin-top:1rem">
+      <div class="smithing-row"><strong>Template:</strong> Netherite Upgrade Smithing Template</div>
+      <div class="smithing-row"><strong>Base:</strong> Balo Kim Cương</div>
+      <div class="smithing-row"><strong>Addition:</strong> Netherite Ingot</div>
+    </div>`:''}
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(e){
+  if(e && e.target!==document.getElementById('modal') && !e.target.classList.contains('modal-close')) return;
+  document.getElementById('modal').classList.remove('open');
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.getElementById('modal').classList.remove('open'); });
+
+/* ════ REVEAL ════ */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* MC icon override */
+(function(){
+  const img=new Image();
+  img.onload=img.onerror=function(){ if(this.width!==1) document.documentElement.classList.add('no-webp'); };
+  img.src='data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JZACdAEO/gHOAAA=';
+})();
+</script>
+</body>
+</html>

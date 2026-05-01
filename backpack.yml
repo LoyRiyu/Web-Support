@@ -1,0 +1,369 @@
+# ╔══════════════════════════════════════════════════════════╗
+# ║           PROBABLY BACKPACKS — EAF Server Config         ║
+# ║         Medieval Survival · eaf.ice.fo · Season 1        ║
+# ╚══════════════════════════════════════════════════════════╝
+# Plugin: ProbablyBackpacks (Paper/Purpur 1.21+)
+# Docs:   https://modrinth.com/plugin/probably-backpacks
+
+# ─── TỔNG QUAN ───────────────────────────────────────────
+# Hệ thống balo 6 bậc: Leather → Copper → Iron → Gold → Diamond → Netherite
+# Mỗi bậc yêu cầu bậc trước làm nguyên liệu (progression chain)
+# Balo đeo vào Back Slot của CuriosPaper — hiển thị 3D model trên lưng
+
+# ─── ĐIỀU KHIỂN NHANH (EAF Custom) ─────────────────────
+# • Cầm balo, nhấn CHUỘT TRÁI × 2 nhanh  → tự động đeo lên lưng
+# • Balo ở slot HOTBAR 9, ngồi xuống × 2  → mở balo đang đeo
+# • Balo ở slot HOTBAR 8, ngồi xuống × 2  → mở menu (tháo/trang bị)
+
+# ═══════════════════════════════════════════════════════════
+# CÀI ĐẶT CHUNG
+# ═══════════════════════════════════════════════════════════
+settings:
+  language: "vi_VN"
+  debug: false
+  auto_save_interval: 300        # Giây — lưu data người chơi
+
+  # Hotkey controls (EAF custom keybinds)
+  hotkeys:
+    # Nhấn CHUỘT TRÁI x2 nhanh khi cầm balo → đeo lên lưng
+    double_click_equip: true
+    double_click_threshold_ms: 400   # Khoảng thời gian giữa 2 lần click
+
+    # Balo ở slot 9 + ngồi x2 → mở balo
+    sneak_open_slot: 9               # Slot hotbar (1-9)
+    sneak_open_threshold_ms: 500
+
+    # Balo ở slot 8 + ngồi x2 → mở menu quản lý
+    sneak_menu_slot: 8
+    sneak_menu_threshold_ms: 500
+
+  # 3D model trên lưng
+  visual:
+    show_on_back: true
+    auto_hide_when_looking_down: true
+    hide_angle_threshold: 45         # Độ nghiêng đầu để ẩn
+
+  # Bảo vệ item
+  keep_on_death: false               # true = giữ balo khi chết (cân nhắc)
+  drop_contents_on_death: true       # Đổ đồ ra khi chết nếu mất balo
+
+# ═══════════════════════════════════════════════════════════
+# 6 BẬC BALO
+# ═══════════════════════════════════════════════════════════
+backpacks:
+
+  # ── BẬC 1: LEATHER ──────────────────────────────────────
+  leather:
+    name: "&8[&7Da Thú&8] &fBalo Da"
+    lore:
+      - "&7Chiếc balo đơn sơ nhất."
+      - "&7Đủ chứa hành lý cho chuyến đi ngắn."
+      - ""
+      - "&8• &727 ô chứa đồ"
+      - "&8• &71 ô nâng cấp"
+    slots: 27
+    upgrade_slots: 1
+    color: "#8B4513"          # Màu balo hiển thị GUI
+
+    # Công thức craft — 3x3 crafting table
+    # s=String, L=Leather, C=Chest
+    recipe:
+      shape:
+        - "SLS"
+        - "SCS"
+        - "LLL"
+      ingredients:
+        S: "STRING"
+        L: "LEATHER"
+        C: "CHEST"
+      result_amount: 1
+
+    permissions:
+      craft: "backpack.craft.leather"
+      use:   "backpack.use.leather"
+
+  # ── BẬC 2: COPPER ───────────────────────────────────────
+  copper:
+    name: "&6[&cĐồng&6] &fBalo Đồng"
+    lore:
+      - "&7Được bọc đồng gia cố, chắc hơn balo da."
+      - "&7Dùng cho những chuyến thám hiểm dài."
+      - ""
+      - "&8• &745 ô chứa đồ"
+      - "&8• &72 ô nâng cấp"
+      - "&8• &7Cần: &cBalo Da"
+    slots: 45
+    upgrade_slots: 2
+    color: "#B87333"
+
+    recipe:
+      shape:
+        - "CCC"
+        - "CPC"
+        - "CCC"
+      ingredients:
+        C: "COPPER_INGOT"
+        P: "LEATHER_BACKPACK"     # Custom item từ plugin
+      result_amount: 1
+
+    permissions:
+      craft: "backpack.craft.copper"
+      use:   "backpack.use.copper"
+
+  # ── BẬC 3: IRON ─────────────────────────────────────────
+  iron:
+    name: "&7[&fSắt&7] &fBalo Sắt"
+    lore:
+      - "&7Được rèn từ sắt nguyên chất."
+      - "&7Đủ bền để mang theo vũ khí và giáp."
+      - ""
+      - "&8• &754 ô chứa đồ"
+      - "&8• &73 ô nâng cấp"
+      - "&8• &7Cần: &cBalo Đồng"
+    slots: 54
+    upgrade_slots: 3
+    color: "#C0C0C0"
+
+    recipe:
+      shape:
+        - "III"
+        - "IPI"
+        - "III"
+      ingredients:
+        I: "IRON_INGOT"
+        P: "COPPER_BACKPACK"
+      result_amount: 1
+
+    permissions:
+      craft: "backpack.craft.iron"
+      use:   "backpack.use.iron"
+
+  # ── BẬC 4: GOLD ─────────────────────────────────────────
+  gold:
+    name: "&e[&6Vàng&e] &fBalo Vàng"
+    lore:
+      - "&7Dát vàng tinh luyện, rộng rãi bậc nhất."
+      - "&7Dành cho thương nhân và quý tộc."
+      - ""
+      - "&8• &781 ô chứa đồ"
+      - "&8• &74 ô nâng cấp"
+      - "&8• &7Cần: &fBalo Sắt"
+    slots: 81
+    upgrade_slots: 4
+    color: "#FFD700"
+
+    recipe:
+      shape:
+        - "GGG"
+        - "GIG"
+        - "GGG"
+      ingredients:
+        G: "GOLD_INGOT"
+        I: "IRON_BACKPACK"
+      result_amount: 1
+
+    permissions:
+      craft: "backpack.craft.gold"
+      use:   "backpack.use.gold"
+
+  # ── BẬC 5: DIAMOND ──────────────────────────────────────
+  diamond:
+    name: "&b[&3Kim Cương&b] &fBalo Kim Cương"
+    lore:
+      - "&7Cứng như đá, nhẹ như lông vũ."
+      - "&7Chứa đựng kho báu của cả một vương quốc."
+      - ""
+      - "&8• &7108 ô chứa đồ"
+      - "&8• &75 ô nâng cấp"
+      - "&8• &7Cần: &eBalo Vàng"
+    slots: 108
+    upgrade_slots: 5
+    color: "#00BFFF"
+
+    recipe:
+      shape:
+        - "DDD"
+        - "DGD"
+        - "DDD"
+      ingredients:
+        D: "DIAMOND"
+        G: "GOLD_BACKPACK"
+      result_amount: 1
+
+    permissions:
+      craft: "backpack.craft.diamond"
+      use:   "backpack.use.diamond"
+
+  # ── BẬC 6: NETHERITE ────────────────────────────────────
+  netherite:
+    name: "&5[&dNetherite&5] &fBalo Netherite"
+    lore:
+      - "&7Đỉnh cao của nghề rèn."
+      - "&7Chống lửa, chống nước, chống mọi hiểm nguy."
+      - ""
+      - "&8• &7120 ô chứa đồ"
+      - "&8• &76 ô nâng cấp"
+      - "&8• &7Kháng lửa: &aYES"
+      - "&8• &7Cần: &bBalo Kim Cương &7+ Smithing Table"
+    slots: 120
+    upgrade_slots: 6
+    color: "#4A0080"
+    fire_resistant: true      # Không cháy khi rơi vào lửa/nham thạch
+
+    # Netherite dùng Smithing Table thay Crafting Table
+    recipe:
+      type: "SMITHING"
+      template: "NETHERITE_UPGRADE_SMITHING_TEMPLATE"
+      base: "DIAMOND_BACKPACK"
+      addition: "NETHERITE_INGOT"
+
+    permissions:
+      craft: "backpack.craft.netherite"
+      use:   "backpack.use.netherite"
+
+# ═══════════════════════════════════════════════════════════
+# 7 LOẠI NÂNG CẤP
+# ═══════════════════════════════════════════════════════════
+upgrades:
+
+  crafting_station:
+    name: "&aNâng Cấp: &fBàn Chế Tạo Di Động"
+    lore:
+      - "&7Mở bàn crafting 3x3 ngay trong balo."
+      - "&7Không cần tìm bàn chế tạo nữa."
+    recipe:
+      shape:
+        - "WCW"
+        - "CUC"
+        - "WCW"
+      ingredients:
+        W: "CRAFTING_TABLE"
+        C: "CHEST"
+        U: "BOOK"
+    min_tier: "leather"
+
+  pickup:
+    name: "&aNâng Cấp: &fThu Nhặt Tự Động"
+    lore:
+      - "&7Tự động hút vật phẩm rơi vào balo."
+      - "&7Ưu tiên balo trước túi đồ chính."
+    recipe:
+      shape:
+        - "HHH"
+        - "HAH"
+        - "HHH"
+      ingredients:
+        H: "HOPPER"
+        A: "AMETHYST_SHARD"
+    min_tier: "copper"
+
+  magnet:
+    name: "&aNâng Cấp: &fNam Châm"
+    lore:
+      - "&7Hút vật phẩm từ xa vào balo."
+      - "&7Bán kính: &e8 blocks"
+    recipe:
+      shape:
+        - " N "
+        - "NAN"
+        - " N "
+      ingredients:
+        N: "IRON_INGOT"
+        A: "NETHER_STAR"
+    min_tier: "iron"
+    magnet_radius: 8
+
+  feeding:
+    name: "&aNâng Cấp: &fTự Động Ăn"
+    lore:
+      - "&7Tự dùng thức ăn từ balo khi đói."
+      - "&7Ưu tiên thức ăn no nhất trước."
+    recipe:
+      shape:
+        - "BBB"
+        - "BAB"
+        - "BBB"
+      ingredients:
+        B: "BREAD"
+        A: "GOLDEN_CARROT"
+    min_tier: "iron"
+
+  refill:
+    name: "&aNâng Cấp: &fBổ Sung Hotbar"
+    lore:
+      - "&7Tự bổ sung vật phẩm vào hotbar khi hết."
+      - "&7Không bao giờ cạn kiếm hay mũi tên."
+    recipe:
+      shape:
+        - "AAA"
+        - "ARA"
+        - "AAA"
+      ingredients:
+        A: "ARROW"
+        R: "REPEATER"
+    min_tier: "gold"
+
+  compacting:
+    name: "&aNâng Cấp: &fNén Đồ"
+    lore:
+      - "&7Tự động nén vật phẩm thành khối."
+      - "&7Ví dụ: 9 Sắt → 1 Khối Sắt"
+    recipe:
+      shape:
+        - "PPP"
+        - "PAP"
+        - "PPP"
+      ingredients:
+        P: "PISTON"
+        A: "COMPARATOR"
+    min_tier: "gold"
+
+  stack:
+    name: "&aNâng Cấp: &fTăng Stack"
+    lore:
+      - "&7Tăng kích thước stack tối đa trong balo."
+      - "&7Stack size: &ex2 so với thông thường"
+    recipe:
+      shape:
+        - "SSS"
+        - "SAS"
+        - "SSS"
+      ingredients:
+        S: "SHULKER_SHELL"
+        A: "BUNDLE"
+    min_tier: "diamond"
+
+# ═══════════════════════════════════════════════════════════
+# GUI MESSAGES
+# ═══════════════════════════════════════════════════════════
+messages:
+  equipped:        "&a&lĐã đeo balo lên lưng!"
+  unequipped:      "&c&lĐã tháo balo."
+  opened:          "&7Đang mở balo..."
+  full:            "&cBalo đã đầy!"
+  no_permission:   "&cBạn không có quyền dùng bậc balo này."
+  fire_resistant:  "&6Balo Netherite không thể bị thiêu rụi!"
+  double_click_hint: "&7Nhấn chuột trái &ex2 nhanh &7để đeo balo."
+  sneak_hint_open: "&7Để balo ở &eô 9 &7và ngồi &ex2 &7để mở."
+  sneak_hint_menu: "&7Để balo ở &eô 8 &7và ngồi &ex2 &7để mở menu."
+
+# ═══════════════════════════════════════════════════════════
+# PERMISSIONS OVERVIEW
+# ═══════════════════════════════════════════════════════════
+# backpack.craft.leather     — Craft balo da
+# backpack.craft.copper      — Craft balo đồng
+# backpack.craft.iron        — Craft balo sắt
+# backpack.craft.gold        — Craft balo vàng
+# backpack.craft.diamond     — Craft balo kim cương
+# backpack.craft.netherite   — Craft balo netherite
+# backpack.use.*             — Dùng tất cả bậc balo
+# backpack.admin             — Lệnh admin
+# backpack.*                 — Toàn quyền
+
+# ═══════════════════════════════════════════════════════════
+# PERFORMANCE
+# ═══════════════════════════════════════════════════════════
+performance:
+  magnet_task_interval_ticks: 10   # Tần suất check nam châm (mỗi 0.5s)
+  feeding_task_interval_ticks: 40  # Tần suất tự ăn (mỗi 2s)
+  pickup_task_interval_ticks: 5    # Tần suất thu nhặt (mỗi 0.25s)
