@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Tính Năng — EAF Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@400;600;700&display=swap&subset=vietnamese" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<link rel="stylesheet" href="minecraft-icons.css"/>
+<style>
+.icon-minecraft,.icon-minecraft-sm,.icon-minecraft-md{background-image:url("minecraft-icons.webp")!important}
+.no-webp .icon-minecraft,.no-webp .icon-minecraft-sm,.no-webp .icon-minecraft-md{background-image:url("minecraft-icons.png")!important}
+
+:root{
+  --night:#06090f;--navy:#0a1020;--navy-mid:#101828;--navy-lt:#182236;
+  --gold:#d4a832;--gold-bright:#f5c842;--gold-dim:#8a6a18;
+  --silver:#c0d0e8;--silver-dk:#8898b8;--silver-lt:#e8f0ff;--white:#f0f6ff;
+  --ink:#04070e;
+  --green:#4ade80;--blue:#60a5fa;--purple:#c084fc;--orange:#fb923c;--red:#f87171;
+  --glow-gold:0 0 22px rgba(212,168,50,.6),0 0 70px rgba(212,168,50,.2);
+  /* Section accent colors */
+  --c-econ: #f5c842;
+  --c-personal: #c084fc;
+  --c-util: #4ade80;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--night);color:var(--silver);font-family:'Crimson Pro',Georgia,serif;font-size:1.05rem;line-height:1.75;overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");opacity:.4}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--ink)}::-webkit-scrollbar-thumb{background:var(--gold)}
+::selection{background:var(--gold);color:var(--ink)}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:58px;padding:0 2rem;display:flex;align-items:center;gap:1rem;background:rgba(6,9,15,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(212,168,50,.18)}
+.nav-back{display:flex;align-items:center;gap:.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--silver-dk);transition:color .2s;padding-right:1rem;border-right:1px solid rgba(212,168,50,.18)}
+.nav-back:hover{color:var(--gold-bright)}
+.nav-logo{font-family:'Philosopher',serif;font-size:1.25rem;font-weight:700;color:var(--gold-bright);text-shadow:var(--glow-gold)}
+.nav-crumb{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver-dk);display:flex;align-items:center;gap:.5rem}
+.nav-crumb .sep{color:rgba(212,168,50,.4)}.nav-crumb .cur{color:var(--gold)}
+
+/* ── LAYOUT ── */
+.wiki-layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;padding-top:58px}
+
+/* ── SIDEBAR ── */
+.wiki-sidebar{position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;background:rgba(8,12,24,.7);border-right:1px solid rgba(212,168,50,.12);padding:1.5rem 0}
+.wiki-sidebar::-webkit-scrollbar{width:3px}
+.wiki-sidebar::-webkit-scrollbar-thumb{background:rgba(212,168,50,.3)}
+.sb-group{margin-bottom:1.2rem}
+.sb-group-title{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;padding:.3rem 1.4rem .2rem;color:var(--gold);display:flex;align-items:center;gap:.5rem}
+.sb-group-title::after{content:'';flex:1;height:1px;background:rgba(212,168,50,.18)}
+.sb-item{display:flex;align-items:center;gap:.65rem;padding:.55rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver-dk);text-decoration:none;transition:all .18s;border-left:2px solid transparent}
+.sb-item:hover{color:var(--silver-lt);background:rgba(255,255,255,.03);border-left-color:rgba(212,168,50,.3)}
+.sb-item.active{color:var(--gold-bright);background:rgba(212,168,50,.07);border-left-color:var(--gold)}
+.sb-item .icon-minecraft{flex-shrink:0}
+.sb-cmd{font-family:'Courier New',monospace;font-size:.6rem;background:rgba(212,168,50,.1);color:var(--gold);padding:.05rem .3rem;border:1px solid rgba(212,168,50,.2);margin-left:auto;white-space:nowrap}
+
+/* ── MAIN ── */
+.wiki-main{padding:2.5rem 3rem;max-width:860px}
+
+/* ── PAGE HERO ── */
+.page-hero{position:relative;overflow:hidden;margin-bottom:3rem;padding:2.5rem 2.5rem 2rem;background:rgba(10,16,32,.8);border:1px solid rgba(212,168,50,.18)}
+.page-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(212,168,50,.02) 0px,rgba(212,168,50,.02) 1px,transparent 1px,transparent 55px),repeating-linear-gradient(0deg,rgba(212,168,50,.02) 0px,rgba(212,168,50,.02) 1px,transparent 1px,transparent 55px);pointer-events:none}
+.page-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.page-title{font-family:'Philosopher',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--white);margin-bottom:.5rem}
+.page-sub{font-style:italic;color:var(--silver-dk);max-width:540px;line-height:1.85;margin-bottom:1.4rem}
+.page-toc{display:flex;gap:.5rem;flex-wrap:wrap}
+.toc-pill{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;padding:.28rem .8rem;border:1px solid;text-decoration:none;transition:all .18s;display:flex;align-items:center;gap:.4rem}
+.toc-pill:hover{filter:brightness(1.2)}
+
+/* ── SECTION CONTAINER ── */
+.feat-section{margin-bottom:4rem;scroll-margin-top:80px}
+.feat-section-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding-bottom:.8rem;border-bottom:1px solid rgba(255,255,255,.06);position:relative}
+.feat-section-header::after{content:'';position:absolute;bottom:-1px;left:0;width:60px;height:2px;background:var(--sc,var(--gold))}
+.feat-section-num{font-family:'Philosopher',serif;font-size:2.5rem;font-weight:700;color:var(--sc,var(--gold));opacity:.25;line-height:1;flex-shrink:0;width:2.5rem}
+.feat-section-info{}
+.feat-section-title{font-family:'Philosopher',serif;font-size:1.35rem;color:var(--white)}
+.feat-section-sub{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--sc,var(--gold));margin-top:.2rem}
+
+/* ── FEATURE CARDS ── */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.2rem}
+.feat-card{background:rgba(10,16,32,.7);border:1px solid rgba(192,208,232,.08);overflow:hidden;transition:all .25s ease;position:relative}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--fc,var(--gold)),transparent);transform:scaleX(0);transition:transform .35s;transform-origin:center}
+.feat-card:hover{border-color:rgba(212,168,50,.2);transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.feat-card:hover::before{transform:scaleX(1)}
+
+.feat-card-head{padding:1.3rem 1.4rem 1rem;display:flex;align-items:flex-start;gap:1rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.feat-icon-wrap{width:48px;height:48px;background:rgba(255,255,255,.04);border:1px solid rgba(192,208,232,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.feat-icon-wrap::after{content:'';position:absolute;inset:-4px;border:1px solid var(--fc,var(--gold));opacity:.15;pointer-events:none}
+.feat-icon-wrap .icon-minecraft{filter:drop-shadow(0 0 6px var(--fc,rgba(212,168,50,.5)))}
+.feat-icon-wrap i{color:var(--fc,var(--gold));font-size:1.2rem}
+.feat-card-title{font-family:'Philosopher',serif;font-size:1rem;color:var(--white);margin-bottom:.2rem}
+.feat-card-cmd{font-family:'Courier New',monospace;font-size:.72rem;color:var(--fc,var(--gold));background:rgba(255,255,255,.04);padding:.08rem .4rem;border:1px solid rgba(255,255,255,.08)}
+.feat-card-body{padding:1rem 1.4rem 1.3rem}
+.feat-card-desc{font-size:.92rem;color:var(--silver-dk);line-height:1.8;margin-bottom:.9rem}
+
+/* Icon strip inside card */
+.feat-icon-strip{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}
+.feat-icon-strip .icon-minecraft{filter:drop-shadow(0 0 4px var(--fc,rgba(212,168,50,.4)));transition:transform .2s}
+.feat-icon-strip .icon-minecraft:hover{transform:scale(1.15)}
+
+/* Tags */
+.feat-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.feat-tag{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;padding:.15rem .5rem;border:1px solid;color:var(--fc,var(--gold));border-color:rgba(212,168,50,.25);background:rgba(212,168,50,.05)}
+
+/* ── SPECIAL CARDS ── */
+
+/* Job card — has income table */
+.job-table{width:100%;border-collapse:collapse;margin:.6rem 0}
+.job-table th{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);padding:.4rem .6rem;border-bottom:1px solid rgba(212,168,50,.2);text-align:left}
+.job-table td{font-size:.85rem;color:var(--silver-dk);padding:.4rem .6rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.job-table tr:last-child td{border-bottom:none}
+.job-table td:last-child{color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.08em}
+
+/* Slotkeeper image */
+.slotkeeper-img{width:100%;max-width:340px;display:block;border:1px solid rgba(212,168,50,.15);image-rendering:pixelated;margin:.6rem 0}
+
+/* Pet card — special styling */
+.pet-quote{background:rgba(251,146,60,.05);border-left:2px solid var(--orange);padding:.7rem 1rem;margin:.6rem 0;font-style:italic;color:var(--silver-dk);font-size:.9rem}
+.pet-quote strong{color:var(--orange)}
+
+/* Vein miner progress bar visual */
+.vein-bar-wrap{margin:.6rem 0}
+.vein-bar-label{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver-dk);margin-bottom:.3rem;display:flex;justify-content:space-between}
+.vein-bar{height:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);overflow:hidden;position:relative}
+.vein-bar-fill{height:100%;background:linear-gradient(90deg,#4ade80,#22c55e);position:relative}
+.vein-bar-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3))}
+
+/* Skill/Talent cards */
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.7rem;margin:.6rem 0}
+.skill-item{background:rgba(255,255,255,.03);border:1px solid rgba(192,208,232,.08);padding:.7rem .8rem;text-align:center;transition:all .2s}
+.skill-item:hover{border-color:rgba(192,132,252,.3);background:rgba(192,132,252,.04)}
+.skill-item .icon-minecraft{margin-bottom:.4rem;filter:drop-shadow(0 0 5px rgba(192,132,252,.4))}
+.skill-item-name{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--silver-lt)}
+.skill-item-desc{font-size:.78rem;color:var(--silver-dk);margin-top:.2rem;line-height:1.4}
+
+/* Item tier visual */
+.item-tier-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.6rem 0}
+.item-tier{display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.item-tier-icon{width:44px;height:44px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;position:relative}
+.item-tier-icon .icon-minecraft{filter:drop-shadow(0 0 5px var(--it,rgba(192,208,232,.4)))}
+.item-tier-label{font-family:'Barlow Condensed',sans-serif;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--it,var(--silver-dk))}
+.item-tier-arrow{color:rgba(212,168,50,.35);font-size:.7rem;align-self:center;margin-top:-.8rem}
+
+/* Trade illustration */
+.trade-visual{display:flex;align-items:center;gap:1rem;margin:.7rem 0;flex-wrap:wrap}
+.trade-player{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.trade-player-name{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver-dk)}
+.trade-items{display:flex;gap:.3rem}
+.trade-arrow{display:flex;flex-direction:column;align-items:center;gap:.2rem;color:var(--gold);font-size:1.2rem}
+.trade-arrow span{font-family:'Barlow Condensed',sans-serif;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver-dk);white-space:nowrap}
+
+/* Ranker badge visual */
+.ranker-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}
+.ranker-badge{display:inline-flex;align-items:center;gap:.4rem;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .7rem;border:1px solid;transition:all .2s}
+.ranker-badge:hover{filter:brightness(1.2)}
+
+/* ── TIP / WARN ── */
+.tip-box{display:flex;gap:.9rem;align-items:flex-start;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.2);padding:.9rem 1.1rem;margin-bottom:1.1rem}
+.tip-box i{color:#4ade80;flex-shrink:0;margin-top:.18rem}
+.tip-box p{font-size:.9rem;color:var(--silver-dk);line-height:1.72}
+.tip-box p strong{color:var(--silver-lt)}
+.warn-box{display:flex;gap:.9rem;align-items:flex-start;background:rgba(251,146,60,.04);border:1px solid rgba(251,146,60,.2);padding:.9rem 1.1rem;margin-bottom:1.1rem}
+.warn-box i{color:#fb923c;flex-shrink:0;margin-top:.18rem}
+.warn-box p{font-size:.9rem;color:var(--silver-dk);line-height:1.72}
+.warn-box p strong{color:var(--silver-lt)}
+code{font-family:'Courier New',monospace;font-size:.84rem;background:rgba(212,168,50,.1);color:var(--gold-bright);padding:.06rem .35rem;border:1px solid rgba(212,168,50,.2)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.22s}.d4{transition-delay:.3s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .wiki-layout{grid-template-columns:1fr}
+  .wiki-sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid rgba(212,168,50,.12);padding:.8rem 0}
+  .wiki-sidebar .sb-group{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1rem;margin-bottom:.5rem}
+  .wiki-sidebar .sb-group-title{width:100%;padding:.2rem 0}
+  .sb-item{padding:.35rem .7rem;border-left:none;border:1px solid rgba(192,208,232,.1);font-size:.68rem}
+  .wiki-main{padding:2rem 1.2rem}
+  .feat-grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  nav{padding:0 1rem}
+  .page-title{font-size:clamp(1.4rem,5.5vw,2rem)}
+  .skill-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">
+    <i class="fas fa-chevron-left"></i>
+    <span class="nav-logo">EAF</span>
+  </a>
+  <div class="nav-crumb">
+    <span>Wiki</span>
+    <span class="sep">/</span>
+    <span class="cur">Tính Năng</span>
+  </div>
+</nav>
+
+<div class="wiki-layout">
+
+<!-- SIDEBAR -->
+<aside class="wiki-sidebar">
+  <div class="sb-group">
+    <div class="sb-group-title">I · Kinh Tế</div>
+    <a class="sb-item active" href="#kinh-te-jobs">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-gold-ingot"></i>
+      Jobs <span class="sb-cmd">/jobs</span>
+    </a>
+    <a class="sb-item" href="#kinh-te-trade">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-emerald"></i>
+      Trade <span class="sb-cmd">/trade</span>
+    </a>
+  </div>
+  <div class="sb-group">
+    <div class="sb-group-title">II · Cá Nhân</div>
+    <a class="sb-item" href="#ca-nhan-ranker">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-nether-star"></i>
+      Ranker
+    </a>
+    <a class="sb-item" href="#ca-nhan-skills">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-enchanted-book"></i>
+      Skills
+    </a>
+    <a class="sb-item" href="#ca-nhan-talent">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-book"></i>
+      Talent
+    </a>
+    <a class="sb-item" href="#ca-nhan-item">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-sword"></i>
+      Item Cấp Độ
+    </a>
+  </div>
+  <div class="sb-group">
+    <div class="sb-group-title">III · Tiện Ích</div>
+    <a class="sb-item" href="#tien-ich-slotkeeper">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-chest"></i>
+      Slotkeeper <span class="sb-cmd">/slotkeeper</span>
+    </a>
+    <a class="sb-item" href="#tien-ich-backpack">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-bundle"></i>
+      Backpack
+    </a>
+    <a class="sb-item" href="#tien-ich-veinminer">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-pickaxe"></i>
+      Vein Miner
+    </a>
+    <a class="sb-item" href="#tien-ich-pet">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-lead"></i>
+      Pet
+    </a>
+    <a class="sb-item" href="#tien-ich-utility">
+      <i class="icon-minecraft icon-minecraft-sm icon-minecraft-compass"></i>
+      TPA, Home,...
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="wiki-main">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero reveal">
+    <p class="page-eyebrow">EAF — Bách Khoa Thư · Tổng Quan</p>
+    <h1 class="page-title">Tính Năng Server</h1>
+    <p class="page-sub">
+      Tổng hợp mọi hệ thống gameplay của EAF — từ kinh tế, phát triển cá nhân
+      đến các tiện ích hỗ trợ hàng ngày. Khám phá, làm chủ, thống trị.
+    </p>
+    <div class="page-toc">
+      <a href="#kinh-te-jobs"    class="toc-pill" style="color:var(--c-econ);border-color:rgba(245,200,66,.3)"><i class="fas fa-coins"></i>I · Kinh Tế</a>
+      <a href="#ca-nhan-ranker"  class="toc-pill" style="color:var(--c-personal);border-color:rgba(192,132,252,.3)"><i class="fas fa-user-astronaut"></i>II · Cá Nhân</a>
+      <a href="#tien-ich-slotkeeper" class="toc-pill" style="color:var(--c-util);border-color:rgba(74,222,128,.3)"><i class="fas fa-toolbox"></i>III · Tiện Ích</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       I. KINH TẾ
+  ══════════════════════════════════ -->
+  <section class="feat-section reveal" id="kinh-te-jobs" style="--sc:var(--c-econ)">
+    <div class="feat-section-header">
+      <div class="feat-section-num">I</div>
+      <div class="feat-section-info">
+        <div class="feat-section-title">Kinh Tế</div>
+        <div class="feat-section-sub">Economy System</div>
+      </div>
+    </div>
+
+    <div class="feat-grid">
+
+      <!-- JOBS -->
+      <div class="feat-card reveal d1" id="kinh-te-jobs-card" style="--fc:var(--c-econ)">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:var(--c-econ)">
+            <i class="icon-minecraft icon-minecraft-gold-ingot"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Jobs — Nghề Nghiệp</div>
+            <div class="feat-card-cmd">/jobs</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-icon-strip" style="--fc:var(--c-econ)">
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-pickaxe"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-axe"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-fishing-rod"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-bow"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-wheat"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-sword"></i>
+          </div>
+          <p class="feat-card-desc">
+            Nguồn thu nhập chính của server. Chọn nghề phù hợp với lối chơi —
+            khai thác, chặt gỗ, câu cá, săn bắt, canh tác hay chiến đấu.
+            Mỗi hành động trong game đều mang lại xu và kinh nghiệm nghề.
+          </p>
+          <table class="job-table">
+            <tr><th>Nghề</th><th>Hành Động</th><th>Thu Nhập</th></tr>
+            <tr><td><i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-pickaxe"></i> Miner</td><td>Khai thác quặng</td><td>Cao</td></tr>
+            <tr><td><i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-axe"></i> Woodcutter</td><td>Chặt gỗ</td><td>Trung bình</td></tr>
+            <tr><td><i class="icon-minecraft icon-minecraft-sm icon-minecraft-fishing-rod"></i> Fisherman</td><td>Câu cá</td><td>Trung bình</td></tr>
+            <tr><td><i class="icon-minecraft icon-minecraft-sm icon-minecraft-wheat"></i> Farmer</td><td>Thu hoạch</td><td>Thấp–Cao</td></tr>
+            <tr><td><i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-sword"></i> Hunter</td><td>Giết mob</td><td>Cao</td></tr>
+          </table>
+          <div class="feat-tags">
+            <span class="feat-tag" style="--fc:var(--c-econ)">Thu Nhập Chính</span>
+            <span class="feat-tag" style="--fc:var(--c-econ)">Kinh Nghiệm Nghề</span>
+            <span class="feat-tag" style="--fc:var(--c-econ)">/jobs join &lt;tên&gt;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRADE -->
+      <div class="feat-card reveal d2" id="kinh-te-trade" style="--fc:#22d3ee">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:#22d3ee">
+            <i class="icon-minecraft icon-minecraft-emerald"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Trade — Trao Đổi Công Bằng</div>
+            <div class="feat-card-cmd">/trade &lt;player&gt;</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="trade-visual">
+            <div class="trade-player">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-chestplate"></i>
+              <div class="trade-items">
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond"></i>
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond"></i>
+              </div>
+              <div class="trade-player-name">Người A</div>
+            </div>
+            <div class="trade-arrow">
+              <i class="fas fa-right-left"></i>
+              <span>1 vs 1</span>
+              <span>Công Bằng</span>
+            </div>
+            <div class="trade-player">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-sword"></i>
+              <div class="trade-items">
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-gold-ingot"></i>
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-gold-ingot"></i>
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-gold-ingot"></i>
+              </div>
+              <div class="trade-player-name">Người B</div>
+            </div>
+          </div>
+          <p class="feat-card-desc">
+            Giao dịch 1-đối-1 trực tiếp giữa 2 người chơi.
+            Cả hai phải xác nhận trước khi trao đổi hoàn tất —
+            không thể bị lừa hay tráo đổi đột ngột.
+          </p>
+          <div class="tip-box" style="margin-bottom:0">
+            <i class="fas fa-shield-halved"></i>
+            <p>Cả hai bên phải bấm <strong>Xác Nhận</strong> mới hoàn tất giao dịch. An toàn tuyệt đối.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       II. CÁ NHÂN
+  ══════════════════════════════════ -->
+  <section class="feat-section reveal" id="ca-nhan-ranker" style="--sc:var(--c-personal)">
+    <div class="feat-section-header">
+      <div class="feat-section-num">II</div>
+      <div class="feat-section-info">
+        <div class="feat-section-title">Cá Nhân</div>
+        <div class="feat-section-sub">Personal Progression</div>
+      </div>
+    </div>
+
+    <div class="feat-grid">
+
+      <!-- RANKER -->
+      <div class="feat-card reveal d1" style="--fc:var(--c-personal)">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:var(--c-personal)">
+            <i class="icon-minecraft icon-minecraft-nether-star"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Ranker</div>
+            <div class="feat-card-cmd">Ai cũng có thể là Ranker</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <p class="feat-card-desc">
+            Hệ thống danh hiệu mở — không phân biệt thời gian chơi,
+            bất kỳ ai cũng có thể đạt được Ranker nếu đủ thành tích.
+            Ranker nhận prefix đặc biệt và quyền lợi riêng.
+          </p>
+          <div class="ranker-badges">
+            <span class="ranker-badge" style="color:#94a3b8;border-color:#94a3b830">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-stone"></i>Newbie
+            </span>
+            <span class="ranker-badge" style="color:#4ade80;border-color:#4ade8030">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-emerald"></i>Member
+            </span>
+            <span class="ranker-badge" style="color:#60a5fa;border-color:#60a5fa30">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond"></i>Veteran
+            </span>
+            <span class="ranker-badge" style="color:#f5c842;border-color:#f5c84230">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-nether-star"></i>Ranker
+            </span>
+            <span class="ranker-badge" style="color:#c084fc;border-color:#c084fc30">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-beacon"></i>Elite
+            </span>
+          </div>
+          <div class="feat-tags">
+            <span class="feat-tag" style="--fc:var(--c-personal)">Thành Tích</span>
+            <span class="feat-tag" style="--fc:var(--c-personal)">Prefix Đặc Biệt</span>
+            <span class="feat-tag" style="--fc:var(--c-personal)">Quyền Lợi Riêng</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="feat-card reveal d2" id="ca-nhan-skills" style="--fc:#a78bfa">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:#a78bfa">
+            <i class="icon-minecraft icon-minecraft-enchanted-book"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Skills — Kỹ Năng</div>
+            <div class="feat-card-cmd">Phát triển theo thời gian chơi</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <p class="feat-card-desc">
+            Mỗi người chơi có cây kỹ năng riêng phát triển theo hoạt động.
+            Khai thác nhiều → Mining skill tăng. Chiến đấu nhiều → Combat skill tăng.
+            Skill cao mở ra passive buff ẩn.
+          </p>
+          <div class="skill-grid">
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-pickaxe"></i>
+              <div class="skill-item-name">Mining</div>
+              <div class="skill-item-desc">Xác suất quặng đôi</div>
+            </div>
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-sword"></i>
+              <div class="skill-item-name">Combat</div>
+              <div class="skill-item-desc">Sát thương thêm</div>
+            </div>
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-wheat"></i>
+              <div class="skill-item-name">Farming</div>
+              <div class="skill-item-desc">Thu hoạch ×2</div>
+            </div>
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-fishing-rod"></i>
+              <div class="skill-item-name">Fishing</div>
+              <div class="skill-item-desc">Đồ hiếm hơn</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TALENT -->
+      <div class="feat-card reveal d3" id="ca-nhan-talent" style="--fc:#f472b6">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:#f472b6">
+            <i class="icon-minecraft icon-minecraft-book"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Talent — Năng Khiếu</div>
+            <div class="feat-card-cmd">Chọn khi tạo nhân vật</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <p class="feat-card-desc">
+            Khác với Skill học được, Talent là thiên phú bẩm sinh —
+            chọn 1 lần khi bắt đầu chơi, định hình phong cách lâu dài.
+            Mỗi Talent có ưu điểm và nhược điểm riêng.
+          </p>
+          <div class="skill-grid">
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-chestplate"></i>
+              <div class="skill-item-name">Warrior</div>
+              <div class="skill-item-desc">+Máu, +Dame chiến đấu</div>
+            </div>
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-gold-ingot"></i>
+              <div class="skill-item-name">Merchant</div>
+              <div class="skill-item-desc">+Giá bán, +Jobs EXP</div>
+            </div>
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-pickaxe"></i>
+              <div class="skill-item-name">Miner</div>
+              <div class="skill-item-desc">+Drop rate, +Tốc đào</div>
+            </div>
+            <div class="skill-item">
+              <i class="icon-minecraft icon-minecraft-sm icon-minecraft-bow"></i>
+              <div class="skill-item-name">Ranger</div>
+              <div class="skill-item-desc">+Tầm xa, +Crit bow</div>
+            </div>
+          </div>
+          <div class="warn-box" style="margin-top:.7rem;margin-bottom:0">
+            <i class="fas fa-triangle-exclamation"></i>
+            <p>Talent <strong>không thể đổi</strong> sau khi chọn — cân nhắc kỹ trước khi quyết định.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM CẤP ĐỘ -->
+      <div class="feat-card reveal d4" id="ca-nhan-item" style="--fc:#38bdf8">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:#38bdf8">
+            <i class="icon-minecraft icon-minecraft-diamond-sword"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Item Cấp Độ</div>
+            <div class="feat-card-cmd">Tier I → II → III → IV</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <p class="feat-card-desc">
+            Vũ khí và giáp trên server có hệ thống cấp độ riêng — cùng là
+            Diamond Sword nhưng Tier IV mạnh hơn nhiều so với Tier I.
+            Nâng cấp qua craft, enchant và nguyên liệu đặc biệt.
+          </p>
+          <div class="item-tier-row">
+            <div class="item-tier">
+              <div class="item-tier-icon" style="--it:#94a3b8;border-color:#94a3b830">
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-stone-sword"></i>
+              </div>
+              <div class="item-tier-label" style="color:#94a3b8">Tier I</div>
+            </div>
+            <div class="item-tier-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="item-tier">
+              <div class="item-tier-icon" style="--it:#4ade80;border-color:#4ade8030">
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-sword"></i>
+              </div>
+              <div class="item-tier-label" style="color:#4ade80">Tier II</div>
+            </div>
+            <div class="item-tier-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="item-tier">
+              <div class="item-tier-icon" style="--it:#60a5fa;border-color:#60a5fa30">
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond-sword"></i>
+              </div>
+              <div class="item-tier-label" style="color:#60a5fa">Tier III</div>
+            </div>
+            <div class="item-tier-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="item-tier">
+              <div class="item-tier-icon" style="--it:#c084fc;border-color:#c084fc30">
+                <i class="icon-minecraft icon-minecraft-sm icon-minecraft-netherite-sword"></i>
+              </div>
+              <div class="item-tier-label" style="color:#c084fc">Tier IV</div>
+            </div>
+          </div>
+          <div class="feat-tags">
+            <span class="feat-tag" style="--fc:#38bdf8">Stat Tăng Dần</span>
+            <span class="feat-tag" style="--fc:#38bdf8">Craft Nâng Cấp</span>
+            <span class="feat-tag" style="--fc:#38bdf8">Visual Đổi Màu</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       III. TIỆN ÍCH
+  ══════════════════════════════════ -->
+  <section class="feat-section reveal" id="tien-ich-slotkeeper" style="--sc:var(--c-util)">
+    <div class="feat-section-header">
+      <div class="feat-section-num">III</div>
+      <div class="feat-section-info">
+        <div class="feat-section-title">Tiện Ích</div>
+        <div class="feat-section-sub">Utility Features</div>
+      </div>
+    </div>
+
+    <div class="feat-grid">
+
+      <!-- SLOTKEEPER -->
+      <div class="feat-card reveal d1" style="--fc:var(--c-util)">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:var(--c-util)">
+            <i class="icon-minecraft icon-minecraft-chest"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Slotkeeper — Ô Đồ Vĩnh Viễn</div>
+            <div class="feat-card-cmd">/slotkeeper</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <p class="feat-card-desc">
+            Dùng EXP để mua thêm ô đồ <strong>vĩnh viễn</strong> trong túi đồ.
+            Ô Slotkeeper không bị mất khi chết — nội dung bên trong luôn được giữ lại.
+            Hoàn hảo để bảo vệ vật phẩm quý giá.
+          </p>
+          <img
+            class="slotkeeper-img"
+            src="https://cdn.modrinth.com/data/QcatfvU6/images/5e0d34dbef181586e7af187f85234aff2f5ecedd.png"
+            alt="Slotkeeper UI"
+            onerror="this.style.display='none'"
+          />
+          <div class="tip-box" style="margin-bottom:.6rem">
+            <i class="fas fa-shield-halved"></i>
+            <p>Đồ trong ô Slotkeeper <strong>không rơi khi chết</strong>. Đây là cách an toàn nhất để bảo vệ Netherite và vật phẩm hiếm.</p>
+          </div>
+          <div class="feat-tags">
+            <span class="feat-tag" style="--fc:var(--c-util)">Dùng EXP Mua</span>
+            <span class="feat-tag" style="--fc:var(--c-util)">Vĩnh Viễn</span>
+            <span class="feat-tag" style="--fc:var(--c-util)">An Toàn Khi Chết</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BACKPACK -->
+      <div class="feat-card reveal d2" id="tien-ich-backpack" style="--fc:#d4a832">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:#d4a832">
+            <i class="icon-minecraft icon-minecraft-bundle"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Backpack — Hệ Thống Balo</div>
+            <div class="feat-card-cmd">Chuột Trái ×2 → Đeo lên lưng</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-icon-strip" style="--fc:#d4a832">
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-leather"></i>
+            <i class="fas fa-chevron-right" style="color:rgba(212,168,50,.4);font-size:.6rem"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-copper-ingot"></i>
+            <i class="fas fa-chevron-right" style="color:rgba(212,168,50,.4);font-size:.6rem"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-iron-ingot"></i>
+            <i class="fas fa-chevron-right" style="color:rgba(212,168,50,.4);font-size:.6rem"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-gold-ingot"></i>
+            <i class="fas fa-chevron-right" style="color:rgba(212,168,50,.4);font-size:.6rem"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-diamond"></i>
+            <i class="fas fa-chevron-right" style="color:rgba(212,168,50,.4);font-size:.6rem"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-netherite-ingot"></i>
+          </div>
+          <p class="feat-card-desc">
+            6 bậc balo từ Da → Netherite. Mỗi bậc mở rộng không gian lưu trữ
+            và thêm ô nâng cấp. Hiển thị 3D model trên lưng.
+          </p>
+          <div class="feat-tags" style="margin-bottom:.7rem">
+            <span class="feat-tag" style="--fc:#d4a832">27–120 Ô</span>
+            <span class="feat-tag" style="--fc:#d4a832">3D Model</span>
+            <span class="feat-tag" style="--fc:#d4a832">7 Nâng Cấp</span>
+          </div>
+          <a href="backpack.html" style="display:inline-flex;align-items:center;gap:.45rem;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(212,168,50,.3);padding:.3rem .8rem;transition:all .2s">
+            <i class="fas fa-arrow-right"></i> Xem Chi Tiết
+          </a>
+        </div>
+      </div>
+
+      <!-- VEIN MINER -->
+      <div class="feat-card reveal d3" id="tien-ich-veinminer" style="--fc:#a3e635">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:#a3e635">
+            <i class="icon-minecraft icon-minecraft-diamond-pickaxe"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Vein Miner</div>
+            <div class="feat-card-cmd">Giảm thời gian khai thác</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <p class="feat-card-desc">
+            Khai thác toàn bộ mạch quặng chỉ bằng một nhát cuốc.
+            Đủ điều kiện kích hoạt thì mạch quặng tự vỡ theo chain reaction —
+            không cần đào từng khối một. Tiết kiệm thời gian đáng kể.
+          </p>
+          <div class="vein-bar-wrap">
+            <div class="vein-bar-label">
+              <span>Tốc độ khai thác thông thường</span>
+              <span>1 lần nhấp</span>
+            </div>
+            <div class="vein-bar"><div class="vein-bar-fill" style="width:20%"></div></div>
+          </div>
+          <div class="vein-bar-wrap">
+            <div class="vein-bar-label">
+              <span>Với Vein Miner (cả mạch quặng)</span>
+              <span>1 lần nhấp</span>
+            </div>
+            <div class="vein-bar"><div class="vein-bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="feat-tags">
+            <span class="feat-tag" style="--fc:#a3e635">Chain Break</span>
+            <span class="feat-tag" style="--fc:#a3e635">Toàn Bộ Mạch</span>
+            <span class="feat-tag" style="--fc:#a3e635">Mining Buff</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PET -->
+      <div class="feat-card reveal d4" id="tien-ich-pet" style="--fc:var(--orange)">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:var(--orange)">
+            <i class="icon-minecraft icon-minecraft-lead"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">Pet — Thú Cưỡi &amp; Đồng Hành</div>
+            <div class="feat-card-cmd">Dùng Lead để thuần hóa</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-icon-strip" style="--fc:var(--orange)">
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-lead"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-spawn-egg-wolf"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-spawn-egg-cat"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-spawn-egg-horse"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-spawn-egg-parrot"></i>
+          </div>
+          <div class="pet-quote">
+            Cách thuần hóa: <strong>Dùng Lead trói mob lại.</strong>
+            Bạo lực? Có thể — nhưng hiệu quả!
+          </div>
+          <p class="feat-card-desc">
+            Hệ thống Pet cho phép thuần hóa nhiều loại mob thành đồng hành.
+            Pet theo sát, hỗ trợ chiến đấu hoặc làm mount cưỡi.
+            Mỗi loại pet có kỹ năng đặc biệt riêng.
+          </p>
+          <div class="feat-tags">
+            <span class="feat-tag" style="--fc:var(--orange)">Dùng Lead</span>
+            <span class="feat-tag" style="--fc:var(--orange)">Hỗ Trợ Chiến Đấu</span>
+            <span class="feat-tag" style="--fc:var(--orange)">Kỹ Năng Riêng</span>
+            <span class="feat-tag" style="--fc:var(--orange)">Mount Cưỡi</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TPA HOME -->
+      <div class="feat-card reveal d1" id="tien-ich-utility" style="--fc:#60a5fa">
+        <div class="feat-card-head">
+          <div class="feat-icon-wrap" style="--fc:#60a5fa">
+            <i class="icon-minecraft icon-minecraft-compass"></i>
+          </div>
+          <div>
+            <div class="feat-card-title">TPA, Home &amp; Tiện Ích</div>
+            <div class="feat-card-cmd">/tpa /home /spawn</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-icon-strip" style="--fc:#60a5fa">
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-compass"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-respawn-anchor"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-ender-pearl"></i>
+            <i class="icon-minecraft icon-minecraft-sm icon-minecraft-map"></i>
+          </div>
+          <p class="feat-card-desc">
+            Bộ lệnh tiện ích cơ bản giúp di chuyển và quản lý nhanh:
+          </p>
+          <table class="job-table" style="margin:.5rem 0">
+            <tr><th>Lệnh</th><th>Tác Dụng</th></tr>
+            <tr><td><code>/tpa &lt;player&gt;</code></td><td>Yêu cầu teleport đến người chơi</td></tr>
+            <tr><td><code>/tpahere &lt;player&gt;</code></td><td>Gọi người chơi đến chỗ mình</td></tr>
+            <tr><td><code>/sethome &lt;tên&gt;</code></td><td>Đặt điểm về nhà</td></tr>
+            <tr><td><code>/home &lt;tên&gt;</code></td><td>Teleport về nhà</td></tr>
+            <tr><td><code>/spawn</code></td><td>Về Spawn chính</td></tr>
+            <tr><td><code>/back</code></td><td>Quay lại vị trí trước đó</td></tr>
+          </table>
+          <div class="feat-tags">
+            <span class="feat-tag" style="--fc:#60a5fa">Teleport</span>
+            <span class="feat-tag" style="--fc:#60a5fa">Multi Home</span>
+            <span class="feat-tag" style="--fc:#60a5fa">Cooldown</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+/* Sidebar active sync */
+const sbItems = document.querySelectorAll('.sb-item');
+const sections = [...document.querySelectorAll('.feat-card[id], .feat-section[id]')];
+
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{
+    if(window.scrollY >= s.offsetTop - 120) cur='#'+s.id;
+  });
+  sbItems.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href')===cur);
+  });
+},{passive:true});
+
+sbItems.forEach(a=>{
+  a.addEventListener('click',e=>{
+    const href=a.getAttribute('href');
+    if(!href.startsWith('#')) return;
+    e.preventDefault();
+    document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+/* Reveal */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* MC icon override */
+(function(){
+  const img=new Image();
+  img.onload=img.onerror=function(){if(this.width!==1)document.documentElement.classList.add('no-webp')};
+  img.src='data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JZACdAEO/gHOAAA=';
+})();
+</script>
+</body>
+</html>
